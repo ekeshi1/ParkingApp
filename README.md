@@ -1,29 +1,8 @@
-# README #
+# Parking project #
+Made by Group 6:  Rajab Azizli,Huseyn Garayev, Karl Jääts and Erald Keshi.
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### Branch Strategy ###
+We use Gihub workflow.
+So master branch is for stable(ish) code.
+Feature branches for developing new features that will be merged into master when they are done.
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
