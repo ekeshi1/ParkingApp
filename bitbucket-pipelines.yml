@@ -1,0 +1,26 @@
+pipelines:
+  branches:
+    master:
+    - step:
+        image: elixir:1.8
+        caches:
+          - deps
+          - build
+        script:
+          - mix local.hex --force
+          - mix local.rebar --force
+          - mix deps.get
+          - MIX_ENV=test mix coveralls.xml -o "test-results"
+        services:
+        - db
+
+definitions:
+  caches:
+    deps: deps
+    build: _build
+  services:
+    db:
+      image: postgres:9.6-alpine
+      environment:
+        POSTGRES_PASSWORD: "postgres"
+        POSTGRES_USER: "postgres"
