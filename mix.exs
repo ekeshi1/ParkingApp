@@ -44,7 +44,15 @@ defmodule Parking.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:white_bread, "~> 4.5", only: [:test]},
+      {:hound, "~> 1.0"},
+      {:guardian, "~> 1.2"},
+      {:pbkdf2_elixir, "~> 1.0"},
+      {:httpoison, "~> 1.6"},
+      {:poison, "~> 3.1"},
+      {:coverex, "~> 1.4.10", only: :test},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
