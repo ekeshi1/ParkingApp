@@ -16,7 +16,7 @@ DDEFeature: Registration
     Scenario: Registration on web (with invalid email error)
         Given that I am an unregistered user
         And my full name is "Jana Kesku"
-        And my License Number is "145631" 
+        And my License Number is "1456312" 
         And my email is "jana.kesku"
         And my password is "11134"
         And I fill all the fields
