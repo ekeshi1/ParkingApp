@@ -3,7 +3,7 @@ DDEFeature: Registration
 
 
     Scenario: Registration on webb (with succesfull message)
-        GIven that I am an unregistered user
+        Given that I am an unregistered user
         And my full name is "Jan Klod"
         And my License Number is "1311234" 
         And my email is "jan.klod@hotmail.com"

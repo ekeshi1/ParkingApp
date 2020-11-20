@@ -12,7 +12,7 @@ defmodule Parking.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls, output: "test-results"],
-      preferred_cli_env: [coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.xml": :test]
+      preferred_cli_env: ["white_bread.run": :test, coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.xml": :test]
     ]
   end
 
