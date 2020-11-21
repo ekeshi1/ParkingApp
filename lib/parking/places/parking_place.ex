@@ -4,7 +4,7 @@ defmodule Parking.Places.Parking_place do
 
   schema "parking_places" do
     field :name, :string
-    field :adress, :string
+    field :address, :string
     field :total_places, :integer
     field :busy_places, :integer
     belongs_to :zone, Parking.Places.Zone
@@ -13,7 +13,7 @@ defmodule Parking.Places.Parking_place do
 
   def changeset(struct, params ) do
     struct
-    |> cast(params, [:name,:adress,:total_places,:busy_places])
+    |> cast(params, [:name,:address,:total_places,:busy_places])
     |> validate_required([:name,:adress,:total_places,:busy_places])
   end
 end

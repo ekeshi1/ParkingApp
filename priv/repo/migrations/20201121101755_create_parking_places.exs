@@ -2,7 +2,7 @@ defmodule Parking.Repo.Migrations.CreateParkingPlaces do
   use Ecto.Migration
 
   def change do
-    create table(:parking_places) do
+    create table("parking_places") do
       add :name, :string
       add :address, :string
       add :zone_id, references(:zones)
