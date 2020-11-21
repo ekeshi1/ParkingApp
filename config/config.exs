@@ -7,6 +7,12 @@
 # General application configuration
 use Mix.Config
 
+config :takso, Takso.Endpoint,
+  http: [port: 4001],
+  server: true  # Change the `false` to `true`
+
+
+
 config :parking,
   ecto_repos: [Parking.Repo]
 
@@ -29,3 +35,6 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :hound, driver: "chrome_driver"
+config :takso, sql_sandbox: true
