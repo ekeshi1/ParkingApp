@@ -14,7 +14,8 @@ Feature: Searching parking place
         | Delta Parking | Delta | A | 5
         | Raatuse P | Raatuse 18 | B | 10 |
         | LounaKeskus | Ringtee 75 | B | 10 |
-
+        
+        And I open searching parking place page
         And my destination address is Raatuse 22
         And I have not provided an intended leaving hour
         When I submit searching request
@@ -35,6 +36,7 @@ Feature: Searching parking place
         | Raatuse P | Raatuse 18 | B | 10 |
         | LounaKeskus | Ringtee 75 | B | 10 |
 
+        And I open searching parking place page
         And my destination address is Raatuse 22
         And my intended leaving hour is 1 hour before now
         When I submit searhing request
