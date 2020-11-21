@@ -14,6 +14,6 @@ defmodule Parking.Places.Parking_place do
   def changeset(struct, params ) do
     struct
     |> cast(params, [:name,:address,:total_places,:busy_places])
-    |> validate_required([:name,:adress,:total_places,:busy_places])
+    |> validate_required([:name,:address,:total_places,:busy_places])
   end
 end
