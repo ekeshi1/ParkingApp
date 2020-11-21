@@ -16,7 +16,7 @@ Feature: Searching parking place
         | LounaKeskus | ingtee 75, 50501 Tartu | B | 23 |
         
         And I open searching parking place page
-        And my destination address is Raatuse 22
+        And my destination address is "Raatuse 22"
         And I have not provided an intended leaving hour
         When I submit searching request
         Then I should see information about Delta parking place in the screen
@@ -37,7 +37,7 @@ Feature: Searching parking place
         | LounaKeskus | ingtee 75, 50501 Tartu | B | 23 |
 
         And I open searching parking place page
-        And my destination address is Raatuse 22
+        And my destination address is "Raatuse 22"
         And my intended leaving hour is 1 hour before now
         When I submit searhing request
         Then I should see "Leaving hour can't be in the past message" .
