@@ -7,7 +7,7 @@
 # General application configuration
 use Mix.Config
 
-config :takso, Takso.Endpoint,
+config :parking, Parking.Endpoint,
   http: [port: 4001],
   server: true  # Change the `false` to `true`
 
@@ -37,4 +37,4 @@ config :phoenix, :json_library, Jason
 import_config "#{Mix.env()}.exs"
 
 config :hound, driver: "chrome_driver"
-config :takso, sql_sandbox: true
+config :parking, sql_sandbox: true

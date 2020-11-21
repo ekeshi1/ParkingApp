@@ -1,4 +1,4 @@
-defmodule Takso.Repo.Migrations.CreateParkingPlaces do
+defmodule Parking.Repo.Migrations.CreateParkingPlaces do
   use Ecto.Migration
 
   def change do
