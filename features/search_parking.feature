@@ -15,10 +15,10 @@ Feature: Searching parking place
         | Raatuse P | Raatuse 18 | B | 10 |
         | LounaKeskus | Ringtee 75 | B | 10 |
 
-        And Given that the following parking places are available
         And my destination address is Raatuse 22
         And I have not provided an intended leaving hour
-        Then I should see information about Raatuse P in the screen
+        When I submit searching request
+        Then I should see information about Delta parking place in the screen
         And information must include information for number of free places, zone , zone Pricing , distance from destination address, and amount to be paid for Hourly and real time payment.
 
     Scenario: Searching parking (with time error)
@@ -35,8 +35,9 @@ Feature: Searching parking place
         | Raatuse P | Raatuse 18 | B | 10 |
         | LounaKeskus | Ringtee 75 | B | 10 |
 
-        And Given that my destination address is Raatuse 22
+        And my destination address is Raatuse 22
         And my intended leaving hour is 1 hour before now
+        When I submit searhing request
         Then I should see "Leaving hour can't be in the past message" .
 
 
