@@ -40,6 +40,6 @@ Feature: Searching parking place
         And my destination address is "Raatuse 22"
         And my intended leaving hour is 1 hour before now
         When I submit searhing request
-        Then I should see "Leaving hour can't be in the past message" .
+        Then I should see "Leaving hour can't be in the past" message .
 
 
