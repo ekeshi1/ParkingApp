@@ -11,9 +11,9 @@ Feature: Searching parking place
 
         And Given the following parking places are available
         | Name | Address | Zone | Nr of free spaces |
-        | Delta Parking | Delta | A | 5
-        | Raatuse P | Raatuse 18 | B | 10 |
-        | LounaKeskus | Ringtee 75 | B | 10 |
+        | Delta| Narva maantee 18, 51009, Tartu | A | 28 |
+        | Eeden | Kalda tee 1c, 50104 Tartu | B | 22 |
+        | LounaKeskus | ingtee 75, 50501 Tartu | B | 23 |
         
         And I open searching parking place page
         And my destination address is Raatuse 22
@@ -32,9 +32,9 @@ Feature: Searching parking place
 
         And Given the following parking places are available
         | Name | Address | Zone | Nr of free spaces |
-        | Delta Parking | Delta | A | 5
-        | Raatuse P | Raatuse 18 | B | 10 |
-        | LounaKeskus | Ringtee 75 | B | 10 |
+        | Delta| Narva maantee 18, 51009, Tartu | A | 28 |
+        | Eeden | Kalda tee 1c, 50104 Tartu | B | 22 |
+        | LounaKeskus | ingtee 75, 50501 Tartu | B | 23 |
 
         And I open searching parking place page
         And my destination address is Raatuse 22
