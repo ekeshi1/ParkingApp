@@ -2,7 +2,7 @@ Feature: Searching parking place
     As a user I want to search for parking place
 
     Scenario: Searching parking (with succesfull result with description)
-        Given that my email is "eraldo.keshi@hotmail.com"
+        Given that my email is "eraldo.keshi@hotmail.com" and password is "123456"
         And I am logged in
         And the following prices correspond to the zones
         | Zone | Hourly | Real-time |
@@ -23,7 +23,7 @@ Feature: Searching parking place
         And information must include information for number of free places, zone , zone Pricing , distance from destination address, and amount to be paid for Hourly and real time payment.
 
     Scenario: Searching parking (with time error)
-        Given that my email is "eraldo.keshi@hotmail.com"
+        Given that my email is "eraldo.keshi@hotmail.com" and password is "123456"
         And I am logged in
         And the following prices correspond to the zones
         | Zone | Hourly | Real-time |
