@@ -4,9 +4,7 @@ Feature: Login
     so that I can login into the app
 
     Scenario: Logging in (with successful message)
-        Given that I am a registered user
-        And my email is  "eraldo.keshi@Hotmail.com"
-        And my password is "11134"
+        Given that I am a registered user "eraldo.keshi@Hotmail.com" with password "11134"
         When I go to the login page
         And I fill email as  "eraldo.keshi@Hotmail.com"
         And I fill password as "11134"
@@ -22,9 +20,7 @@ Feature: Login
         Then I must see "User doesn't exist" in the screen. 
 
     Scenario: Logging in (with wrong password message)
-        Given that I am a registered user
-        And my email is  "eraldo.keshi@Hotmail.com"
-        And my password is "11134"
+        Given that I am a registered user "eraldo.keshi@Hotmail.com" with password "11134"
         When I go to the login page
         And I fill email as  "eraldo.keshi@Hotmail.com"
         And I fill password as "21315"

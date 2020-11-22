@@ -76,7 +76,8 @@ defmodule WhiteBreadContext do
 
   # ---------------------------------------------------------------------------------------
   # LOGIN
-  given_ ~r/^that I am a registered user$/, fn state ->
+  given_ ~r/^that I am a registered user "(?<argument_one>[^"]+)" with password "(?<argument_two>[^"]+)"$/,
+  fn state, %{argument_one: _argument_one,argument_two: _argument_two} ->
     {:ok, state}
   end
 
@@ -84,15 +85,8 @@ defmodule WhiteBreadContext do
     {:ok, state}
   end
 
-  and_ ~r/^my email is  "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
-    {:ok, state}
-  end
-
-  and_ ~r/^my password is "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
-    {:ok, state}
-  end
-
   when_ ~r/^I go to the login page$/, fn state ->
+    #navigate_to "/user/login"
     {:ok, state}
   end
 
