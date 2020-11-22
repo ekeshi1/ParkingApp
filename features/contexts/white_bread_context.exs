@@ -78,6 +78,7 @@ defmodule WhiteBreadContext do
   # LOGIN
   given_ ~r/^that I am a registered user "(?<argument_one>[^"]+)" with password "(?<argument_two>[^"]+)"$/,
   fn state, %{argument_one: _argument_one,argument_two: _argument_two} ->
+    # Add that user to the database
     {:ok, state}
   end
 
@@ -87,23 +88,28 @@ defmodule WhiteBreadContext do
   end
 
   when_ ~r/^I go to the login page$/, fn state ->
-    #navigate_to "/user/login"
+    #navigate_to "/sessions/new"
     {:ok, state}
   end
 
   and_ ~r/^I fill email as  "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    #fill_field({:id, "email"}, _argument_one)
     {:ok, state}
   end
 
   and_ ~r/^I fill password as "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    #fill_field({:id, "password"}, _argument_one)
     {:ok, state}
   end
 
   and_ ~r/^I click Login$/, fn state ->
+    #click({:id, "login_button"})
     {:ok, state}
   end
 
   then_ ~r/^I must see "(?<argument_one>[^"]+)" in the screen. $/, fn state, %{argument_one: _argument_one} ->
+    #assert visible_in_page? _argument_one
     {:ok, state}
   end
+  # ------------------------------------------------------------------------------------
 end
