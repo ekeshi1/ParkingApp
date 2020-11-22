@@ -81,7 +81,8 @@ defmodule WhiteBreadContext do
     {:ok, state}
   end
 
-  given_ ~r/^that I am an uregistered user$/, fn state ->
+  given_ ~r/^that user "(?<argument_one>[^"]+)" is not registered$/,
+  fn state, %{argument_one: _argument_one} ->
     {:ok, state}
   end
 

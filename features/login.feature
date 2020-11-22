@@ -12,7 +12,7 @@ Feature: Login
         Then I must see "Successfully logged in" in the screen. 
 
     Scenario: Logging in (with user doesn't exist message)
-        Given that I am an uregistered user
+        Given that user "somedude@Hotmail.com" is not registered
         When I go to the login page
         And I fill email as  "somedude@Hotmail.com"
         And I fill password as "21312"
