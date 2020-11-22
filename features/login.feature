@@ -15,7 +15,7 @@ Feature: Login
 
     Scenario: Logging in (with user doesn't exist message)
         Given that I am an uregistered user
-        When I  go to the login page
+        When I go to the login page
         And I fill email as  "somedude@Hotmail.com"
         And I fill password as "21312"
         And I click Login
@@ -25,7 +25,7 @@ Feature: Login
         Given that I am a registered user
         And my email is  "eraldo.keshi@Hotmail.com"
         And my password is "11134"
-        When I go to the login page 
+        When I go to the login page
         And I fill email as  "eraldo.keshi@Hotmail.com"
         And I fill password as "21315"
         And I click Login

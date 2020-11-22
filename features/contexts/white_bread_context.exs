@@ -73,4 +73,42 @@ defmodule WhiteBreadContext do
     # click({:id, "submit"})
     {:ok, state}
   end
+
+  # ---------------------------------------------------------------------------------------
+  # LOGIN
+  given_ ~r/^that I am a registered user$/, fn state ->
+    {:ok, state}
+  end
+
+  given_ ~r/^that I am an uregistered user$/, fn state ->
+    {:ok, state}
+  end
+
+  and_ ~r/^my email is  "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    {:ok, state}
+  end
+
+  and_ ~r/^my password is "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    {:ok, state}
+  end
+
+  when_ ~r/^I go to the login page$/, fn state ->
+    {:ok, state}
+  end
+
+  and_ ~r/^I fill email as  "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    {:ok, state}
+  end
+
+  and_ ~r/^I fill password as "(?<argument_one>[^"]+)"$/, fn state, %{argument_one: _argument_one} ->
+    {:ok, state}
+  end
+
+  and_ ~r/^I click Login$/, fn state ->
+    {:ok, state}
+  end
+
+  then_ ~r/^I must see "(?<argument_one>[^"]+)" in the screen. $/, fn state, %{argument_one: _argument_one} ->
+    {:ok, state}
+  end
 end
