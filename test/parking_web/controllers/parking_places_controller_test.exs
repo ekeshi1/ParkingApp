@@ -14,10 +14,10 @@ defmodule ParkingWeb.ParkingPLacesControllerTest do
 
   describe "search" do
 
-    # test "search with address, hours, and minutes", %{conn: conn} do
+    test "search with address, hours, and minutes", %{conn: conn} do
 
-    #   conn = post conn, "search/some", %{}
-    # end
+      conn = post conn, "search/some", %{}
+    end
   end
 
 end
