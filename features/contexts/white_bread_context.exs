@@ -78,7 +78,7 @@ defmodule WhiteBreadContext do
   # LOGIN
   given_ ~r/^that I am a registered user "(?<argument_one>[^"]+)" with password "(?<argument_two>[^"]+)"$/,
   fn state, %{argument_one: _argument_one,argument_two: _argument_two} ->
-    # Add that user to the database
+    # TODO Add that user to the database
     {:ok, state}
   end
 
