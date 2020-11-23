@@ -19,7 +19,6 @@ defmodule WhiteBreadConfig do
         context:       WhiteBread.Contexts.SearchParkingContext,
         feature_paths: ["features/searchparking/"]
 
-
   #suite name:          "All",
   #      context:       WhiteBreadContext,
   #      feature_paths: ["features/"]

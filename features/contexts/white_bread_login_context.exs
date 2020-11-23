@@ -70,7 +70,7 @@ defmodule WhiteBread.Contexts.LoginContext do
   end
 
   then_ ~r/^I must see "(?<message>[^"]+)" in the screen. $/, fn state, %{message: message} ->
-    #assert visible_in_page? message
+    assert visible_in_page? Regex.compile!(message)
     {:ok, state}
   end
 
