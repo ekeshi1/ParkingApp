@@ -36,14 +36,14 @@ defmodule ParkingWeb.ParkingPLacesControllerTest do
     end
 
     test "search with address, hours and without minutes", %{conn: conn} do
-      conn = post(conn, Routes.parking_place_path(conn, :create), post: @valid_attrs_with_only_hours)
+      conn = post(conn, Routes.parking_place_path(conn, :create), post: @valid_attrs_without_minutes)
       # assert redirected_to(conn) == Routes.parking_place_path(conn, :create)
       conn = get(conn, Routes.parking_place_path(conn, :create))
       assert html_response(conn, 200) =~ "Here are the available parking zones with estimated pricing."
     end
 
-    test "search with address, without hours and minutes", %{conn: conn} do
-      conn = post(conn, Routes.parking_place_path(conn, :create), post: @valid_attrs_without_time)
+    test "search with address, minutes and without hours", %{conn: conn} do
+      conn = post(conn, Routes.parking_place_path(conn, :create), post: @valid_attrs_without_hours)
       # assert redirected_to(conn) == Routes.parking_place_path(conn, :create)
       conn = get(conn, Routes.parking_place_path(conn, :create))
       assert html_response(conn, 200) =~ "Here are the available parking zones with estimated pricing."
