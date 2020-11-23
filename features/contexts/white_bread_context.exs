@@ -20,6 +20,9 @@ defmodule WhiteBreadContext do
   end
 
   given_ ~r/^that my email is "(?<email>[^"]+)" and password is "(?<password>[^"]+)"$/,
+  IO.puts "Came here."
+
+
   fn state, %{email: email,password: password} ->
     {:ok, state |> Map.put(:email, email)
                 |> Map.put(:password, password)}

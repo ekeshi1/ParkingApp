@@ -17,7 +17,8 @@ defmodule ParkingWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/sessions", SessionController
+    resources "/users", UserController
+    #resources "/sessions", SessionController
   end
 
   # Other scopes may use custom stacks.
