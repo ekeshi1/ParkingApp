@@ -22,7 +22,7 @@ defmodule ParkingWeb.ParkingPLacesControllerTest do
       conn = post(conn, Routes.parking_place_path(conn, :create), post: @valid_attrs_with_everything)
       assert redirected_to(conn) == Routes.parking_place_path(conn, :show)
       conn = get(conn, Routes.parking_place_path(conn, :show))
-      assert html_response(conn, 200) =~ "Here are available parking zones."
+      assert html_response(conn, 200) =~ "Here are the available parking zones."
 
     end
 
