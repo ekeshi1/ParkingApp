@@ -21,3 +21,8 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place}
  %{name: "Eeden", address: "Kalda tee 1c, 50104 Tartu", total_places: 35, busy_places: 13}]
 |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+
+[%{name: "Bob", license: "9999", email: "bob@gmail.com", password: "123"},
+ %{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321"}]
+|> Enum.map(fn user_data -> User.changeset(%User{}, user_data) end)
+|> Enum.each(fn changeset -> Repo.insert!(changeset) end)
