@@ -12,7 +12,7 @@
 alias Parking.{Repo, Places.Zone, Places.Parking_place}
 
 [%{name: "A", hourly_rate: 2.0, realtime_rate: 0.16},
- %{name: "B", hourly_rate: 1.0, realtime_rate: 0.8}]
+ %{name: "B", hourly_rate: 1.0, realtime_rate: 0.08}]
 |> Enum.map(fn zone_data -> Zone.changeset(%Zone{}, zone_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
 
