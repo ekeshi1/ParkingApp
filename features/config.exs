@@ -10,9 +10,14 @@ defmodule WhiteBreadConfig do
   suite name:          "Register",
         context:       WhiteBread.Contexts.RegisterContext,
         feature_paths: ["features/register/"]
-  #suite name:          "All",
-  #      context:       WhiteBreadContext,
-  #      feature_paths: ["features/"]
+
+  suite name:          "Login",
+        context:       WhiteBread.Contexts.LoginContext,
+        feature_paths: ["features/login/"]
+
+  suite name:          "All",
+        context:       WhiteBreadContext,
+        feature_paths: ["features/"]
 
 
 end

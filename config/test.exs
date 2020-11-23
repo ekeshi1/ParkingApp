@@ -21,4 +21,4 @@ config :parking, ParkingWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :debug
 config :hound, driver: "chrome_driver"
-config :takso, sql_sandbox: true
+config :parking, sql_sandbox: true
