@@ -98,26 +98,35 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
   end
 
   when_ ~r/^I submit searching request$/, fn state ->
-    click({:id, "submit"})
-    {:ok, state}
-  end
-  then_ ~r/^I should see information about Delta parking place in the screen$/, fn state ->
-    assert visible_in_page? ~r/Delta/
+    click({:id, "submit_button"})
     {:ok, state}
   end
 
-  and_ ~r/^information must include information for number of free places, zone , zone Pricing , distance from destination address, and amount to be paid for Hourly and real time payment.$/, fn state ->
-    assert visible_in_page? ~r/free places/
-    assert visible_in_page? ~r/zone/
-    assert visible_in_page? ~r/hourly rate/
-    assert visible_in_page? ~r/realtime rate/
-    assert visible_in_page? ~r/distance/
-    assert visible_in_page? ~r/amount/
+
+  # then_ ~r/^I should see information about Delta parking place in the screen$/, fn state ->
+  #   assert visible_in_page? ~r/Here are the available parking zones./
+  #   {:ok, state}
+  # end
+
+  then_ ~r/^I should see "(?<argument_one>[^"]+)" message.$/,fn state, %{argument_one: _argument_one} ->
+    assert visible_in_page? ~r/Here are the available parking zones./
     {:ok, state}
   end
 
-  and_ ~r/^my intended leaving hour is 1 hour before now$/, fn state ->
-    fill_field({:id, "hour"},1)
+  # and_ ~r/^information must include information for number of free places, zone , zone Pricing , distance from destination address, and amount to be paid for Hourly and real time payment.$/, fn state ->
+  #   assert visible_in_page? ~r/free places/
+  #   assert visible_in_page? ~r/zone/
+  #   assert visible_in_page? ~r/hourly rate/
+  #   assert visible_in_page? ~r/realtime rate/
+  #   assert visible_in_page? ~r/distance/
+  #   assert visible_in_page? ~r/amount/
+  #   {:ok, state}
+  # end
+
+  and_ ~r/^my intended parking time "(?<hours>[^"]+)" hour and "(?<minutes>[^"]+)" minutes$/,
+  fn state, %{hours: h,minutes: m} ->
+    fill_field({:id, "hours"},h)
+    fill_field({:id, "minutes"},m)
     {:ok, state}
   end
 
