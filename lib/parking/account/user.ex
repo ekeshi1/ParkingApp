@@ -16,5 +16,6 @@ defmodule Parking.Account.User do
     user
     |> cast(attrs, [:name, :email, :license, :password])
     |> validate_required([:name, :email, :license, :password])
+    |> validate_format(:email, ~r/^[\w.!#$%&’*+\-\/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/i, message: "Invalid email!" )
   end
 end

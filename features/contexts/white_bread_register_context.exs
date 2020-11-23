@@ -78,6 +78,10 @@ defmodule WhiteBread.Contexts.RegisterContext do
     {:ok, state}
   end
 
+  then_ ~r/^I should see "Invalid email!" in the screen/, fn state ->
+    assert visible_in_page? ~r/Invalid email!/
+    {:ok, state}
+  end
 
 
 
