@@ -1,8 +1,8 @@
 defmodule WhiteBread.Contexts.RegisterContext do
   use WhiteBread.Context
   use Hound.Helpers
-
-  alias Parking.{Repo}
+  import Ecto.Query
+  alias Parking.{Repo,Account.User,Account}
 
   feature_starting_state fn  ->
     Application.ensure_all_started(:hound)
@@ -20,7 +20,7 @@ defmodule WhiteBread.Contexts.RegisterContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    # Hound.end_session
+    Hound.end_session
   end
 
   given_ ~r/^that I am an unregistered user/, fn state ->
@@ -28,11 +28,48 @@ defmodule WhiteBread.Contexts.RegisterContext do
     {:ok, state}
   end
 
+  given_ ~r/^that there exists a user whose email address is "(?<already_existing_email>[^"]+)"/, fn state,%{already_existing_email: already_existing_email} ->
+    query = from u in User,
+            where: u.email==^already_existing_email
+    case Account.create_user(%{name: "Erald", license: "1231", email: "jan.klod@hotmail.com", password: "123456"}) do
+      {:ok, user} ->
+        IO.puts("created user")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.puts("Couldnt create user")
+    end
+    user_exists = Repo.exists?(query)
+    IO.puts user_exists
+    cond do
+      user_exists -> {:ok,state}
+      not user_exists -> {:error,state}
+    end
+  end
+
+  given_ ~r/^that there exists a user whose license number is "(?<already_existing_license>[^"]+)"/, fn state, %{already_existing_license: already_existing_license}->
+    query = from u in User,
+            where: u.license==^already_existing_license
+    case Account.create_user(%{name: "Erald", license: already_existing_license, email: "janaaa.klod@hotmail.com", password: "123456"}) do
+      {:ok, user} ->
+        IO.puts("created user")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.puts("Couldnt create user")
+    end
+    user_exists = Repo.exists?(query)
+    IO.puts user_exists
+    cond do
+      user_exists -> {:ok,state}
+      not user_exists -> {:error,state}
+    end
+  end
+
+
   and_ ~r/^my full name is "(?<name>[^"]+)"/, fn state,%{name: name} ->
 
     IO.inspect(name)
     {:ok, state |> Map.put(:name,name)}
-  end
+    end
 
   and_ ~r/^my License Number is "(?<license>[^"]+)"/, fn state, %{license: license} ->
     IO.puts license
@@ -73,7 +110,9 @@ defmodule WhiteBread.Contexts.RegisterContext do
     {:ok,state}
   end
 
-  then_ ~r/^I must see "(?<success_msg>[^"]+)" appear in the screen/, fn state,%{success_msg: success_msg} ->
+
+
+  then_ ~r/^I must see a success message/, fn state ->
     assert visible_in_page? ~r/Successfully registered!/
     {:ok, state}
   end
@@ -83,11 +122,14 @@ defmodule WhiteBread.Contexts.RegisterContext do
     {:ok, state}
   end
 
-
-
-
-
-
+  then_ ~r/I must see "A user already exists with this email!" in the screen/, fn state ->
+    assert visible_in_page? ~r/A user already exists with this email!/
+    {:ok,state}
+  end
+  then_ ~r/I must see "A user already exists with this license!" in the screen/, fn state ->
+    assert visible_in_page? ~r/A user already exists with this license!/
+    {:ok,state}
+  end
 
 
 end
