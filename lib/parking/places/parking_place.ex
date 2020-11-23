@@ -7,13 +7,13 @@ defmodule Parking.Places.Parking_place do
     field :address, :string
     field :total_places, :integer
     field :busy_places, :integer
-    belongs_to :zone, Parking.Places.Zone
+    field :zone_id, :string
     timestamps()
   end
-
-  def changeset(struct, params ) do
-    struct
-    |> cast(params, [:name,:address,:total_places,:busy_places])
-    |> validate_required([:name,:address,:total_places,:busy_places])
+  @doc false
+  def changeset(parking_place, params  \\ %{}) do
+    parking_place
+    |> cast(params, [:name,:address,:total_places,:busy_places,:zone_id])
+    |> validate_required([:name,:address,:total_places,:busy_places,:zone_id])
   end
 end
