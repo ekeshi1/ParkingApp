@@ -15,6 +15,10 @@ defmodule WhiteBreadConfig do
         context:       WhiteBread.Contexts.LoginContext,
         feature_paths: ["features/login/"]
 
+#   suite name:          "Search",
+#         context:       WhiteBread.Contexts.SearchParkingContext,
+#         feature_paths: ["features/searchparking/"]
+
 
   #suite name:          "All",
   #      context:       WhiteBreadContext,
