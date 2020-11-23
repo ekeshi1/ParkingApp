@@ -1,0 +1,19 @@
+<%= form_for @changeset, Routes.parking_place_path(@conn, :create), fn parking_place -> %>
+
+  <div class="form-group">
+    <%= label parking_place, :destination_address, class: "control-label" %>
+    <%= text_input parking_place, :destination_address, id: "destination_address", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label parking_place, :hours, class: "control-label" %>
+    <%= number_input parking_place, :hours, id: "hours", class: "form-control", min: "0", max: "6" %>
+    <%= label parking_place, :minutes, class: "control-label" %>
+    <%= number_input parking_place, :minutes, id: "minutes", class: "form-control", min: "0", max: "59" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", id: "submit_button", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
