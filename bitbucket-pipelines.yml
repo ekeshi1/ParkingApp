@@ -10,7 +10,6 @@ pipelines:
           - mix local.hex --force
           - mix local.rebar --force
           - mix deps.get
-          - mix white_bread.run -o "white_bread results"
           - MIX_ENV=test mix coveralls.xml -o "test-results"
         services:
         - db
