@@ -9,7 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-alias Parking.{Repo, Places.Zone, Places.Parking_place}
+alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
 
 [%{name: "A", hourly_rate: 2.0, realtime_rate: 0.16},
  %{name: "B", hourly_rate: 1.0, realtime_rate: 0.8}]

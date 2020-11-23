@@ -13,12 +13,30 @@ defmodule ParkingWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :browser_auth do
+    plug Parking.AuthPipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   scope "/", ParkingWeb do
     pipe_through :browser
 
+    resources "/sessions", SessionController
+  end
+
+  scope "/", ParkingWeb do
+    pipe_through [:browser, :browser_auth]
+    # Stuff that anybody can access
     get "/", PageController, :index
     resources "/users", UserController
-    resources "/sessions", SessionController
+  end
+
+  scope "/", ParkingWeb do
+    pipe_through [:browser, :browser_auth, :ensure_auth]
+    # Stuff only logged in users should access
   end
 
   # Other scopes may use custom stacks.

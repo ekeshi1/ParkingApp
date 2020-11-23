@@ -1,6 +1,8 @@
 defmodule ParkingWeb.SessionControllerTest do
   use ParkingWeb.ConnCase
 
+  alias Parking.Account
+
   describe "log in" do
 
     test "log in succesful", %{conn: conn} do
