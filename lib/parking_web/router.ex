@@ -32,6 +32,10 @@ defmodule ParkingWeb.Router do
     # Stuff that anybody can access
     get "/", PageController, :index
     resources "/users", UserController
+
+    get "/search", Parking_placeController ,:index
+    get "/search/some", Parking_placeController ,:create
+    post "/search/some", Parking_placeController ,:create
   end
 
   scope "/", ParkingWeb do

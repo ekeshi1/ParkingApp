@@ -1,0 +1,35 @@
+<h2>Parking Places in vicinity</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Zone type</th>
+      <th>Number of free spaces</th>
+      <th>Price for hourly</th>
+      <th>Price for real time</th>
+      <th>distance</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for place <- @places do %>
+    <tr>
+      <td><%= place.name %></td>
+      <td><%= place.address %></td>
+      <td style="color: green;"><%= place.zone_id %></td>
+      <td><%= place.total_places- place.busy_places%></td>
+      <td style="color: tomato;"><%= place.hour_price %> euros</td>
+      <td><%= place.realtime_price %> euros</td>
+      <td><%= place.distance %> km</td>
+      
+       <td class="text-right">
+        <span><%= link "Select", to: Routes.parking_place_path(@conn, :index), class: "btn btn-default btn-xs" %></span>
+
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
