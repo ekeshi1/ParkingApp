@@ -16,9 +16,9 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place}
 |> Enum.map(fn zone_data -> Zone.changeset(%Zone{}, zone_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
 
-[%{name: "Delta", address: "Narva maantee 18, 51009, Tartu", total_places: 30, busy_places: 2},
- %{name: "Lounakeskus", address: "Ringtee 75, 50501 Tartu", total_places: 45, busy_places: 22},
- %{name: "Eeden", address: "Kalda tee 1c, 50104 Tartu", total_places: 35, busy_places: 13}]
+[%{name: "Delta", address: "Narva maantee 18, 51009, Tartu", total_places: 30, busy_places: 2, zone_id: "A"},
+ %{name: "Lounakeskus", address: "Ringtee 75, 50501 Tartu", total_places: 45, busy_places: 22, zone_id: "A"},
+ %{name: "Eeden", address: "Kalda tee 1c, 50104 Tartu", total_places: 35, busy_places: 13, zone_id: "B"}]
 |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
 
