@@ -4,9 +4,16 @@ defmodule ParkingWeb.SessionController do
   alias Parking.Account.User
 
   def new(conn, _params) do
-    render conn, "new.html"
+    user = Parking.Authentication.load_current_user(conn)
+    if( not is_nil(user)) do
+      conn |> redirect(to: Routes.parking_place_path(conn, :index))
+
+
+    else  render conn, "new.html"
+  end
   end
 
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
     user = Repo.get_by(User, email: email)
     case Authentication.check_credentials(user, password) do
@@ -29,6 +36,6 @@ defmodule ParkingWeb.SessionController do
   def delete(conn, _params) do
     conn
     |> Parking.Authentication.logout()
-    |> redirect(to: Routes.page_path(conn, :index))
+    |> redirect(to: Routes.session_path(conn, :new))
   end
 end

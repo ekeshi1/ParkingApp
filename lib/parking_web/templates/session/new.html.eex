@@ -1,3 +1,5 @@
+<h1> Welcome to ParkingApp! Please Log in </h1>
+
 <%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn session -> %>
   <div class="form-group">
     <%= label session, :email, class: "control-label" %>
@@ -5,9 +7,9 @@
   </div>
   <div class="form-group">
     <%= label session, :password, class: "control-label" %>
-    <%= text_input session, :password, id: "password", class: "form-control" %>
+    <%= password_input session, :password, id: "password", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary", id: "login_button" %>
-  </div>
+    <%= submit "Login", class: "btn btn-primary", id: "login_button" %>
+  </div>Or <%= link "Register instead", to: Routes.user_path(@conn, :new) %>
 <% end %>

@@ -24,14 +24,18 @@ defmodule ParkingWeb.Router do
   scope "/", ParkingWeb do
     pipe_through :browser
 
-    resources "/sessions", SessionController
   end
+
+
+
+
 
   scope "/", ParkingWeb do
     pipe_through [:browser, :browser_auth]
     # Stuff that anybody can access
     get "/", PageController, :index
-    resources "/users", UserController
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, only: [:new, :create]
 
   end
 
