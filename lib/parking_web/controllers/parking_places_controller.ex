@@ -14,6 +14,7 @@ defmodule ParkingWeb.Parking_placeController do
 
   def new(conn, _params) do
     places = Repo.all(Parametre)
+    Repo.delete_all(Parametre)
     render conn, "index.html", places: places
   end
 
@@ -27,6 +28,8 @@ defmodule ParkingWeb.Parking_placeController do
 
     #zones=Repo.all(from t in Zone, select: t)
     #IO.puts ( zones)
+
+
 
     places =  places |> Enum.map(fn x ->
        [d1, d2] =Parking.Geolocation.distance(parking_place_params[:destination_address], x.address)
@@ -51,7 +54,7 @@ defmodule ParkingWeb.Parking_placeController do
     # Repo.insert(changeset)
 
     conn
-    |> put_flash(:info,"Here are the available parking zones with estimated pricing.")
+    |> put_flash(:info,"Here are the available parking zones.")
     |> redirect(to: Routes.parking_place_path(conn, :new))
 
   end

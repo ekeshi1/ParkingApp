@@ -34,17 +34,17 @@ defmodule ParkingWeb.Router do
     pipe_through [:browser, :browser_auth]
     # Stuff that anybody can access
     get "/", PageController, :index
-<<<<<<< HEAD
+
     resources "/users", UserController
     get "/search", Parking_placeController ,:index
     get "/search/some", Parking_placeController ,:create
     post "/search/some", Parking_placeController ,:create
     get "/search/data", Parking_placeController ,:new
-=======
+
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController, only: [:new, :create]
 
->>>>>>> 14ef77c4a6cd16c44c571cfd74f0d1840f61d18f
+
   end
 
   scope "/", ParkingWeb do
