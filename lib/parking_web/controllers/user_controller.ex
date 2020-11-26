@@ -5,22 +5,34 @@ defmodule ParkingWeb.UserController do
   alias Parking.Account.User
 
   def index(conn, _params) do
+
     users = Account.list_users()
     render(conn, "index.html", users: users)
   end
 
   def new(conn, _params) do
-    changeset = Account.change_user(%User{})
-    render(conn, "new.html", changeset: changeset)
+    user = Parking.Authentication.load_current_user(conn)
+
+    if( not is_nil(user)) do
+      conn |> redirect(to: Routes.parking_place_path(conn, :index))
+
+
+    else  changeset = Account.change_user(%User{})
+
+          render(conn, "new.html", changeset: changeset)
+
+  end
+
+
   end
 
   def create(conn, %{"user" => user_params}) do
     IO.puts("Came in controller. Creating")
     case Account.create_user(user_params) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "Successfully registered!")
-        |> redirect(to: Routes.user_path(conn, :show, user))
+        |> redirect(to: Routes.session_path(conn, :new))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
