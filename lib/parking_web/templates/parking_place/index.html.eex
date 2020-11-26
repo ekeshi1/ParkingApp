@@ -21,8 +21,8 @@
       <td><%= place.address %></td>
       <td style="color: green;"><%= place.zone_id %></td>
       <td><%= place.total_places- place.busy_places%></td>
-      <td style="color: tomato;"><%= place.hour_price %> euros</td>
-      <td style="color: tomato;"><%= place.realtime_price %> euros</td>
+      <td style="color: tomato;"><%= if  place.hour_price == 0 do "Time not specified" else place.hour_price end %> euros</td>
+      <td style="color: tomato;"><%= if  place.realtime_price == 0 do "Time not specified" else place.realtime_price end %> euros</td>
       <td><%= place.distance %> km</td>
       
        <td class="text-right">
