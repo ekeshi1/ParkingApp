@@ -37,11 +37,17 @@ defmodule ParkingWeb.Parking_placeController do
     end  )
 
 
+    hh = if parking_place_params[:hours] == ""  do  "0" else  parking_place_params[:hours] end
+
+    mm = if parking_place_params[:minutes] == ""  do  "0" else  parking_place_params[:minutes] end
+
+
+
     places =  places |> Enum.map(fn x ->
       zone=Enum.at( Repo.all(from t in Zone, where: t.name == ^(x.zone_id), select: t),0)
-      hnumber= ceil(( String.to_integer(parking_place_params[:hours])*60 + String.to_integer(parking_place_params[:minutes]) )/60 )
+      hnumber= ceil(( String.to_integer(hh)*60 + String.to_integer(mm) )/60 )
       hour_price= Float.round(zone.hourly_rate*hnumber , 2)
-      hminutes= ceil(( String.to_integer(parking_place_params[:hours])*60 + String.to_integer(parking_place_params[:minutes]) )/5 )
+      hminutes= ceil(( String.to_integer(hh)*60 + String.to_integer(mm) )/5 )
       realtime_price= Float.round(zone.realtime_rate*hminutes ,2)
       Map.merge( %{hour_price: hour_price, realtime_price: realtime_price},x)
    end  )
