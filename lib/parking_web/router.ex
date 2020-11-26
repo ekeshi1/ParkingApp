@@ -32,15 +32,16 @@ defmodule ParkingWeb.Router do
     # Stuff that anybody can access
     get "/", PageController, :index
     resources "/users", UserController
-
+    get "/search", Parking_placeController ,:index
+    get "/search/some", Parking_placeController ,:create
+    post "/search/some", Parking_placeController ,:create
+    get "/search/data", Parking_placeController ,:new
   end
 
   scope "/", ParkingWeb do
     pipe_through [:browser, :browser_auth, :ensure_auth]
     # Stuff only logged in users should access
-    get "/search", Parking_placeController ,:index
-    get "/search/some", Parking_placeController ,:create
-    post "/search/some", Parking_placeController ,:create
+
   end
 
   # Other scopes may use custom stacks.

@@ -3,7 +3,7 @@ defmodule ParkingWeb.Parking_placeController do
   #import Ecto.Query, only: [from: 2]
   import Ecto.Query
   alias Parking.Repo
-  alias Parking.Places.{Zone, Parking_place}
+  alias Parking.Places.{Zone, Parking_place,Parametre}
   #alias Ecto.{Changeset, Multi}
 
   def index(conn, _params) do
@@ -13,8 +13,8 @@ defmodule ParkingWeb.Parking_placeController do
 
 
   def new(conn, _params) do
-    changeset = Parking_place.changeset(%Parking_place{}, %{})
-    render conn, "new.html", changeset: changeset
+    places = Repo.all(Parametre)
+    render conn, "index.html", places: places
   end
 
   def create(conn, %{"parking_place" => parking_place_params}) do
@@ -43,11 +43,17 @@ defmodule ParkingWeb.Parking_placeController do
       Map.merge( %{hour_price: hour_price, realtime_price: realtime_price},x)
    end  )
 
-
+    Enum.each(places, fn(place) ->          changeset=Parametre.changeset(%Parametre{}, %{address: place.address, busy_places: place.busy_places , total_places: place.total_places, distance: place.distance, hour_price: place.hour_price, name: place.name, realtime_price: place.realtime_price, zone_id: place.zone_id})
+                                            Repo.insert(changeset)
+                                            #IO.puts changeset
+                                            end)
+    # changeset=Parametre.changeset(%Parametre{}, places)
+    # Repo.insert(changeset)
 
     conn
     |> put_flash(:info,"Here are the available parking zones with estimated pricing.")
-    |> render( "index.html", places: places )
+    |> redirect(to: Routes.parking_place_path(conn, :new))
+
   end
 
 
