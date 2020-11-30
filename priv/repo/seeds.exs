@@ -24,7 +24,7 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
  %{name: "Raatuse", address: "Raatuse 22,51009,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
  %{name: "Lounakeskus 2", address: "Ringtee 75,50501,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
  %{name: "Pikk", address: "Pikk 40,50630,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
- %{name: "Narva 27", address: "Narva maantee 27,51009,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
+ %{name: "Narva 27", address: "Narva mnt 27,51013,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
 ]
 |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)

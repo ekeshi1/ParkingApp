@@ -19,9 +19,13 @@ defmodule WhiteBreadConfig do
   #      context:       WhiteBread.Contexts.SearchParkingContext,
   #      feature_paths: ["features/searchparking/"]
 
-  suite name:          "Parking Booking",
-        context:       WhiteBread.Contexts.ParkingBookingContext,
-        feature_paths: ["features/parking_booking/"]
+  #suite name:          "Parking Booking",
+  #      context:       WhiteBread.Contexts.ParkingBookingContext,
+  #      feature_paths: ["features/parking_booking/"]
+
+  suite name:          "Terminate Parking",
+        context:       WhiteBread.Contexts.TerminateParkingContext,
+        feature_paths: ["features/terminateparking/"]
 
   #suite name:          "All",
   #      context:       WhiteBreadContext,

@@ -7,6 +7,8 @@ defmodule Parking.Bookings do
   alias Parking.Repo
 
   alias Parking.Bookings.Booking
+  alias Parking.Account.User
+  alias Parking.Places.Parking_place
 
   @doc """
   Returns the list of bookings.
@@ -18,7 +20,9 @@ defmodule Parking.Bookings do
 
   """
   def list_bookings do
-    Repo.all(Booking)
+    a = Repo.all(Booking)
+    |> Repo.preload([:user, :parking_place])
+    a
   end
 
   @doc """
@@ -52,6 +56,8 @@ defmodule Parking.Bookings do
   def create_booking(attrs \\ %{}) do
     %Booking{}
     |> Booking.changeset(attrs)
+    |>Ecto.Changeset.put_assoc(:user, Repo.get!(User, attrs[:user_id]))
+    |>Ecto.Changeset.put_assoc(:parking_place, Repo.get!(Parking_place, attrs[:parking_place_id]))
     |> Repo.insert()
   end
 

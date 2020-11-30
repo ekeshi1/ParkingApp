@@ -8,6 +8,7 @@
       <th>End time</th>
       <th>Total amount</th>
       <th>Parking type</th>
+      <th>Address<th>
       <th></th>
     </tr>
   </thead>
@@ -20,10 +21,11 @@
       <td><%= booking.end_time %></td>
       <td><%= booking.total_amount %></td>
       <td><%= booking.parking_type %></td>
+      <td><%= booking.parking_place.address %></td>
 
       <td>
         <%= if booking.end_time == nil do %>
-          <%= link "Terminate parking", to: Routes.booking_path(@conn, :delete, booking), method: :delete, data: [confirm: "Are you sure?"] %>
+          <%= link "Terminate parking", to: Routes.booking_path(@conn, :delete, booking.id), method: :delete %>
         <% end %>
       </td>
     </tr>
