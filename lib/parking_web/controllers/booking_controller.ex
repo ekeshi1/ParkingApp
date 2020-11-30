@@ -163,7 +163,7 @@ defmodule ParkingWeb.BookingController do
 
   res =
   Repo.all(query)
-  |>Enum.map(fn parking_place ->  Map.put(parking_place,:distance,Geolocation.manual_distance(lat,long,parking_place.address))  end)
+  |>Enum.map(fn parking_place ->  Map.put(parking_place,:distance,Geolocation.find_distance(lat,long,parking_place.lat,parking_place.long))  end)
   |>Enum.filter(fn parking_place-> parking_place.distance <=1.0 end )
   |>Enum.sort(&(&1.distance< &2.distance))
 
