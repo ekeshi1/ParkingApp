@@ -28,7 +28,6 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
 # ]
 
 [
-
   %{name: "Delta", address: "Narva maantee 18", total_places: 30, busy_places: 2, zone_id: "A" , lat: 58.390910, long: 26.729980},
  %{name: "Lounakeskus", address: "Ringtee 75", total_places: 45, busy_places: 22, zone_id: "A", lat: 58.358158, long: 26.680401},
  %{name: "Eeden", address: "Kalda tee 1c", total_places: 35, busy_places: 13, zone_id: "B", lat: 58.372800, long: 26.753930},

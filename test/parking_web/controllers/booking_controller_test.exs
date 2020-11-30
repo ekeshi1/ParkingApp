@@ -3,9 +3,9 @@ defmodule ParkingWeb.BookingControllerTest do
 
   alias Parking.Bookings
 
-  @create_attrs %{end_time: "2010-04-17T14:00:00Z", start_time: "2010-04-17T14:00:00Z", status: "some status", total_amount: 120.5}
-  @update_attrs %{end_time: "2011-05-18T15:01:01Z", start_time: "2011-05-18T15:01:01Z", status: "some updated status", total_amount: 456.7}
-  @invalid_attrs %{end_time: nil, start_time: nil, status: nil, total_amount: nil}
+  @create_attrs %{end_time: "2010-04-17T14:00:00Z", start_time: "2010-04-17T14:00:00Z", status: "ACTIVE", total_amount: 120.5, parking_type: "RT", parking_place_id: 1, user_id: 1}
+  @update_attrs %{end_time: "2011-05-18T15:01:01Z", start_time: "2011-05-18T15:01:01Z", status: "some updated status", total_amount: 456.7, parking_type: "RT", parking_place_id: 1, user_id: 1}
+  @invalid_attrs %{end_time: nil, start_time: nil, status: nil, total_amount: nil, parking_type: nil}
 
   def fixture(:booking) do
     {:ok, booking} = Bookings.create_booking(@create_attrs)
@@ -69,15 +69,17 @@ defmodule ParkingWeb.BookingControllerTest do
     end
   end
 
-  describe "delete booking" do
+  describe "terminate parking" do
     setup [:create_booking]
 
-    test "deletes chosen booking", %{conn: conn, booking: booking} do
+    test "terminates chosen parking", %{conn: conn, booking: booking} do
+      id = booking.id
+
       conn = delete(conn, Routes.booking_path(conn, :delete, booking))
       assert redirected_to(conn) == Routes.booking_path(conn, :index)
-      assert_error_sent 404, fn ->
-        get(conn, Routes.booking_path(conn, :show, booking))
-      end
+
+      updated_booking = Bookings.get_booking!(id)
+      assert updated_booking.status == "TERMINATED"
     end
   end
 

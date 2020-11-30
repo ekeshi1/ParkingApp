@@ -203,10 +203,13 @@ defmodule ParkingWeb.BookingController do
 
   def delete(conn, %{"id" => id}) do
     booking = Bookings.get_booking!(id)
-    {:ok, _booking} = Bookings.delete_booking(booking)
+    parking_place = Repo.get!(Parking_place, booking.parking_place_id)
+    amount = calculate_amount(booking.start_time, DateTime.utc_now(), booking.parking_type, parking_place)
+
+    {:ok, _booking} = Bookings.update_booking(booking, %{end_time: DateTime.utc_now(), total_amount: amount, status: "TERMINATED"})
 
     conn
-    |> put_flash(:info, "Booking deleted successfully.")
+    |> put_flash(:info, "Parking Terminated. Total Fee is " <> to_string(amount) <> " euro.")
     |> redirect(to: Routes.booking_path(conn, :index))
   end
 end
