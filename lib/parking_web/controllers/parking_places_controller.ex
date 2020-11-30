@@ -21,8 +21,9 @@ defmodule ParkingWeb.Parking_placeController do
   def create(conn, %{"parking_place" => parking_place_params}) do
     query = from t in Parking_place, select: t
     parking_place_params =Enum.map(parking_place_params, fn({key, value}) -> {String.to_atom(key), value} end)
+    [dlat,dlong]=Parking.Geolocation.find_location(parking_place_params[:destination_address])
     places=     Repo.all(query)
-                |> Enum.filter (fn x -> Parking.Geolocation.distance(parking_place_params[:destination_address], x.address)>0 end )
+                |> Enum.filter (fn x -> Parking.Geolocation.find_distance(x.lat,x.long, dlat,dlong)>0 end )
     #[d1, _] =   Parking.Geolocation.distance(parking_place_params[:destination_address], "Narva mnt 18")
     #IO.puts ( parking_place_params[:final_time]  )
 
@@ -32,8 +33,8 @@ defmodule ParkingWeb.Parking_placeController do
 
 
     places =  places |> Enum.map(fn x ->
-       [d1, d2] =Parking.Geolocation.distance(parking_place_params[:destination_address], x.address)
-       Map.merge( %{distance: d1, real_ti: 2},x)
+       dist=Parking.Geolocation.find_distance(x.lat,x.long, dlat,dlong)
+       Map.merge( %{distance: dist, real_ti: 2},x)
     end  )
 
 
