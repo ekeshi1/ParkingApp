@@ -43,6 +43,7 @@ defmodule ParkingWeb.Router do
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController, only: [:new, :create]
+    resources "/bookings", BookingController
 
 
   end

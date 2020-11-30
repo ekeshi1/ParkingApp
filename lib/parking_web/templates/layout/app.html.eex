@@ -10,24 +10,24 @@
   </head>
   <body>
     <header>
-      <nav role="navigation">
-        <ol class="breadcrumb pull-right">
-          <%= if Parking.Authentication.load_current_user(@conn) do %>
+
+
+<nav class="navbar navbar-light bg-light justify-content-between">
+  <a class="navbar-brand">ParkingApp</a>
+  <%= if Parking.Authentication.load_current_user(@conn) do %>
             <li>Hello <%= Parking.Authentication.load_current_user(@conn).name %></li>
             <li><%= link "Log out", to: Routes.session_path(@conn, :delete, Parking.Authentication.load_current_user(@conn)), method: "delete" %></li>
           <% else %>
-           <!--
-            <li><%= link "Log in", to: Routes.session_path(@conn, :new) %></li>
-          -->
+
           <% end %>
-        </ol>
-        <span class="logo"></span>
-      </nav>
+
+</nav>
     </header>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
     </main>
+
   </body>
 </html>

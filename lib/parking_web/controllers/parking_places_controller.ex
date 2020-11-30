@@ -23,8 +23,8 @@ defmodule ParkingWeb.Parking_placeController do
     parking_place_params =Enum.map(parking_place_params, fn({key, value}) -> {String.to_atom(key), value} end)
     places=     Repo.all(query)
                 |> Enum.filter (fn x -> Parking.Geolocation.distance(parking_place_params[:destination_address], x.address)>0 end )
-    [d1, _] =   Parking.Geolocation.distance(parking_place_params[:destination_address], "Narva mnt 18")
-    IO.puts ( parking_place_params[:final_time]  )
+    #[d1, _] =   Parking.Geolocation.distance(parking_place_params[:destination_address], "Narva mnt 18")
+    #IO.puts ( parking_place_params[:final_time]  )
 
     #zones=Repo.all(from t in Zone, select: t)
     #IO.puts ( zones)

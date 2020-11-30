@@ -12,9 +12,16 @@ config :parking, Parking.Endpoint,
   server: true  # Change the `false` to `true`
 
 
+config :parking, Parking.Scheduler,
+  jobs: [
+    {"* * * * *",      {Heartbeat, :send, []}},
+        ]
 
-config :parking,
+
+    config :parking,
   ecto_repos: [Parking.Repo]
+
+
 
 # Configures the endpoint
 config :parking, ParkingWeb.Endpoint,
@@ -25,7 +32,7 @@ config :parking, ParkingWeb.Endpoint,
   live_view: [signing_salt: "G2RD4BO5"]
 
 # Configures Elixir's Logger
-config :logger, :console,
+config :logger, :console,level: :debug,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

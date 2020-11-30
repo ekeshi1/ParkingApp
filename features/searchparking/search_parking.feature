@@ -13,7 +13,7 @@ Feature: Searching parking place
         | Name | Address | Zone | Nr of free spaces |
         | Delta| Narva maantee 18, 51009, Tartu | A | 28 |
         | Eeden | Kalda tee 1c, 50104 Tartu | B | 22 |
-        | LounaKeskus | ingtee 75, 50501 Tartu | B | 23 |
+        | LounaKeskus | Ringtee 75, 50501 Tartu | B | 23 |
         
         And I open searching parking place page
         And my destination address is "Raatuse 22"

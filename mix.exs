@@ -54,7 +54,9 @@ defmodule Parking.MixProject do
       {:httpoison, "~> 1.6"},
       {:poison, "~> 3.1"},
       {:coverex, "~> 1.4.10", only: :test},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test},
+      {:distance, "~> 0.2.1"},
+      {:quantum, "~> 3.0"}
 
     ]
   end

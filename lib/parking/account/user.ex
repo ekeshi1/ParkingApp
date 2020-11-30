@@ -7,6 +7,7 @@ defmodule Parking.Account.User do
     field :license, :string
     field :name, :string
     field :password, :string
+    has_many :bookings, Parking.Bookings.Booking
 
     timestamps()
   end

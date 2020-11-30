@@ -8,6 +8,7 @@ defmodule Parking.Places.Parking_place do
     field :total_places, :integer
     field :busy_places, :integer
     field :zone_id, :string
+    has_many :bookings, Parking.Bookings.Booking
     timestamps()
   end
   @doc false

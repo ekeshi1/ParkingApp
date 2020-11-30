@@ -6,6 +6,8 @@ defmodule Parking.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
     children = [
       # Start the Ecto repository
       Parking.Repo,
@@ -14,8 +16,8 @@ defmodule Parking.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Parking.PubSub},
       # Start the Endpoint (http/https)
-      ParkingWeb.Endpoint
-      # Start a worker by calling: Parking.Worker.start_link(arg)
+      ParkingWeb.Endpoint,
+      Parking.Scheduler      # Start a worker by calling: Parking.Worker.start_link(arg)
       # {Parking.Worker, arg}
     ]
 

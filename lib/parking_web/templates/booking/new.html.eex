@@ -1,0 +1,71 @@
+<h1>New Booking </h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.booking_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.booking_path(@conn, :index) %></span>
+
+
+<script>
+
+
+  window.onload = function(){
+    let submitButton = document.getElementById('submit_button')
+    let bookingTimeHour = document.getElementById('booking_end_time_hour')
+    let bookingTimeMinutes = document.getElementById('booking_end_time_minute')
+    let checkBox = document.getElementById('leaving_time')
+
+    let latInput = document.getElementById('user_lat')
+    let longInput = document.getElementById('user_long')
+    checkBox.addEventListener('change', (event) => {
+        if(event.target.checked){
+            bookingTimeHour.disabled=false
+            bookingTimeMinutes.disabled=false
+        }else {
+            bookingTimeHour.disabled=true
+            bookingTimeMinutes.disabled=true
+        }
+    })
+
+
+
+
+    submitButton.disabled=true
+    bookingTimeHour.disabled=true
+    bookingTimeMinutes.disabled=true
+
+
+      var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  function userLocation(cb) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(p){
+            // on success
+            cb(null, p.coords);
+        }, function(e){
+            // on error
+            cb(e, null);
+        },options);
+    } else {
+        cb("Geolocation is not supported by this browser.", null);
+    }
+  }
+
+
+  userLocation(function(err, coords) {
+    if (err) console.log(err);
+    else {
+        console.log(coords)
+        submitButton.disabled=false
+        latInput.value=coords.latitude
+        longInput.value=coords.longitude
+    }
+  });
+
+  }
+
+
+</script>
