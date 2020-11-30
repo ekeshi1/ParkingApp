@@ -17,7 +17,7 @@ defmodule ParkingWeb.BookingController do
     |> Quantum.Job.set_name(:ticker)
     |> Quantum.Job.set_schedule(~e[* * * * *])
     |> Quantum.Job.set_task(fn -> IO.puts("OPAAAA")
-                                  :ok end)
+                                 :ok end)
     |> Scheduler.add_job()
     render(conn, "index.html", bookings: bookings)
 
@@ -96,7 +96,7 @@ defmodule ParkingWeb.BookingController do
             schedule_stuff()
 
             conn
-            |> put_flash(:info, "Booking created successfully.")
+            |> put_flash(:info, "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' .")
             |> redirect(to: Routes.booking_path(conn, :show, booking))
 
           {:error, %Ecto.Changeset{} = changeset} ->
