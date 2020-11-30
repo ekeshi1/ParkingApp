@@ -13,13 +13,14 @@ defmodule ParkingWeb.BookingController do
 
   def index(conn, _params) do
     bookings = Bookings.list_bookings()
-    render(conn, "index.html", bookings: bookings)
     Scheduler.new_job()
     |> Quantum.Job.set_name(:ticker)
     |> Quantum.Job.set_schedule(~e[* * * * *])
     |> Quantum.Job.set_task(fn -> IO.puts("OPAAAA")
                                   :ok end)
     |> Scheduler.add_job()
+    render(conn, "index.html", bookings: bookings)
+
   end
 
   def new(conn, _params) do
@@ -156,6 +157,7 @@ defmodule ParkingWeb.BookingController do
 
      endDatetime
     end
+  @spec check_location_near_parking(any, any) :: {:not_ok} | {:ok, any}
   def check_location_near_parking(lat,long) do
     # check if there is a parking place in a distance of
     # less than 0.1 km
