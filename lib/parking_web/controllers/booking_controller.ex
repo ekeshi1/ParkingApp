@@ -87,7 +87,7 @@ defmodule ParkingWeb.BookingController do
             render(conn, "new.html", changeset: changeset)
 
           end
-      :not_ok ->
+      {:not_ok} ->
         conn
         |> put_flash(:eror, "We couldn't find a parking place near you!")
         |> render("new.html", changeset: Bookings.change_booking(%Booking{}))
