@@ -43,6 +43,16 @@ defmodule ParkingWeb.BookingController do
 
     case check_location_near_parking(lat,long) do
       {:ok,closestParkingPlace} ->
+        #Check if there are available places first
+       if (closestParkingPlace.total_places-closestParkingPlace.busy_places)==0
+        do
+          #return here.
+          conn
+          |> put_flash(:eror, "Oops,this parking place doesnt have any available space right now. Please find another one.")
+          |> redirect(to: Routes.parking_place(conn, :new))
+
+        else
+        #There are places
         user = Authentication.load_current_user(conn)
 
         IO.puts "OK"
@@ -57,25 +67,31 @@ defmodule ParkingWeb.BookingController do
         bookingMap=Map.put(bookingMap, :parking_type, booking_params["payment_type"])
 
         amount = if isEndingSpecified == true do calculate_amount(bookingMap.start_time, bookingMap.end_time,bookingMap.parking_type,closestParkingPlace) else 0.0 end
-
         bookingMap=Map.put(bookingMap,:total_amount,amount)
-
-        bookingMap = Map.put(bookingMap,:total_amount,amount)
+        bookingMap=Map.put(bookingMap,:total_amount,amount)
         bookingMap=Map.put(bookingMap,:user_id ,user.id)
         #IO.inspect bookingMap
         #IO.puts "1"
 
         #IO.inspect(bookingMap)
-
+        #insert Booking
         uf = Booking.changeset(%Booking{},bookingMap)
             |>Ecto.Changeset.put_assoc(:user,user)
             |>Ecto.Changeset.put_assoc(:parking_place,closestParkingPlace)
-       #  IO.inspect(uf)
+
+        #Update parking place availability
+
+
+            #  IO.inspect(uf)
         ##booking_struct = Ecto.build_assoc(user, :bookings, Enum.map(bookingMap, fn({key, value}) -> {String.to_atom(key), value} end))
         #IO.inspect booking_struct
         case Repo.insert(uf) do
-          {:ok, booking} ->
-
+        {:ok, booking} ->
+            updated =
+              closestParkingPlace
+            |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
+            |>Repo.update()
+            IO.inspect updated
             schedule_stuff()
 
             conn
@@ -86,26 +102,30 @@ defmodule ParkingWeb.BookingController do
             IO.inspect changeset
             render(conn, "new.html", changeset: changeset)
 
-          end
+
       :not_ok ->
         conn
         |> put_flash(:eror, "We couldn't find a parking place near you!")
         |> render("new.html", changeset: Bookings.change_booking(%Booking{}))
 
       end
+      end
+    end
 
 
 
   end
 
+  @spec schedule_stuff :: :ok
   def schedule_stuff() do
     IO.puts("Scheduling")
   end
+
+
   def calculate_amount(start_time, end_time, payment_type,parking_place) do
 
-
-    IO.puts "################################"
-    IO.inspect start_time
+      IO.puts "################################"
+      IO.inspect start_time
       endDatetime=end_time
       IO.inspect DateTime.to_unix(endDatetime)
       IO.inspect DateTime.to_unix(start_time)
