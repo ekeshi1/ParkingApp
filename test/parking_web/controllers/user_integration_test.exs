@@ -29,7 +29,6 @@ defmodule ParkingWeb.UserIntegrationTest do
   end
 
 
-
   test "Authenticated user cant register", %{conn: conn} do
     Account.create_user(%{email: "bob2@gmail.com", license: "3566542", name: "some name", password: "123"})
 

@@ -9,20 +9,20 @@
 
   <li>
     <strong>Start time:</strong>
-    <%= @booking.start_time %>
+    <%= "#{@booking.start_time.day}/#{@booking.start_time.month}/#{@booking.start_time.year} #{@booking.start_time.hour+2}:#{@booking.start_time.minute}:#{@booking.start_time.second} "%>
   </li>
 
   <li>
     <strong>End time:</strong>
-    <%= @booking.end_time %>
+    <span id="booking_end_time"><%=if @booking.end_time==  nil do    "" else "#{@booking.end_time.day}/#{@booking.end_time.month}/#{@booking.end_time.year} #{@booking.end_time.hour+2}:#{@booking.end_time.minute}:#{@booking.end_time.second} " end%></span>
   </li>
 
   <li>
     <strong>Total amount:</strong>
-    <%= @booking.total_amount %>
+
+    <span id = "booking_total_amount"><%= if @booking.total_amount == 0.0 do "-" else @booking.total_amount end%>
   </li>
 
 </ul>
 
-<span><%= link "Edit", to: Routes.booking_path(@conn, :edit, @booking) %></span>
-<span><%= link "Back", to: Routes.booking_path(@conn, :index) %></span>
+<span><%= link "View Bookings", to: Routes.booking_path(@conn, :index) , id: "view_bookings" %></span>

@@ -2,16 +2,19 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
   use WhiteBread.Context
   use Hound.Helpers
   import Ecto.Query
-  alias Parking.{Repo,Account.User,Account,Parking_place}
+  alias Parking.{Repo,Account.User,Account,Places.Parking_place}
 
   feature_starting_state fn  ->
     Application.ensure_all_started(:hound)
     %{}
+
     IO.puts "Started"
   end
 
 
   scenario_starting_state fn _state ->
+
+
     Hound.start_session
     Ecto.Adapters.SQL.Sandbox.checkout(Parking.Repo)
     Ecto.Adapters.SQL.Sandbox.mode(Parking.Repo, {:shared, self()})
@@ -20,142 +23,130 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    Hound.end_session
+    #Hound.end_session
   end
 
-  given_ ~r/^Given that the following parking places are available$/, fn state, %{table_data: table} ->
+  given_ ~r/that I am logged in$/, fn state->
+    navigate_to "/sessions/new"
 
+    case search_element(:id, "email",2) do
+      {:ok,_elem} ->
+        fill_field({:id, "email"}, "erkesh@ttu.ee")
+        fill_field({:id, "password"}, "12345")
+        click({:id, "login_button"})
+        {:ok,state}
+
+      {:error ,_s}->    {:ok,state}
+
+    end
+
+  end
+
+  and_ ~r/^that the following parking places are available$/, fn state, %{table_data: table} ->
+    IO.puts("first")
     table
-    |> Enum.map(fn p -> Parking_place.changeset(%Parking_place{}, p) end)
+    |> Enum.map(fn p ->
+      Parking_place.changeset(%Parking_place{}, p) end)
     |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+    {:ok, state}
+
+  end
+
+  and_ ~r/^I navigate to new bookings page$/, fn state ->
+    navigate_to "/bookings/new"
     {:ok, state}
 
   end
 
   and_ ~r/^my location is "(?<location>[^"]+)" with latitude "(?<lat>[^"]+)" and longitude "(?<long>[^"]+)"$/,
   fn state, %{location: location, lat: lat, long: long} ->
-    fill_field({:id, "user_lat"},lat)
-    fill_field({:id, "user_long"},long)
+
+    IO.inspect lat
+    IO.inspect long
+    execute_script("document.getElementById('user_lat').value=arguments[0];
+    document.getElementById('user_long').value=arguments[1];
+    ", [String.to_float(lat), String.to_float(long)])
+
+    #fill_field({:id, "user_lat"},lat)
+    #fill_field({:id, "user_long"},long)
+
+    IO.puts("completed location")
+    {:ok, state}
+  end
+
+  and_ ~r/^I specify ending time 1 hour from now$/, fn state ->
+    click({:id,"leaving_time"})
+
+    #get time now
+    timenow=DateTime.utc_now()
+    hourNow = timenow.hour+2
+    minuteNow =timenow.minute
+
+    find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow+1)<>"']") |> click()
+    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow)<>"']") |> click()
 
 
     {:ok, state}
   end
 
   when_ ~r/^I click Book$/, fn state ->
+    execute_script("document.getElementById('submit_button').disabled=arguments[0]",[false])
     click({:id, "submit_button"})
+    IO.puts("Submited")
     {:ok, state}
   end
 
-  then_ ~r/^I must see an error message "(?<argument_one>[^"]+)" message.$/,fn state, %{argument_one: _argument_one} ->
+  then_ ~r/^I must see an error message "(?<argument_one>[^"]+)"$/,fn state, %{argument_one: _argument_one} ->
     assert visible_in_page? ~r/We couldn't find a parking place near you!/
     {:ok, state}
   end
 
-
-
-
-#############################################################################################
-
-
-
-
-  given_ ~r/^Given that the following parking places are available$/, fn state, %{table_data: table} ->
-
-    table
-    |> Enum.map(fn p -> Parking_place.changeset(%Parking_place{}, p) end)
-    |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
-    {:ok, state}
-
-  end
-
-  and_ ~r/^my location is "(?<location>[^"]+)" with latitude "(?<lat>[^"]+)" and longitude "(?<long>[^"]+)"$/,
-  fn state, %{location: location, lat: lat, long: long} ->
-    fill_field({:id, "user_lat"},lat)
-    fill_field({:id, "user_long"},long)
-
-
-    {:ok, state}
-  end
-
-
-
   and_ ~r/^I choose "(?<argument_one>[^"]+)" payment method$/,
-  fn state, %{argument_one: _argument_one} ->
-
-    find_element(:id, "#payment_type option[value='HR']") |> click()
-    {:ok, state}
-  end
-
-
-  and_ ~r/^I specify the intended leaving time 1 hour from now$/,
-  fn state, %{argument_one: _argument_one} ->
-
-    find_element(:id, "#booking_end_time_hour option[value='1']") |> click()
-    {:ok, state}
-  end
-
-
-  when_ ~r/^I click Book$/, fn state ->
-    click({:id, "submit_button"})
-    {:ok, state}
-  end
-
-
-  then_ ~r/^I must see "(?<argument_one>[^"]+)"$/,fn state, %{argument_one: _argument_one} ->
-    assert visible_in_page? ~r/Booking created successfully.You can now park in 'Narva maante 18'/
-    {:ok, state}
-  end
-
-
-  and_ ~r/^the number of busy places for '(?<address>[^"]+)' must be "(?<num>[^"]+)"$/, fn state, %{address: address,num: num} ->
-
-    query = from p in Parking_place,
-            where: p.address==^address and p.busy_places==^num
-    check = Repo.exists?(query)
-    cond do
-      not check -> {:error,state}
-      check -> {:ok,state}
+  fn state, %{argument_one: argument_one} ->
+    case argument_one do
+      "Hourly" -> find_element(:css, "#booking_payment_type option[value='H']") |> click()
+      "Real-Time" -> find_element(:css, "#booking_payment_type option[value='RT']") |> click()
     end
-  end
-
-
-
-
-
-
-######################################################################################
-
-
-
-
-
-
-
-  given_ ~r/^Given that the following parking places are available$/, fn state, %{table_data: table} ->
-
-    table
-    |> Enum.map(fn p -> Parking_place.changeset(%Parking_place{}, p) end)
-    |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
-    {:ok, state}
-
-  end
-
-  and_ ~r/^my location is "(?<location>[^"]+)" with latitude "(?<lat>[^"]+)" and longitude "(?<long>[^"]+)"$/,
-  fn state, %{location: location, lat: lat, long: long} ->
-    fill_field({:id, "user_lat"},lat)
-    fill_field({:id, "user_long"},long)
-
-
+    IO.puts("Selected Hourly method")
     {:ok, state}
   end
 
-  when_ ~r/^I click Book$/, fn state ->
-    click({:id, "submit_button"})
-    {:ok, state}
+  then_ ~r/I must see "Booking created successfully.You can now park in 'Narva maante 18'"$/, fn state ->
+    IO.puts "Response check"
+    assert visible_in_page? ~r/Booking created successfully./
+    {:ok,state}
   end
 
-  then_ ~r/^I must see "(?<argument_one>[^"]+)"$/,fn state, %{argument_one: _argument_one} ->
+  then_ ~r/I must see "Oops,this parking place doesnt have any available space right now. Please find another one."$/, fn state ->
+    IO.puts "Response check"
     assert visible_in_page? ~r/Oops,this parking place doesnt have any available space right now. Please find another one./
+    {:ok,state}
+  end
+
+  then_ ~r/I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."$/, fn state ->
+    IO.puts "Response check"
+    assert visible_in_page? ~r/Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings./
+    {:ok,state}
+  end
+
+  and_ ~r/^Total amount must be "(?<argument_one>[^"]+)"$/,
+    fn state, %{argument_one: _argument_one} ->
+      assert inner_text({:id,"booking_total_amount"})=="-"
+      {:ok, state}
+    end
+  and_ ~r/^Total amount must be calculated$/, fn state ->
+    assert inner_text({:id,"booking_total_amount"}) != "-"
+
+    {:ok, state}
+  end
+
+  and_ ~r/^End time should not be specified$/, fn state ->
+    assert inner_text({:id,"booking_end_time"})==""
+    {:ok, state}
+  end
+
+  and_ ~r/^End time should be specified$/, fn state ->
+    assert inner_text({:id,"booking_end_time"}) != ""
     {:ok, state}
   end
 
@@ -165,53 +156,10 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
 
 
 
-#######################################################################3
 
 
 
 
-
-
-  given_ ~r/^Given that the following parking places are available$/, fn state, %{table_data: table} ->
-
-    table
-    |> Enum.map(fn p -> Parking_place.changeset(%Parking_place{}, p) end)
-    |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
-    {:ok, state}
-
-
-  end
-
-  and_ ~r/^my location is "(?<location>[^"]+)" with latitude "(?<lat>[^"]+)" and longitude "(?<long>[^"]+)"$/,
-  fn state, %{location: location, lat: lat, long: long} ->
-    fill_field({:id, "user_lat"},lat)
-    fill_field({:id, "user_long"},long)
-
-
-    {:ok, state}
-  end
-
-
-
-  and_ ~r/^I choose "(?<argument_one>[^"]+)" payment method$/,
-  fn state, %{argument_one: _argument_one} ->
-
-    find_element(:id, "#payment_type option[value='RT']") |> click()
-    {:ok, state}
-  end
-
-
-
-
-  when_ ~r/^I click Book$/, fn state ->
-    click({:id, "submit_button"})
-    {:ok, state}
-  end
-
-  then_ ~r/^I must see "(?<argument_one>[^"]+)"$/,fn state, %{argument_one: _argument_one} ->
-    assert visible_in_page? ~r/Booking is successfull. You can now terminate your parking anytime by clicking Terminate'/
-    {:ok, state}
-  end
 
 
 

@@ -14,9 +14,12 @@
 
 <nav class="navbar navbar-light bg-light justify-content-between">
   <a class="navbar-brand">ParkingApp</a>
+
+  <%= link "Search", to: Routes.parking_place_path(@conn, :index) %>
+  <%= link "My bookings", to: Routes.booking_path(@conn, :index) %>
   <%= if Parking.Authentication.load_current_user(@conn) do %>
             <li>Hello <%= Parking.Authentication.load_current_user(@conn).name %></li>
-            <li><%= link "Log out", to: Routes.session_path(@conn, :delete, Parking.Authentication.load_current_user(@conn)), method: "delete" %></li>
+            <li><%= link "Log out", to: Routes.session_path(@conn, :delete, Parking.Authentication.load_current_user(@conn)), method: "delete", id: "logout" %></li>
           <% else %>
 
           <% end %>

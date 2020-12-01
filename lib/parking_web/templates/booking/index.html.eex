@@ -15,7 +15,7 @@
   <tbody>
 <%= for booking <- @bookings do %>
 
-    <tr>
+    <tr >
       <td><%= booking.status %></td>
       <td><%= booking.start_time %></td>
       <td><%= booking.end_time %></td>

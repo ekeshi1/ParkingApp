@@ -13,12 +13,7 @@ defmodule ParkingWeb.BookingController do
 
   def index(conn, _params) do
     bookings = Bookings.list_bookings()
-    Scheduler.new_job()
-    |> Quantum.Job.set_name(:ticker)
-    |> Quantum.Job.set_schedule(~e[* * * * *])
-    |> Quantum.Job.set_task(fn -> IO.puts("OPAAAA")
-                                 :ok end)
-    |> Scheduler.add_job()
+
     render(conn, "index.html", bookings: bookings)
 
   end
@@ -49,8 +44,8 @@ defmodule ParkingWeb.BookingController do
         do
           #return here.
           conn
-          |> put_flash(:eror, "Oops,this parking place doesnt have any available space right now. Please find another one.")
-          |> redirect(to: Routes.parking_place(conn, :new))
+          |> put_flash(:error, "Oops,this parking place doesnt have any available space right now. Please find another one.")
+          |> redirect(to: Routes.parking_place_path(conn, :index))
 
         else
         #There are places
@@ -93,35 +88,84 @@ defmodule ParkingWeb.BookingController do
             |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
             |>Repo.update()
             IO.inspect updated
-            schedule_stuff()
+            if (isEndingSpecified and booking.parking_type=="H") do
+            schedule_stuff(booking)
+            end
+            message=
+            if isEndingSpecified do
+              "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' ."
+            else
+              "Booking is successfull. You can now terminate your parking in '"<>closestParkingPlace.address <> "' anytime by clicking Terminate Parking in your bookings."
+            end
 
             conn
-            |> put_flash(:info, "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' .")
+            |> put_flash(:info, message)
             |> redirect(to: Routes.booking_path(conn, :show, booking))
 
           {:error, %Ecto.Changeset{} = changeset} ->
             IO.inspect changeset
             render(conn, "new.html", changeset: changeset)
-
-
-      :not_ok ->
+          end
+        end
+      {:not_ok} ->
+        IO.puts("Not ok. No parking places")
         conn
-        |> put_flash(:eror, "We couldn't find a parking place near you!")
+        |> put_flash(:error, "We couldn't find a parking place near you!")
         |> render("new.html", changeset: Bookings.change_booking(%Booking{}))
 
-      end
-      end
+
+
     end
 
 
 
   end
 
-  @spec schedule_stuff :: :ok
-  def schedule_stuff() do
-    IO.puts("Scheduling")
+  def schedule_stuff(booking) do
+    bookingId = Integer.to_string(booking.id)
+    IO.puts "Scheduling reminder for booking with id: "<>bookingId
+
+    jobNameReminder="REMINDER_"<> bookingId
+
+    cronExpresion = buildCronExpressionReminder(booking.end_time)
+    jobNameTermination="TERMINATE_" <> bookingId
+
+
+    Scheduler.new_job()
+    |> Quantum.Job.set_name(String.to_atom(jobNameReminder))
+    |> Quantum.Job.set_schedule(cronExpresion)
+    |> Quantum.Job.set_task(fn -> IO.puts("OPAAAA")
+                                  end)
+    |> Scheduler.add_job()
+
+    IO.inspect Scheduler.find_job(String.to_atom(jobNameReminder))
+
+
+
   end
 
+  def buildCronExpressionReminder(end_time1) do
+  reminder_time = DateTime.add(end_time1,-60, :second)
+  day = reminder_time.day
+  hour = reminder_time.hour
+  minute = reminder_time.minute
+  month = reminder_time.month
+  second = reminder_time.second
+  year = reminder_time.year
+
+  expr = %Crontab.CronExpression{
+    extended: true,
+    second: [second],
+    minute: [minute],
+    hour: [hour],
+    day: [day],
+    month: [month],
+    weekday: [:*],
+    year: [year]}
+  IO.inspect expr
+
+  expr
+end
 
   def calculate_amount(start_time, end_time, payment_type,parking_place) do
 
@@ -131,18 +175,21 @@ defmodule ParkingWeb.BookingController do
       IO.inspect DateTime.to_unix(endDatetime)
       IO.inspect DateTime.to_unix(start_time)
       diffMinutes = div(round(DateTime.diff(endDatetime,start_time)),60)
-      IO.inspect(diffMinutes)
-      hnumber= div(diffMinutes,60)
-      hminutes = rem(diffMinutes,60)
-      IO.inspect(hnumber)
-      IO.inspect(hminutes)
       zone=Enum.at( Repo.all(from t in Zone, where: t.name == ^(parking_place.zone_id), select: t),0)
+      hh= div(diffMinutes,60)
+      mm = rem(diffMinutes,60)
+      hnumber= ceil(( hh*60 +mm)/60 )
+      hminutes= ceil(( hh*60 + mm )/5 )
       hour_price= Float.round(zone.hourly_rate*hnumber , 2)
       realtime_price= Float.round(zone.realtime_rate*hminutes ,2)
 
+      IO.inspect(hnumber)
+      IO.inspect(hminutes)
+
       case payment_type do
-        "RT"-> IO.puts realtime_price
-                realtime_price
+        "RT"->
+          IO.puts realtime_price
+            realtime_price
         "H" -> IO.puts hour_price
                hour_price
       end
@@ -151,7 +198,7 @@ defmodule ParkingWeb.BookingController do
   def get_utc_date_time(start_time,end_time) do
     IO.inspect start_time
     endDatetime = %DateTime{year: start_time.year , month: start_time.month , day: start_time.day, zone_abbr: "EET",
-    hour: String.to_integer(end_time["hour"]), minute: String.to_integer(end_time["minute"]), second: 0, microsecond: {0, 0},
+    hour: String.to_integer(end_time["hour"]), minute: String.to_integer(end_time["minute"]), second: start_time.second, microsecond: {0, 0},
      utc_offset: 7200, std_offset: 0, time_zone: "Europe/Tallinn"}
      IO.inspect endDatetime
 
