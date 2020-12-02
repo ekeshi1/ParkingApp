@@ -23,7 +23,7 @@ defmodule ParkingWeb.Parking_placeController do
     parking_place_params =Enum.map(parking_place_params, fn({key, value}) -> {String.to_atom(key), value} end)
     [dlat,dlong]=Parking.Geolocation.find_location(parking_place_params[:destination_address])
     places=     Repo.all(query)
-                |> Enum.filter (fn x -> Parking.Geolocation.find_distance(x.lat,x.long, dlat,dlong)>0 end )
+                |> Enum.filter (fn x -> Parking.Geolocation.find_distance(x.lat,x.long, dlat,dlong)<5.0 end )
     #[d1, _] =   Parking.Geolocation.distance(parking_place_params[:destination_address], "Narva mnt 18")
     #IO.puts ( parking_place_params[:final_time]  )
 
@@ -51,7 +51,7 @@ defmodule ParkingWeb.Parking_placeController do
       hminutes= ceil(( String.to_integer(hh)*60 + String.to_integer(mm) )/5 )
       realtime_price= Float.round(zone.realtime_rate*hminutes ,2)
       Map.merge( %{hour_price: hour_price, realtime_price: realtime_price},x)
-   end  )
+   end  ) |> Enum.sort(&(&1.distance< &2.distance))
 
     Enum.each(places, fn(place) ->          changeset=Parametre.changeset(%Parametre{}, %{address: place.address, busy_places: place.busy_places , total_places: place.total_places, distance: place.distance, hour_price: place.hour_price, name: place.name, realtime_price: place.realtime_price, zone_id: place.zone_id})
                                             Repo.insert(changeset)
