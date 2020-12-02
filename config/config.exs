@@ -7,15 +7,21 @@
 # General application configuration
 use Mix.Config
 
+
+
 config :parking, Parking.Endpoint,
   http: [port: 4001],
   server: true  # Change the `false` to `true`
 
 
+config :Parking, env: Mix.env()
 config :parking, Parking.Scheduler,
   jobs: [
-    {"* * * * *",      {Heartbeat, :send, []}},
-        ]
+    news_letter: [
+      schedule: "@weekly",
+      task: {Heartbeat, :send, []}
+    ]
+  ]
 
 
     config :parking,

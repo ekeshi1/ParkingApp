@@ -36,20 +36,19 @@ defmodule ParkingWeb.Router do
     get "/", PageController, :index
 
     resources "/users", UserController
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, only: [:new, :create]
+    resources "/bookings", BookingController
     get "/search", Parking_placeController ,:index
     get "/search/some", Parking_placeController ,:create
     post "/search/some", Parking_placeController ,:create
     get "/search/data", Parking_placeController ,:new
 
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
-    resources "/users", UserController, only: [:new, :create]
-    resources "/bookings", BookingController
-
-
   end
 
   scope "/", ParkingWeb do
     pipe_through [:browser, :browser_auth, :ensure_auth]
+
     # Stuff only logged in users should access
 
   end

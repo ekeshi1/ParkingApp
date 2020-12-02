@@ -24,8 +24,15 @@ defmodule WhiteBread.Contexts.TerminateParkingContext do
   end
 
   given_ ~r/^that I have booked a real time parking space with no end time$/, fn state ->
+
+    param = %{name: "Narva 27", address: "Narva maantee 27", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3965215, long: 26.735385}
+    set =Parking_place.changeset(%Parking_place{},param)
+    place= Repo.insert!(set)
+
+    IO.inspect place
+    IO.inspect place.id
     Bookings.create_booking(%{end_time: nil, start_time: DateTime.utc_now(), status: "ACTIVE", total_amount: 0.0,
-    user_id: 1, parking_place_id: 1, parking_type: "RT"})
+    user_id: 1, parking_place_id: place.id, parking_type: "RT"})
     {:ok, state}
   end
 

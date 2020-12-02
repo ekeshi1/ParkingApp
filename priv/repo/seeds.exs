@@ -27,6 +27,7 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
 #  %{name: "Narva 27", address: "Narva maantee 27,51009,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
 # ]
 
+if Application.get_env(:parking, :env) == :dev do
 [
   %{name: "Delta", address: "Narva maantee 18", total_places: 30, busy_places: 2, zone_id: "A" , lat: 58.390910, long: 26.729980},
  %{name: "Lounakeskus", address: "Ringtee 75", total_places: 45, busy_places: 22, zone_id: "A", lat: 58.358158, long: 26.680401},
@@ -39,8 +40,10 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
 |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
 
+end
+
 [%{name: "Bob", license: "9999", email: "bob@gmail.com", password: "123"},
- %{name: "E", license: "11112", email: "erkesh@ttu.ee", password: "12345"},
- %{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321"}]
+%{name: "E", license: "11112", email: "erkesh@ttu.ee", password: "12345"},
+%{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321"}]
 |> Enum.map(fn user_data -> User.changeset(%User{}, user_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
