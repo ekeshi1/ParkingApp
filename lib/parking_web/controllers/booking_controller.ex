@@ -10,6 +10,7 @@ defmodule ParkingWeb.BookingController do
   alias Parking.Scheduler
   import Ecto.Query, warn: false
   import Crontab.CronExpression
+  alias Parking.SenderTasks
 
   def index(conn, _params) do
     bookings = Bookings.list_bookings()
@@ -28,14 +29,7 @@ defmodule ParkingWeb.BookingController do
     lat = String.to_float(booking_params["lat"])
     long = String.to_float(booking_params["long"])
     isEndingSpecified = booking_params["isEndingSpecified"]=="true"
-    #test = "Raatuse 22,51009,Estonia"
-    #IO.puts(test)
-    #IO.inspect Geolocation.manual_distance(String.to_float(lat),String.to_float(long),test)
 
-
-    #IO.puts(lat)
-    #IO.puts(long)
-    #IO.puts(isEndingSpecified)
 
     case check_location_near_parking(lat,long) do
       {:ok,closestParkingPlace} ->
@@ -63,7 +57,6 @@ defmodule ParkingWeb.BookingController do
         bookingMap=Map.put(bookingMap, :parking_type, booking_params["payment_type"])
 
         amount = if isEndingSpecified == true do calculate_amount(bookingMap.start_time, bookingMap.end_time,bookingMap.parking_type,closestParkingPlace) else 0.0 end
-        bookingMap=Map.put(bookingMap,:total_amount,amount)
         bookingMap=Map.put(bookingMap,:total_amount,amount)
         bookingMap=Map.put(bookingMap,:user_id ,user.id)
         #IO.inspect bookingMap
@@ -127,25 +120,30 @@ defmodule ParkingWeb.BookingController do
 
     jobNameReminder="REMINDER_"<> bookingId
 
-    cronExpresion = buildCronExpressionReminder(booking.end_time)
+    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,10)
+    cronExpresionTermination = buildCronExpressionReminder(booking.end_time,2)
     jobNameTermination="TERMINATE_" <> bookingId
 
 
     Scheduler.new_job()
     |> Quantum.Job.set_name(String.to_atom(jobNameReminder))
-    |> Quantum.Job.set_schedule(cronExpresion)
-    |> Quantum.Job.set_task(fn -> IO.puts("OPAAAA")
-                                  end)
+    |> Quantum.Job.set_schedule(cronExpresionReminder)
+    |> Quantum.Job.set_task(fn -> SenderTasks.sendEmail(bookingId) end)
     |> Scheduler.add_job()
 
-    IO.inspect Scheduler.find_job(String.to_atom(jobNameReminder))
 
+    Scheduler.new_job()
+    |> Quantum.Job.set_name(String.to_atom(jobNameTermination))
+    |> Quantum.Job.set_schedule(cronExpresionTermination)
+    |> Quantum.Job.set_task(fn -> SenderTasks.terminateParking(bookingId)  end)
+    |> Scheduler.add_job()
 
 
   end
 
-  def buildCronExpressionReminder(end_time1) do
-  reminder_time = DateTime.add(end_time1,-60, :second)
+  def buildCronExpressionReminder(end_time1,nrOfMinutes) do
+  secondsBefore = -60*nrOfMinutes
+  reminder_time = DateTime.add(end_time1,secondsBefore, :second)
   day = reminder_time.day
   hour = reminder_time.hour
   minute = reminder_time.minute
@@ -204,7 +202,9 @@ end
 
      endDatetime
     end
-  @spec check_location_near_parking(any, any) :: {:not_ok} | {:ok, any}
+
+
+    @spec check_location_near_parking(any, any) :: {:not_ok} | {:ok, any}
   def check_location_near_parking(lat,long) do
     # check if there is a parking place in a distance of
     # less than 0.1 km

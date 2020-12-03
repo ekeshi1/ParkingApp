@@ -27,7 +27,7 @@ alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
 #  %{name: "Narva 27", address: "Narva maantee 27,51009,Estonia", total_places: 30, busy_places: 2, zone_id: "A"},
 # ]
 
-if Application.get_env(:parking, :env) == :dev do
+if Application.get_env(:parking, :env) != :test do
 [
   %{name: "Delta", address: "Narva maantee 18", total_places: 30, busy_places: 2, zone_id: "A" , lat: 58.390910, long: 26.729980},
  %{name: "Lounakeskus", address: "Ringtee 75", total_places: 45, busy_places: 22, zone_id: "A", lat: 58.358158, long: 26.680401},

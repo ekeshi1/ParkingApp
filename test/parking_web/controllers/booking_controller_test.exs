@@ -17,7 +17,7 @@ defmodule ParkingWeb.BookingControllerTest do
 
     user = Repo.get_by(User, email: "erkesh@ttu.ee")
     conn = build_conn()
-    |> bypass_through(Takso.Router, [:browser, :browser_auth, :ensure_auth])
+    |> bypass_through(Parking.Router, [:browser, :browser_auth, :ensure_auth])
     |> get("/")
     |> Map.update!(:state, fn (_) -> :set end)
     |> Guardian.Plug.sign_in(user)

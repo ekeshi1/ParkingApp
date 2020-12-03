@@ -23,6 +23,7 @@ defmodule Parking.Authentication do
     |> Guardian.Plug.sign_out()
   end
 
+  @spec load_current_user(Plug.Conn.t()) :: any
   def load_current_user(conn) do
     Guardian.Plug.current_resource(conn)
   end
