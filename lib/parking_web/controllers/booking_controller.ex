@@ -25,6 +25,7 @@ defmodule ParkingWeb.BookingController do
   end
 
   def create(conn, %{"booking" => booking_params}) do
+    IO.inspect("-------------------------------------------------------------------------")
     IO.inspect(booking_params)
     lat = String.to_float(booking_params["lat"])
     long = String.to_float(booking_params["long"])
@@ -251,7 +252,8 @@ end
   def delete(conn, %{"id" => id}) do
     booking = Bookings.get_booking!(id)
     parking_place = Repo.get!(Parking_place, booking.parking_place_id)
-    amount = calculate_amount(booking.start_time, DateTime.utc_now(), booking.parking_type, parking_place)
+
+    amount = calculate_amount(booking.start_time, DateTime.add(DateTime.utc_now(), 7200, :second), booking.parking_type, parking_place)
 
     {:ok, _booking} = Bookings.update_booking(booking, %{end_time: DateTime.utc_now(), total_amount: amount, status: "TERMINATED"})
 

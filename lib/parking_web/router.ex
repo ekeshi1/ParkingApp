@@ -45,6 +45,7 @@ defmodule ParkingWeb.Router do
     get "/search/some", Parking_placeController ,:create
     post "/search/some", Parking_placeController ,:create
     get "/search/data", Parking_placeController ,:new
+    resources "/invoices", InvoiceController
 
   end
 

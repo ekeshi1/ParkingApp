@@ -1,0 +1,22 @@
+<h1>Listing Invoices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Parking start</th>
+      <th>Parking end</th>
+      <th>Invoice status</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for invoice <- @invoices do %>
+    <tr>
+      <td><%= invoice.amount %></td>
+      <td><%= invoice.start_time %></td>
+      <td><%= invoice.end_time %></td>
+      <td><%= invoice.status %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

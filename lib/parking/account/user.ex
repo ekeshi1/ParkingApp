@@ -8,6 +8,8 @@ defmodule Parking.Account.User do
     field :name, :string
     field :password, :string
     has_many :bookings, Parking.Bookings.Booking
+    field :balance, :float, default: 50.0
+    field :monthly_payment, :boolean, default: false
 
     timestamps()
   end
