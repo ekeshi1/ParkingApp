@@ -259,4 +259,16 @@ end
     |> put_flash(:info, "Parking Terminated. Total Fee is " <> to_string(amount) <> " euro.")
     |> redirect(to: Routes.booking_path(conn, :index))
   end
+
+  @spec extend_page(Plug.Conn.t(), map) :: Plug.Conn.t()
+  def extend_page(conn, %{"id"=> id}) do
+
+    render(conn,"extend.html",id: id, changeset: :changeset)
+
+  end
+
+  def extend(conn, %{"id"=> id, "changeset"=> changeset}) do
+
+    render(conn, "index.html")
+  end
 end
