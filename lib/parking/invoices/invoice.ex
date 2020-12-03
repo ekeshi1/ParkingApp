@@ -1,4 +1,4 @@
-defmodule Parking.Invoice do
+defmodule Parking.Invoices.Invoice do
   use Ecto.Schema
   import Ecto.Changeset
 
