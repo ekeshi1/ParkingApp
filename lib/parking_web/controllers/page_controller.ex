@@ -3,6 +3,7 @@ defmodule ParkingWeb.PageController do
 
   def index(conn, _params) do
 
+    IO.puts("Came here")
     user = Parking.Authentication.load_current_user(conn)
 
     if( not is_nil(user)) do

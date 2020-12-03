@@ -152,6 +152,7 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
 
   then_ ~r/^I should see "(?<argument_one>[^"]+)" message .$/,
   fn state, %{argument_one: _argument_one} ->
+    #TODO: check that space availability and pricing is shown.
     # assert visible_in_page? ~r/Leaving hour can't be in the past/
     {:ok, state}
   end

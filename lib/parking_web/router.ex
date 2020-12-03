@@ -34,7 +34,6 @@ defmodule ParkingWeb.Router do
     pipe_through [:browser, :browser_auth]
     # Stuff that anybody can access
     get "/", PageController, :index
-
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController, only: [:new, :create]
