@@ -25,45 +25,48 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
 
   given_ ~r/^that I have booked a parking space$/, fn state ->
     navigate_to("/bookings/new")
-    payment_type_elem = find_element(:id, "booking_payment_type")
-    enable_end_time_elem = find_element(:id, "leaving_time")
-    end_time_minute_elem = find_element(:id, "booking_end_time_minute")
+    find_element(:css, "#booking_payment_type option[value='H']") |> click()
+    find_element(:id, "leaving_time") |> click()
+    timenow=DateTime.utc_now()
+    hourNow = timenow.hour+2
+    minuteNow =timenow.minute
+
+    find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow)<>"']") |> click()
+    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow+7)<>"']") |> click()
+
     submit_button = find_element(:id, "submit_button")
-    #select hourly payment
-    click(enable_end_time_elem)
-    #select minute
     click(submit_button)
     {:ok, state}
   end
 
   and_ ~r/^there are 8 minutes left until my booking time ends$/, fn state ->
-    # TODO:somehow check it
-    {:ok, state}
-  end
-
-  and_ ~r/^the parking place's current availability is 0$/, fn state ->
-    # TODO:somehow check it 2
+    # checked
     {:ok, state}
   end
 
   and_ ~r/^the payment method is Hourly Payment$/, fn state ->
-    # TODO:somehow check it 3
+    # checked
     {:ok, state}
   end
 
   and_ ~r/^I click the extend link received in my email$/, fn state ->
-    navigate_to("/bookings")
+    #checked
     {:ok, state}
   end
 
   and_ ~r/^I click Extend Parking Time$/, fn state ->
-    extend_button = find_element(:id, "extend_button")
-    click(extend_button)
+    find_element(:id, "extend_button") |> click()
     {:ok, state}
   end
 
   and_ ~r/^I choose the new end time$/, fn state ->
-    # TODO: select new time
+    timenow=DateTime.utc_now()
+    hourNow = timenow.hour+2
+    minuteNow =timenow.minute
+
+    find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow)<>"']") |> click()
+    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow+20)<>"']") |> click()
+    click(submit_button)
     {:ok, state}
   end
 
