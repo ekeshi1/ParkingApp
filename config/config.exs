@@ -14,7 +14,7 @@ config :parking, Parking.Endpoint,
   server: true  # Change the `false` to `true`
 
 
-config :Parking, env: Mix.env()
+config :parking, env: Mix.env()
 config :parking, Parking.Scheduler,
   jobs: [
     news_letter: [
