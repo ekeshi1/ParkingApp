@@ -81,6 +81,22 @@ defmodule ParkingWeb.BookingControllerTest do
     end
   end
 
+  describe "extend parking" do
+
+    test "new end time is not earlier than old one ", %{conn: conn} do
+      #TODO
+    end
+
+    test "verify new end time", %{conn: conn} do
+      #TODO
+    end
+
+    test "verify new parking fee calculated correctly", %{conn: conn} do
+      #TODO
+    end
+
+  end
+
 
 
 
