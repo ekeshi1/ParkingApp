@@ -84,11 +84,49 @@ defmodule ParkingWeb.BookingControllerTest do
   describe "extend parking" do
 
     test "new end time is not earlier than old one ", %{conn: conn} do
-      #TODO
+      param = %{name: "Narva 27", address: "Narva maantee 27", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3965215, long: 26.735385}
+      set =Parking_place.changeset(%Parking_place{},param)
+      place= Repo.insert!(set)
+
+      IO.inspect place
+      params = %{end_time: "2021-04-17T15:00:00Z", start_time: "2021-04-17T14:00:00Z", status: "ACTIVE", total_amount: 120.5, parking_type: "H", parking_place_id: place.id, user_id: 1}
+      {:ok, booking} = Bookings.create_booking(params)
+      id=booking.id
+      end_time_before = params[:end_time]
+
+      conn = get(conn, Routes.booking_path(conn, :extend_page, id))
+      assert html_response(conn, 200) =~ "Extend Parking"
+
+      new_end_time = DateTime.add(end_time_before,-10*60, :seconds)
+      params_for_extend = %{end_time: new_end_time, booking_id: id}
+      conn = get(conn, Routes.booking_path(conn, :extend, params_for_extend))
+      assert html_response(conn,200) =~ "Extended end time need to be after previous one!"
+
+
     end
 
     test "verify new end time", %{conn: conn} do
-      #TODO
+      param = %{name: "Narva 27", address: "Narva maantee 27", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3965215, long: 26.735385}
+      set =Parking_place.changeset(%Parking_place{},param)
+      place= Repo.insert!(set)
+
+      IO.inspect place
+      params = %{end_time: "2021-04-17T15:00:00Z", start_time: "2021-04-17T14:00:00Z", status: "ACTIVE", total_amount: 120.5, parking_type: "H", parking_place_id: place.id, user_id: 1}
+      {:ok, booking} = Bookings.create_booking(params)
+      id=booking.id
+      end_time_before = params[:end_time]
+
+      conn = get(conn, Routes.booking_path(conn, :extend_page, id))
+      assert html_response(conn, 200) =~ "Extend Parking"
+
+      new_end_time = DateTime.add(end_time_before,10*60, :seconds)
+      params_for_extend = %{end_time: new_end_time, booking_id: id}
+      conn = get(conn, Routes.booking_path(conn, :extend, params_for_extend))
+      assert redirected_to(conn) == Routes.booking_path(conn, :index)
+
+      updated_booking = Bookings.get_booking!(id)
+      diff = DateTime.diff(updated_booking.end_time, end_time_before )
+      assert diff/diff == 1
     end
 
     test "verify new parking fee calculated correctly", %{conn: conn} do
