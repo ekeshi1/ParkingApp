@@ -3,7 +3,7 @@
 
   <div class="form-group">
   </div>
-  <%= hidden_input f, :id%>
+  <%= hidden_input f, :id, value: @id%>
   </div>
 
   <div class="form-group">

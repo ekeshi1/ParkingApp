@@ -269,8 +269,38 @@ end
 
   end
 
-  def extend(conn, %{"id"=> id, "changeset"=> changeset}) do
+  def extend(conn, %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}) do
+    IO.puts(hour)
+    IO.puts(minute)
+    IO.puts(id)
+    input_time = %{"hour" => hour, "minute" => minute}
+    booking = Bookings.get_booking!(id)
+    booking_start_time = booking.start_time
+    booking_end_time = booking.end_time
+    IO.inspect(booking_start_time)
+    IO.inspect(booking_end_time)
+    new_end_time = get_utc_date_time(booking_start_time, input_time)
+    IO.inspect(new_end_time)
+    time_diff = DateTime.diff(new_end_time, booking_end_time)
+    IO.puts("##############")
+    IO.inspect(time_diff)
+    IO.puts("###########")
 
-    render(conn, "index.html")
+    cond do
+      time_diff<=0 -> conn |>put_flash(:error, "Please choose time which is not earlier than previous booking's end time.")
+        |> redirect(to: Routes.booking_path(conn, :extend_page, %{id: id}))
+        IO.puts("ERROR, CHANGE NEWTIME")
+      time_diff>0 ->
+        parking_place = Repo.get!(Parking_place, booking.parking_place_id)
+        new_amount = calculate_amount(booking.start_time, new_end_time, booking.parking_type, parking_place)
+        {:ok, _booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
+        conn
+        |> put_flash(:info, "Booking was extended succesfully!")
+        |> redirect(to: Routes.booking_path(conn, :index))
+        IO.puts("Extended succesfully!")
+    end
+
+
+    redirect(conn, to: Routes.booking_path(conn, :index))
   end
 end
