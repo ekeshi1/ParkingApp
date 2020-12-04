@@ -47,16 +47,17 @@ defmodule Parking.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:white_bread, "~> 4.5", only: [:test]},
+      {:white_bread, "~> 3.1", only: [:test]},
       {:hound, "~> 1.0"},
       {:guardian, "~> 1.2"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:httpoison, "~> 1.6"},
-      {:poison, "~> 3.1"},
-      {:coverex, "~> 1.4.10", only: :test},
+      {:coverex, "~> 1.5", only: :test},
       {:excoveralls, "~> 0.10", only: :test},
       {:distance, "~> 0.2.1"},
-      {:quantum, "~> 3.0"}
+      {:quantum, "~> 3.0"},
+      {:mailgun, "~> 0.1.2"},
+      {:poison, "~> 1.4", override: true}
 
     ]
   end
