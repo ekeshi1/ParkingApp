@@ -295,7 +295,7 @@ end
         new_amount = calculate_amount(booking.start_time, new_end_time, booking.parking_type, parking_place)
         {:ok, _booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
         conn
-        |> put_flash(:info, "Booking was extended succesfully!")
+        |> put_flash(:info, "Booking time extended!")
         |> redirect(to: Routes.booking_path(conn, :index))
         IO.puts("Extended succesfully!")
     end
