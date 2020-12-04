@@ -55,3 +55,8 @@ config :parking, sql_sandbox: true
 config :parking, Parking.Guardian,
   issuer: "parking",
   secret_key: "Ub99nZwGDol3hH3Ghgd0mxheOdvRhL4THNhbI8JG4prvoGRBy5tuTW9kxj1+gv6O"
+
+
+config :parking, Parking.Mailer,
+  mailgun_domain: "34",
+  mailgun_key: "3242"
