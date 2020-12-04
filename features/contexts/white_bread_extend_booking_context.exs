@@ -62,11 +62,16 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
   and_ ~r/^I choose the new end time$/, fn state ->
     timenow=DateTime.utc_now()
     hourNow = timenow.hour+2
-    minuteNow =timenow.minute
+    minuteNow = timenow.minute+10
+    if timenow.minute+10> 60 do
+      minuteNow = 60 - timenow.minute+10
+      hourNow = hourNow + 1
+    end
+
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow)<>"']") |> click()
-    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow+20)<>"']") |> click()
-    click(submit_button)
+    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow)<>"']") |> click()
+    find_element(:id,"submit_button")|>click()
     {:ok, state}
   end
 
