@@ -7,7 +7,9 @@
       <th>Address</th>
       <th>Zone type</th>
       <th>Number of free spaces</th>
+      <th>Rate for hourly</th>
       <th>Price for hourly</th>
+      <th>Rate for real time</th>
       <th>Price for real time</th>
       <th>distance</th>
 
@@ -21,7 +23,9 @@
       <td><%= place.address %></td>
       <td style="color: green;"><%= place.zone_id %></td>
       <td><%= place.total_places- place.busy_places%></td>
+      <td><%= place.hour_rate %> euros per hour</td>
       <td style="color: tomato;"><%= if  place.hour_price == 0 do "Time not specified" else place.hour_price end %> euros</td>
+      <td><%= place.realtime_rate %> euros per 5 minutes</td>
       <td style="color: tomato;"><%= if  place.realtime_price == 0 do "Time not specified" else place.realtime_price end %> euros</td>
       <td><%= place.distance %> km</td>
 

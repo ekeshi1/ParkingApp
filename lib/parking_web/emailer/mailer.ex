@@ -1,7 +1,7 @@
 defmodule Parking.Mailer do
   use Mailgun.Client,
-      domain: Application.fetch_env!(:parking,:mailgun_domain) ,
-      key: Application.fetch_env!(:parking,:mailgun_key)
+      domain: "3" ,#Parking.fetch_env!(:parking,:mailgun_domain) ,
+      key: "3" #Parking.fetch_env!(:parking,:mailgun_key)
 
 
       def send_email(email_address,sub,cont) do
