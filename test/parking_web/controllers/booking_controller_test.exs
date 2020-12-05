@@ -173,7 +173,7 @@ defmodule ParkingWeb.BookingControllerTest do
       updated_booking = Bookings.get_booking!(id)
       total_amount_after = updated_booking.total_amount
 
-      assert total_amount_after-total_amount_before > 2
+      assert total_amount_after-total_amount_before == 2
       IO.puts("##############")
       IO.puts("PASSED")
       IO.puts("##############")
