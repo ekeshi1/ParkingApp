@@ -83,7 +83,7 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
   #   {:ok, state}
   # end
 
-  then_ ~r/^I should see "(?<argument_one>[^"]+)" message.$/,fn state, %{argument_one: _argument_one} ->
+  then_ ~r/^I should see "Here are the available parking zones." message .$/,fn state ->
     assert visible_in_page? ~r/Here are the available parking zones./
     {:ok, state}
   end

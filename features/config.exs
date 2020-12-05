@@ -15,9 +15,9 @@ defmodule WhiteBreadConfig do
 #          context:       WhiteBread.Contexts.LoginContext,
 #          feature_paths: ["features/login/"]
 
-#   suite name:          "Search",
-#         context:       WhiteBread.Contexts.SearchParkingContext,
-#        feature_paths: ["features/searchparking/"]
+  suite name:          "Search",
+        context:       WhiteBread.Contexts.SearchParkingContext,
+       feature_paths: ["features/searchparking/"]
 
 #   suite name:          "Parking Booking",
 #         context:       WhiteBread.Contexts.ParkingBookingContext,
@@ -27,9 +27,9 @@ defmodule WhiteBreadConfig do
 #         context:       WhiteBread.Contexts.TerminateParkingContext,
 #         feature_paths: ["features/terminateparking/"]
 
-  suite name:          "Extend Parking",
-        context:       WhiteBread.Contexts.ExtendBookingContext,
-        feature_paths: ["features/extendbooking/"]
+  # suite name:          "Extend Parking",
+  #       context:       WhiteBread.Contexts.ExtendBookingContext,
+  #       feature_paths: ["features/extendbooking/"]
         #suite name:          "All",
   #      context:       WhiteBreadContext,
   #      feature_paths: ["features/"]
