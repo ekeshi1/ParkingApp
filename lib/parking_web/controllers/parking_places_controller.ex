@@ -4,7 +4,7 @@ defmodule ParkingWeb.Parking_placeController do
   import Ecto.Query
   alias Parking.Repo
   alias Parking.Places.{Zone, Parking_place,Parametre}
-  #alias Ecto.{Changeset, Multi}
+  alias Ecto.{Changeset, Multi}
 
   def index(conn, _params) do
     changeset = Parking_place.changeset(%Parking_place{}, %{})

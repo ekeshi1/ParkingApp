@@ -38,6 +38,9 @@ defmodule ParkingWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController, only: [:new, :create]
     resources "/bookings", BookingController
+    get "booking/extend-page", BookingController, :extend_page
+    post "booking/extend", BookingController, :extend
+
     get "/search", Parking_placeController ,:index
     get "/search/some", Parking_placeController ,:create
     post "/search/some", Parking_placeController ,:create
