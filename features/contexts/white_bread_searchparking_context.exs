@@ -12,23 +12,10 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
     Hound.start_session
     Ecto.Adapters.SQL.Sandbox.checkout(Parking.Repo)
     Ecto.Adapters.SQL.Sandbox.mode(Parking.Repo, {:shared, self()})
-
-
-    [
-      %{name: "Delta", address: "Narva maantee 18", total_places: 30, busy_places: 2, zone_id: "A" , lat: 58.390910, long: 26.729980},
-       %{name: "Lounakeskus", address: "Ringtee 75", total_places: 45, busy_places: 22, zone_id: "A", lat: 58.358158, long: 26.680401},
-       %{name: "Eeden", address: "Kalda tee 1c", total_places: 35, busy_places: 13, zone_id: "B", lat: 58.372800, long: 26.753930},
-       %{name: "Raatuse", address: "Raatuse 22", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.382580, long: 26.732060},
-       %{name: "Lounakeskus 2", address: "Ringtee 74", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3586092, long: 26.6765849},
-       %{name: "Pikk", address: "Pikk 40", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.382213, long: 26.7355454},
-       %{name: "Narva 27", address: "Narva maantee 27", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3965215, long: 26.735385},
-      ]
-      |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
-      |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
     %{}
   end
   scenario_finalize fn _status, _state ->
-    Repo.delete_all(Parking_place)
+    #Repo.delete_all(Parking_place)
 
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
 
@@ -50,50 +37,22 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
     {:ok, state}
   end
 
-  and_ ~r/^the following prices correspond to the zones$/, fn state ->
-    # [%{name: "A", hourly_rate: 2.0, realtime_rate: 0.16},
-    #  %{name: "B", hourly_rate: 1.0, realtime_rate: 0.08}]
-    # |> Enum.map(fn zone_data -> Zone.changeset(%Zone{}, zone_data) end)
-    # |> Enum.each(fn change  information about Delta parking place in the screen implement withset -> Repo.insert!(changeset) end)
-
-    query_a = from z in Zone,
-              where: z.name=="A" and z.hourly_rate == 2.0 and z.realtime_rate == 0.16
-    query_b = query_a = from z in Zone,
-              where: z.name=="B" and z.hourly_rate == 1.0 and z.realtime_rate == 0.08
-
-    zone_a_exists = Repo.exists?(query_a)
-    zone_b_exists = Repo.exists?(query_b)
-
-    cond do
-      zone_a_exists and zone_b_exists -> {:ok, state}
-      not zone_a_exists or not zone_b_exists -> {:error,state}
-    end
-    # it will passed because migrations of zones are done and they seeded to database so in actual test we will fetch from database
+  and_ ~r/^the following prices correspond to the zones$/, fn state, %{table_data: table}->
+    table
+    |> Enum.map(fn p ->
+      Zone.changeset(%Zone{}, p) end)
+    |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+    {:ok, state}
 
   end
 
-  and_ ~r/^Given the following parking places are available$/, fn state ->
-    # [%{name: "Delta", address: "Narva maantee 18, 51009, Tartu", total_places: 30, busy_places: 2},
-    #  %{name: "Lounakeskus", address: "Ringtee 75, 50501 Tartu", total_places: 45, busy_places: 22},
-    #  %{name: "Eeden", address: "Kalda tee 1c, 50104 Tartu", total_places: 35, busy_places: 13}]
-    # |> Enum.map(fn parking_place_data -> Parking_place.changeset(%Parking_place{}, parking_place_data) end)
-    # |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
-
-    query_delta = from z in Parking_place,
-              where: z.name=="Delta"
-    query_louna = query_a = from z in Parking_place,
-              where: z.name=="Lounakeskus"
-    query_eeden = query_a = from z in Parking_place,
-              where: z.name=="Eeden"
-
-    delta_exists = Repo.exists?(query_delta)
-    louna_exists = Repo.exists?(query_louna)
-    eeden_exists = Repo.exists?(query_louna)
-
-    cond do
-      delta_exists and louna_exists and eeden_exists -> {:ok, state}
-      not delta_exists or not louna_exists or not eeden_exists -> {:error, state}
-    end
+  and_ ~r/^Given the following parking places are available$/, fn state, %{table_data: table} ->
+    IO.puts("first")
+    table
+    |> Enum.map(fn p ->
+      Parking_place.changeset(%Parking_place{}, p) end)
+    |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+    {:ok, state}
 
   end
 
@@ -146,14 +105,21 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
     {:ok, state}
   end
 
-  when_ ~r/^I submit searhing request$/, fn state ->
+  and_ ~r/^number of available places should be specified$/, fn state ->
+    assert inner_text({:id,"available_places"}) != ""
     {:ok, state}
   end
 
-  then_ ~r/^I should see "(?<argument_one>[^"]+)" message .$/,
-  fn state, %{argument_one: _argument_one} ->
-    #TODO: check that space availability and pricing is shown.
-    # assert visible_in_page? ~r/Leaving hour can't be in the past/
+  and_ ~r/^prices(rates) for hourly and real time should be specified$/, fn state ->
+    assert inner_text({:id,"hour_rate"}) != ""
+    assert inner_text({:id,"realtime_rate"}) != ""
     {:ok, state}
   end
+
+  and_ ~r/^the estimated fee for hourly and real time should be specified$/, fn state ->
+    assert inner_text({:id,"hour_price"}) != ""
+    assert inner_text({:id,"realtime_price"}) != ""
+    {:ok, state}
+  end
+
 end

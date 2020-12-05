@@ -19,15 +19,15 @@
   <tbody>
 <%= for place <- @places do %>
     <tr>
-      <td><%= place.name %></td>
-      <td><%= place.address %></td>
-      <td style="color: green;"><%= place.zone_id %></td>
-      <td><%= place.total_places- place.busy_places%></td>
-      <td><%= place.hour_rate %> euros per hour</td>
-      <td style="color: tomato;"><%= if  place.hour_price == 0 do "Time not specified" else place.hour_price end %> euros</td>
-      <td><%= place.realtime_rate %> euros per 5 minutes</td>
-      <td style="color: tomato;"><%= if  place.realtime_price == 0 do "Time not specified" else place.realtime_price end %> euros</td>
-      <td><%= place.distance %> km</td>
+      <td id="name"><%= place.name %></td>
+      <td id="address"><%= place.address %></td>
+      <td id="zone_id" style="color: green;"><%= place.zone_id %></td>
+      <td id="available_places"><%= place.total_places- place.busy_places%></td>
+      <td id="hour_rate"><%= place.hour_rate %> euros per hour</td>
+      <td id="hour_price" style="color: tomato;"><%= if  place.hour_price == 0 do "Time not specified" else place.hour_price end %> euros</td>
+      <td id="realtime_rate"><%= place.realtime_rate %> euros per 5 minutes</td>
+      <td id="realtime_price" style="color: tomato;"><%= if  place.realtime_price == 0 do "Time not specified" else place.realtime_price end %> euros</td>
+      <td id="distance"><%= place.distance %> km</td>
 
        <td class="text-right">
         <span>
