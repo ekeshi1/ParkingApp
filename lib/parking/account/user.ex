@@ -21,7 +21,7 @@ defmodule Parking.Account.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :license, :password])
+    |> cast(attrs, [:name, :email, :license, :password, :balance, :monthly_payment])
     |> validate_required([:name, :email, :license, :password])
     |> validate_format(:email, ~r/^[\w.!#$%&’*+\-\/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/i, message: "Invalid email!" )
     |> unique_constraint(:email, message: "A user already exists with this email!")

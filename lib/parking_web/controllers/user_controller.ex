@@ -6,8 +6,7 @@ defmodule ParkingWeb.UserController do
 
   def index(conn, _params) do
 
-    users = Account.list_users()
-    render(conn, "index.html", users: users)
+    render(conn, "index.html")
   end
 
   def new(conn, _params) do
@@ -46,8 +45,15 @@ defmodule ParkingWeb.UserController do
 
   def edit(conn, %{"id" => id}) do
     user = Account.get_user!(id)
-    changeset = Account.change_user(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
+
+    if user.monthly_payment do
+      # TODO pay for all the unpaid invoices
+      Account.update_user(user, %{monthly_payment: false})
+    else
+      Account.update_user(user, %{monthly_payment: true})
+    end
+
+    redirect(conn, to: Routes.user_path(conn, :index))
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
