@@ -26,13 +26,13 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
   given_ ~r/^that I have booked a parking space$/, fn state ->
     navigate_to("/bookings/new")
     find_element(:css, "#booking_payment_type option[value='H']") |> click()
-    find_element(:id, "leaving_time") |> click()
+    click({:id,"leaving_time"})
     timenow=DateTime.utc_now()
     hourNow = timenow.hour+2
     minuteNow =timenow.minute
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow)<>"']") |> click()
-    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow+7)<>"']") |> click()
+    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(33)<>"']") |> click()
 
     submit_button = find_element(:id, "submit_button")
     click(submit_button)

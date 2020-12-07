@@ -39,7 +39,7 @@ Feature: Searching parking place
         When I submit searching request
         Then I should see "Here are the available parking zones." message .
         And number of available places should be specified
-        And prices(rates) for hourly and real time should be specified
+        And prices for hourly and real time should be specified
 
 
     Scenario: Searching parking (with time) shows estimated fees for hourly and real time

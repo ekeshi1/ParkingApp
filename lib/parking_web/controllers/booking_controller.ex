@@ -121,7 +121,7 @@ defmodule ParkingWeb.BookingController do
 
     jobNameReminder="REMINDER_"<> bookingId
 
-    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,10)
+    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,3)
     cronExpresionTermination = buildCronExpressionReminder(booking.end_time,2)
     jobNameTermination="TERMINATE_" <> bookingId
 
