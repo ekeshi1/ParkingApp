@@ -39,7 +39,7 @@ defmodule Parking.Account do
 
   def reduce_balance_by(user_id, amount) do
     user = get_user!(user_id)
-    update_user(user, %{amount: user.amount-amount})
+    update_user(user, %{balance: user.balance-amount})
   end
 
   @doc """
