@@ -17,7 +17,7 @@ And I specify ending time 1 hour from now
 And I click Book
 Then I must see "Booking created successfully.You can now park in 'Narva maante 18'"
 And I navigate to invoices
-And I must see an invoice with status "Paid" in the screen
+And I must see an invoice with status "PAID" in the screen
 
 
 Scenario: As a driver I want to pay for a hourly parking place without a specific end time booking when I terminate booking.  

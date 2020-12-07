@@ -8,6 +8,8 @@ defmodule ParkingWeb.BookingController do
   alias Parking.Places.Zone
   alias Parking.Authentication
   alias Parking.Scheduler
+  alias Parking.Invoices
+  alias Parking.Invoices.Invoice
   import Ecto.Query, warn: false
   import Crontab.CronExpression
   alias Parking.SenderTasks
@@ -88,8 +90,8 @@ defmodule ParkingWeb.BookingController do
                 |>Ecto.Changeset.put_assoc(:user,user)
                 |>Ecto.Changeset.put_assoc(:parking_place,closestParkingPlace)
 
-            #Update parking place availability
 
+            #Update parking place availability
 
                 #  IO.inspect(uf)
             ##booking_struct = Ecto.build_assoc(user, :bookings, Enum.map(bookingMap, fn({key, value}) -> {String.to_atom(key), value} end))
@@ -104,6 +106,17 @@ defmodule ParkingWeb.BookingController do
                 if (isEndingSpecified and booking.parking_type=="H") do
                 schedule_stuff(booking)
                 end
+
+
+                if isEndingSpecified do
+                    %Invoice{}
+                            |> Invoice.changeset(%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time,:end})
+                            |>Ecto.Changeset.put_assoc(:booking,booking)
+                            |>Ecto.Changeset.put_assoc(:user,user)
+
+
+
+
                 message=
                 if isEndingSpecified do
                   "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' ."
