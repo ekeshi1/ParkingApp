@@ -1,5 +1,8 @@
 <h1>Listing Invoices</h1>
 
+<%= if ((length @invoices) == 0) do %>
+ <p> <%= "No Invoices" %></p>
+<% else %>
 <table>
   <thead>
     <tr>
@@ -9,7 +12,10 @@
       <th>Invoice status</th>
     </tr>
   </thead>
+
+
   <tbody>
+
 <%= for invoice <- @invoices do %>
     <tr>
       <td><%= invoice.amount %></td>
@@ -18,5 +24,8 @@
       <td><%= invoice.status %></td>
     </tr>
 <% end %>
+
   </tbody>
+
 </table>
+<% end %>

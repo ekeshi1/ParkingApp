@@ -23,7 +23,7 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    Hound.end_session
+    #Hound.end_session
   end
 
   given_ ~r/that I am logged in$/, fn state->
@@ -169,6 +169,7 @@ end
 
 
 and_ ~r/^I navigate to invoices$/, fn state ->
+  "Navigated"
   navigate_to "/invoices"
 
   {:ok, state}
@@ -176,12 +177,13 @@ end
 and_ ~r/^I must see an invoice with status "(?<argument_one>[^"]+)" in the screen$/,
 fn state, %{argument_one: invoiceStatus} ->
 
-  assert visible_in_page? ~r/UNPAID/
+  assert visible_in_page? ~r/PAID/
   {:ok, state}
 end
 
 and_ ~r/^I shouldn't see an invoice in the screen$/, fn state ->
   assert  visible_in_page? ~r/No Invoices/
+  {:ok, state}
 
 end
 
