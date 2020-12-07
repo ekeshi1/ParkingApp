@@ -107,13 +107,15 @@ defmodule ParkingWeb.BookingController do
                 schedule_stuff(booking)
                 end
 
+                """
+                if(isEndingSpecified) do
+                    invoice = Invoice.changeset(%Invoice{},%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time})
+                             |>Ecto.Changeset.put_assoc(:booking,booking)
+                             |>Ecto.Changeset.put_assoc(:user,user)
+                    Repo.insert(invoice)
 
-                if isEndingSpecified do
-                    %Invoice{}
-                            |> Invoice.changeset(%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time,:end})
-                            |>Ecto.Changeset.put_assoc(:booking,booking)
-                            |>Ecto.Changeset.put_assoc(:user,user)
-
+                end
+                """
 
 
 
