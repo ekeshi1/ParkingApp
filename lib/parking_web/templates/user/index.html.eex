@@ -3,6 +3,7 @@
 <%= if Parking.Authentication.load_current_user(@conn).monthly_payment do %>
   <p><strong>You're configured to pay for your parkings at the end of the month.</strong></p>
   <%= button "Pay on each parking", to: Routes.user_path(@conn, :edit, Parking.Authentication.load_current_user(@conn)), method: :get, id: "Pay on each parking" %>
+  (Will also pay all currently unpaid invoices)
 <% else %>
   <p><strong>You're configured to pay on each parking.</strong></p>
   <%= button "Pay monthly", to: Routes.user_path(@conn, :edit, Parking.Authentication.load_current_user(@conn)), method: :get, id: "Pay monthly" %>

@@ -4,7 +4,7 @@ defmodule Parking.Invoices.Invoice do
 
   schema "invoices" do
     field :status, :string
-    field :amount, :integer
+    field :amount, :float
     field :end_time, :utc_datetime
     field :start_time, :utc_datetime
     belongs_to :booking, Parking.Bookings.Booking
@@ -16,7 +16,7 @@ defmodule Parking.Invoices.Invoice do
   @doc false
   def changeset(invoice, attrs) do
     invoice
-    |> cast(attrs, [:status, :amount, :end_time, :start_time])
+    |> cast(attrs, [:status, :amount, :end_time, :start_time, :booking_id, :user_id])
     |> validate_required([:status, :amount, :end_time, :start_time])
   end
 end

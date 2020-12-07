@@ -4,6 +4,7 @@ defmodule Parking.Invoices do
   alias Parking.Repo
 
   alias Parking.Invoices.Invoice
+  alias Parking.Account
 
   def list_invoices do
     Repo.all(Invoice)
@@ -16,6 +17,19 @@ defmodule Parking.Invoices do
   end
 
   def get_invoice!(id), do: Repo.get!(Invoice, id)
+
+  def get_unpaid(user_id) do
+    query = from invoice in Invoice, select: invoice, where: (invoice.user_id == ^user_id) and invoice.status == "UNPAID"
+
+    Repo.all(query)
+  end
+
+  def pay_all(user_id) do
+    for invoice <- get_unpaid(user_id) do
+      Account.reduce_balance_by(user_id, invoice.amount)
+      update_invoice(invoice, %{status: "PAID"})
+    end
+  end
 
   def create_invoice(attrs \\ %{}) do
     %Invoice{}

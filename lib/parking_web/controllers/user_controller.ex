@@ -3,6 +3,7 @@ defmodule ParkingWeb.UserController do
 
   alias Parking.Account
   alias Parking.Account.User
+  alias Parking.Invoices
 
   def index(conn, _params) do
 
@@ -47,7 +48,7 @@ defmodule ParkingWeb.UserController do
     user = Account.get_user!(id)
 
     if user.monthly_payment do
-      # TODO pay for all the unpaid invoices
+      Invoices.pay_all(user.id)
       Account.update_user(user, %{monthly_payment: false})
     else
       Account.update_user(user, %{monthly_payment: true})
