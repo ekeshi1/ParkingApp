@@ -29,6 +29,7 @@ defmodule ParkingWeb.BookingControllerTest do
 
 
     IO.inspect Parking.Authentication.load_current_user(conn)
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo) end)
 
     {:ok, conn: conn}
   end
