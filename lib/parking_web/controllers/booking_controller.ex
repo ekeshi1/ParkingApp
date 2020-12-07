@@ -12,6 +12,7 @@ defmodule ParkingWeb.BookingController do
   import Crontab.CronExpression
   alias Parking.SenderTasks
   import Ecto.Query
+  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
     bookings = Bookings.list_bookings()
 
