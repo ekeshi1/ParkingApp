@@ -25,6 +25,12 @@ defmodule Parking.Bookings do
     a
   end
 
+  def list_my_bookings(id) do
+    query = from booking in Booking, select: booking, where: booking.user_id == ^id
+
+    Repo.all(query) |> Repo.preload([:user, :parking_place])
+  end
+
   @doc """
   Gets a single booking.
 

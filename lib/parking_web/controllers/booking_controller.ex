@@ -8,12 +8,16 @@ defmodule ParkingWeb.BookingController do
   alias Parking.Places.Zone
   alias Parking.Authentication
   alias Parking.Scheduler
+  alias Parking.Invoices
+  alias Parking.Invoices.Invoice
   import Ecto.Query, warn: false
   import Crontab.CronExpression
   alias Parking.SenderTasks
-
+  import Ecto.Query
+  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    bookings = Bookings.list_bookings()
+    user = Parking.Authentication.load_current_user(conn)
+    bookings = Bookings.list_my_bookings(user.id)
 
     render(conn, "index.html", bookings: bookings)
 
@@ -30,89 +34,123 @@ defmodule ParkingWeb.BookingController do
     lat = String.to_float(booking_params["lat"])
     long = String.to_float(booking_params["long"])
     isEndingSpecified = booking_params["isEndingSpecified"]=="true"
+    start_time = DateTime.utc_now()
+    endtime = if isEndingSpecified == true do get_utc_date_time(start_time,booking_params["end_time"]) else nil end
+    user = Authentication.load_current_user(conn)
 
-
-    case check_location_near_parking(lat,long) do
-      {:ok,closestParkingPlace} ->
-        #Check if there are available places first
-       if (closestParkingPlace.total_places-closestParkingPlace.busy_places)==0
-        do
-          #return here.
+    IO.inspect endtime
+    if isEndingSpecified == true and endtime == nil do
+      IO.puts "everything nil"
           conn
-          |> put_flash(:error, "Oops,this parking place doesnt have any available space right now. Please find another one.")
-          |> redirect(to: Routes.parking_place_path(conn, :index))
+          |> put_flash(:error, "End time cant be later than now!")
+          |> redirect(to: Routes.booking_path(conn, :new))
 
-        else
-        #There are places
-        user = Authentication.load_current_user(conn)
+    else
+      query = from b in "bookings",
+              where: b.user_id == ^user.id and b.status=="ACTIVE",
+              select: count("*")
 
-        IO.puts "OK"
-        IO.puts "Found the parking_place"
-        IO.inspect(closestParkingPlace)
-        bookingMap = %{}
-        bookingMap=Map.put(bookingMap,:parking_place, closestParkingPlace.id)
-        bookingMap=Map.put(bookingMap,:status,"ACTIVE")
-        bookingMap=Map.put(bookingMap,:start_time,DateTime.utc_now())
-        endtime = if isEndingSpecified == true do get_utc_date_time(bookingMap.start_time,booking_params["end_time"]) else nil end
-        bookingMap=Map.put(bookingMap,:end_time, endtime )
-        bookingMap=Map.put(bookingMap, :parking_type, booking_params["payment_type"])
+      count = Repo.all(query)
+              |> Enum.at(0)
+      IO.inspect count
 
-        amount = if isEndingSpecified == true do calculate_amount(bookingMap.start_time, bookingMap.end_time,bookingMap.parking_type,closestParkingPlace) else 0.0 end
-        bookingMap=Map.put(bookingMap,:total_amount,amount)
-        bookingMap=Map.put(bookingMap,:user_id ,user.id)
-        #IO.inspect bookingMap
-        #IO.puts "1"
+      case count do
+        0 -> case check_location_near_parking(lat,long) do
+          {:ok,closestParkingPlace} ->
+            #Check if there are available places first
+           if (closestParkingPlace.total_places-closestParkingPlace.busy_places)==0
+            do
+              #return here.
+              conn
+              |> put_flash(:error, "Oops,this parking place doesnt have any available space right now. Please find another one.")
+              |> redirect(to: Routes.parking_place_path(conn, :index))
 
-        #IO.inspect(bookingMap)
-        #insert Booking
-        uf = Booking.changeset(%Booking{},bookingMap)
-            |>Ecto.Changeset.put_assoc(:user,user)
-            |>Ecto.Changeset.put_assoc(:parking_place,closestParkingPlace)
-
-        #Update parking place availability
-
-
-            #  IO.inspect(uf)
-        ##booking_struct = Ecto.build_assoc(user, :bookings, Enum.map(bookingMap, fn({key, value}) -> {String.to_atom(key), value} end))
-        #IO.inspect booking_struct
-        case Repo.insert(uf) do
-        {:ok, booking} ->
-            updated =
-              closestParkingPlace
-            |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
-            |>Repo.update()
-            IO.inspect updated
-            if (isEndingSpecified and booking.parking_type=="H") do
-            schedule_stuff(booking)
-            end
-            message=
-            if isEndingSpecified do
-              "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' ."
             else
-              "Booking is successfull. You can now terminate your parking in '"<>closestParkingPlace.address <> "' anytime by clicking Terminate Parking in your bookings."
+            #There are places
+
+            IO.puts "OK"
+            IO.puts "Found the parking_place"
+            IO.inspect(closestParkingPlace)
+            bookingMap = %{}
+            bookingMap=Map.put(bookingMap,:parking_place, closestParkingPlace.id)
+            bookingMap=Map.put(bookingMap,:status,"ACTIVE")
+            bookingMap=Map.put(bookingMap,:start_time,start_time)
+            bookingMap=Map.put(bookingMap,:end_time, endtime )
+            bookingMap=Map.put(bookingMap, :parking_type, booking_params["payment_type"])
+
+            amount = if isEndingSpecified == true do calculate_amount(bookingMap.start_time, bookingMap.end_time,bookingMap.parking_type,closestParkingPlace) else 0.0 end
+            bookingMap=Map.put(bookingMap,:total_amount,amount)
+            bookingMap=Map.put(bookingMap,:user_id ,user.id)
+            #IO.inspect bookingMap
+            #IO.puts "1"
+
+            #IO.inspect(bookingMap)
+            #insert Booking
+            uf = Booking.changeset(%Booking{},bookingMap)
+                |>Ecto.Changeset.put_assoc(:user,user)
+                |>Ecto.Changeset.put_assoc(:parking_place,closestParkingPlace)
+
+
+            #Update parking place availability
+
+                #  IO.inspect(uf)
+            ##booking_struct = Ecto.build_assoc(user, :bookings, Enum.map(bookingMap, fn({key, value}) -> {String.to_atom(key), value} end))
+            #IO.inspect booking_struct
+            case Repo.insert(uf) do
+            {:ok, booking} ->
+                updated =
+                  closestParkingPlace
+                |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
+                |>Repo.update()
+                IO.inspect updated
+                if (isEndingSpecified and booking.parking_type=="H") do
+                schedule_stuff(booking)
+                end
+
+                """
+                if(isEndingSpecified) do
+                    invoice = Invoice.changeset(%Invoice{},%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time})
+                             |>Ecto.Changeset.put_assoc(:booking,booking)
+                             |>Ecto.Changeset.put_assoc(:user,user)
+                    Repo.insert(invoice)
+
+                end
+                """
+
+
+
+                message=
+                if isEndingSpecified do
+                  "Booking created successfully. You can now park in '"<> closestParkingPlace.address <> "' ."
+                else
+                  "Booking is successfull. You can now terminate your parking in '"<>closestParkingPlace.address <> "' anytime by clicking Terminate Parking in your bookings."
+                end
+
+                conn
+                |> put_flash(:info, message)
+                |> redirect(to: Routes.booking_path(conn, :show, booking))
+
+              {:error, %Ecto.Changeset{} = changeset} ->
+                IO.inspect changeset
+                render(conn, "new.html", changeset: changeset)
+              end
             end
-
+          {:not_ok} ->
+            IO.puts("Not ok. No parking places")
             conn
-            |> put_flash(:info, message)
-            |> redirect(to: Routes.booking_path(conn, :show, booking))
-
-          {:error, %Ecto.Changeset{} = changeset} ->
-            IO.inspect changeset
-            render(conn, "new.html", changeset: changeset)
+            |> put_flash(:error, "We couldn't find a parking place near you!")
+            |> render("new.html", changeset: Bookings.change_booking(%Booking{}))
           end
-        end
-      {:not_ok} ->
-        IO.puts("Not ok. No parking places")
-        conn
-        |> put_flash(:error, "We couldn't find a parking place near you!")
-        |> render("new.html", changeset: Bookings.change_booking(%Booking{}))
+
+          _ -> conn
+              |> put_flash(:error, "You already have an Active parking!")
+              |> redirect(to: Routes.booking_path(conn, :index))
+
+      end
 
 
 
     end
-
-
-
   end
 
   def schedule_stuff(booking) do
@@ -195,13 +233,23 @@ end
   end
 
   def get_utc_date_time(start_time,end_time) do
+    IO.puts "start"
     IO.inspect start_time
+
     endDatetime = %DateTime{year: start_time.year , month: start_time.month , day: start_time.day, zone_abbr: "EET",
     hour: String.to_integer(end_time["hour"]), minute: String.to_integer(end_time["minute"]), second: start_time.second, microsecond: {0, 0},
      utc_offset: 7200, std_offset: 0, time_zone: "Europe/Tallinn"}
-     IO.inspect endDatetime
 
-     endDatetime
+
+     IO.puts "END"
+
+     case DateTime.compare(start_time, endDatetime) do
+      :lt -> endDatetime
+      :gt -> nil
+      :eq -> nil
+     end
+
+
     end
 
 
@@ -214,7 +262,7 @@ end
   res =
   Repo.all(query)
   |>Enum.map(fn parking_place ->  Map.put(parking_place,:distance,Geolocation.find_distance(lat,long,parking_place.lat,parking_place.long))  end)
-  |>Enum.filter(fn parking_place-> parking_place.distance <=1.0 end )
+  |>Enum.filter(fn parking_place-> parking_place.distance <=10.0 end )
   |>Enum.sort(&(&1.distance< &2.distance))
 
   #IO.inspect res

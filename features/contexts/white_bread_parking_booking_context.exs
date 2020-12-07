@@ -23,18 +23,21 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    #Hound.end_session
+    Hound.end_session
   end
 
   given_ ~r/that I am logged in$/, fn state->
     navigate_to "/sessions/new"
 
+    {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "3454567890", name: "some name", password: "123", monthly_payment: false})
+
     case search_element(:id, "email",2) do
       {:ok,_elem} ->
-        fill_field({:id, "email"}, "erkesh@ttu.ee")
-        fill_field({:id, "password"}, "12345")
+        fill_field({:id, "email"}, "a@gmail.com")
+        fill_field({:id, "password"}, "123")
         click({:id, "login_button"})
-        {:ok,state}
+        {:ok,state
+              |> Map.put("user",createdUser) }
 
       {:error ,_s}->    {:ok,state}
 
@@ -150,6 +153,37 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
     {:ok, state}
   end
 
+
+ ##Added for payment
+
+  and_ ~r/^I have "(?<argument_one>[^"]+)" euros in my account$/,
+fn state, %{argument_one: account_balance} ->
+  IO.puts "Check balance"
+  IO.inspect state["user"]
+  new_user = state["user"]
+            |>User.changeset(%{balance: account_balance})
+            |>Repo.update()
+  IO.inspect new_user
+  {:ok, state}
+end
+
+
+and_ ~r/^I navigate to invoices$/, fn state ->
+  navigate_to "/invoices"
+
+  {:ok, state}
+end
+and_ ~r/^I must see an invoice with status "(?<argument_one>[^"]+)" in the screen$/,
+fn state, %{argument_one: invoiceStatus} ->
+
+  assert visible_in_page? ~r/UNPAID/
+  {:ok, state}
+end
+
+and_ ~r/^I shouldn't see an invoice in the screen$/, fn state ->
+  assert  visible_in_page? ~r/No Invoices/
+
+end
 
 
 

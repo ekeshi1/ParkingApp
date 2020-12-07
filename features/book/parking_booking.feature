@@ -37,6 +37,7 @@ Then I must see "Booking is successfull. You can now terminate your parking in '
 And Total amount must be "-"
 And End time should not be specified
 
+Scenario: Booking a Real time parking space with specifying end time should be successfull
 
 Given that I am logged in
 And I navigate to new bookings page

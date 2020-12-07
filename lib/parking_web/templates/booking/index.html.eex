@@ -27,8 +27,8 @@
         <%= if booking.end_time == nil do %>
           <%= link "Terminate parking", to: Routes.booking_path(@conn, :delete, booking.id), method: :delete %>
         <% end %>
-        <%= if booking.end_time != nil do %>
-          <%= link "Extend parking", to: Routes.booking_path(@conn, :extend_page, %{id: booking.id}), method: :get %>
+        <%= if booking.end_time != nil && booking.status == "ACTIVE" do %>
+          <%= link("Extend parking", to: Routes.booking_path(@conn, :extend_page, %{id: booking.id}), method: :get, class: "extend_button") %>
         <% end %>
       </td>
     </tr>

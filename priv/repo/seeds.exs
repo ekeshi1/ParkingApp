@@ -9,7 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User}
+alias Parking.{Repo, Places.Zone, Places.Parking_place, Account.User, Invoices.Invoice}
 
 [%{name: "A", hourly_rate: 2.0, realtime_rate: 0.16},
  %{name: "B", hourly_rate: 1.0, realtime_rate: 0.08}]
@@ -46,4 +46,9 @@ end
 %{name: "E", license: "11112", email: "erkesh@ttu.ee", password: "12345"},
 %{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321"}]
 |> Enum.map(fn user_data -> User.changeset(%User{}, user_data) end)
+|> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+
+[%{status: "UNPAID", amount: "4.0", end_time: DateTime.utc_now(), start_time: DateTime.add(DateTime.utc_now(), -7200, :second), user_id: 1},
+%{status: "UNPAID", amount: "5.0", end_time: DateTime.utc_now(), start_time: DateTime.add(DateTime.utc_now(), -7200, :second), user_id: 1}]
+|> Enum.map(fn invoice_data -> Invoice.changeset(%Invoice{}, invoice_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
