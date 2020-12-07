@@ -8,6 +8,7 @@ defmodule Parking.Invoices.Invoice do
     field :end_time, :utc_datetime
     field :start_time, :utc_datetime
     belongs_to :booking, Parking.Bookings.Booking
+    belongs_to :user, Parking.Account.User
 
     timestamps()
   end

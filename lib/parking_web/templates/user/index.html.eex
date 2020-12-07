@@ -1,32 +1,9 @@
-<h1>Listing Users</h1>
+<h1>Your profile</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>License</th>
-      <th>Password</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for user <- @users do %>
-    <tr>
-      <td><%= user.name %></td>
-      <td><%= user.email %></td>
-      <td><%= user.license %></td>
-      <td><%= user.password %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.user_path(@conn, :show, user) %></span>
-        <span><%= link "Edit", to: Routes.user_path(@conn, :edit, user) %></span>
-        <span><%= link "Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
+<%= if Parking.Authentication.load_current_user(@conn).monthly_payment do %>
+  <p><strong>You're configured to pay for your parkings at the end of the month.</strong></p>
+  <%= button "Pay on each parking", to: Routes.user_path(@conn, :edit, Parking.Authentication.load_current_user(@conn)), method: :get, id: "Pay on each parking" %>
+<% else %>
+  <p><strong>You're configured to pay on each parking.</strong></p>
+  <%= button "Pay monthly", to: Routes.user_path(@conn, :edit, Parking.Authentication.load_current_user(@conn)), method: :get, id: "Pay monthly" %>
 <% end %>
-  </tbody>
-</table>
-
-<span><%= link "New User", to: Routes.user_path(@conn, :new) %></span>

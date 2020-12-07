@@ -22,7 +22,6 @@ defmodule ParkingWeb.UserIntegrationTest do
     Account.create_user(%{email: "bob@gmail.com", license: "356654", name: "some name", password: "123"})
     conn = post conn, "/sessions", %{session: [email: "bob@gmail.com", password: "123"]}
     assert Parking.Authentication.load_current_user(conn)
-mix
     conn = get(conn,"/")
     assert html_response(conn,302)=~"You are being <a href=\"/search\">redirected"
 

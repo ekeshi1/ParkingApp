@@ -94,17 +94,17 @@ defmodule ParkingWeb.BookingControllerTest do
       {:ok, booking} = Bookings.create_booking(params)
 
       id=booking.id
-      end_time_before = params[:end_time]
+      end_time_before = booking.end_time
 
-      conn = get(conn, Routes.booking_path(conn, :extend_page, id))
+      conn = get(conn, Routes.booking_path(conn, :extend_page, %{"id"=>id}))
       assert html_response(conn, 200) =~ "Extend Parking"
 
-      new_end_time = DateTime.add(end_time_before,-10*60, :seconds)
+      new_end_time = DateTime.add(end_time_before,-10*60, :second)
       hour = new_end_time.hour
       minute = new_end_time.minute
       params_for_extend = %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}
-      conn = get(conn, Routes.booking_path(conn, :extend, params_for_extend))
-      assert html_response(conn,200) =~ "Extended end time need to be after previous one!"
+      conn = post(conn, Routes.booking_path(conn, :extend, params_for_extend))
+      assert html_response(conn,302)
       IO.puts("##############")
       IO.puts("PASSED")
       IO.puts("##############")
@@ -122,21 +122,25 @@ defmodule ParkingWeb.BookingControllerTest do
       {:ok, booking} = Bookings.create_booking(params)
 
       id=booking.id
-      end_time_before = params[:end_time]
+      end_time_before = booking.end_time
+      IO.inspect(end_time_before)
 
-      conn = get(conn, Routes.booking_path(conn, :extend_page, id))
+      conn = get(conn, Routes.booking_path(conn, :extend_page, %{"id"=>id}))
       assert html_response(conn, 200) =~ "Extend Parking"
 
-      new_end_time = DateTime.add(end_time_before,10*60, :seconds)
+      new_end_time = DateTime.add(end_time_before,10*60, :second)
       hour = new_end_time.hour
       minute = new_end_time.minute
-      params_for_extend = %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}
-      conn = get(conn, Routes.booking_path(conn, :extend, params_for_extend))
+      IO.inspect(minute)
+      params_for_extend = %{"changeset" => %{"end_time" => %{"hour" => Integer.to_string(hour), "minute" => Integer.to_string(minute)}, "id" => id}}
+      conn = post(conn, Routes.booking_path(conn, :extend, params_for_extend))
       assert redirected_to(conn) == Routes.booking_path(conn, :index)
 
       updated_booking = Bookings.get_booking!(id)
+      IO.inspect(updated_booking.end_time)
       diff = DateTime.diff(updated_booking.end_time, end_time_before )
-      assert diff/diff == 1
+
+      assert diff==600
       IO.puts("##############")
       IO.puts("PASSED")
       IO.puts("##############")
@@ -156,14 +160,14 @@ defmodule ParkingWeb.BookingControllerTest do
       total_amount_before = booking.total_amount
 
 
-      conn = get(conn, Routes.booking_path(conn, :extend_page, id))
+      conn = get(conn, Routes.booking_path(conn, :extend_page, %{"id"=>id}))
       assert html_response(conn, 200) =~ "Extend Parking"
 
-      new_end_time = DateTime.add(end_time_before,60*60, :seconds)
+      new_end_time = DateTime.add(end_time_before,60*60, :second)
       hour = new_end_time.hour
       minute = new_end_time.minute
       params_for_extend = %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}
-      conn = get(conn, Routes.booking_path(conn, :extend, params_for_extend))
+      conn = post(conn, Routes.booking_path(conn, :extend, params_for_extend))
       assert redirected_to(conn) == Routes.booking_path(conn, :index)
 
       updated_booking = Bookings.get_booking!(id)
