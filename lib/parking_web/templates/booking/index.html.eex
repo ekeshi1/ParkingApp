@@ -17,8 +17,8 @@
 
     <tr >
       <td><%= booking.status %></td>
-      <td><%= booking.start_time %></td>
-      <td><%= booking.end_time %></td>
+      <td><%= "#{booking.start_time.day}/#{booking.start_time.month}/#{booking.start_time.year} #{booking.start_time.hour+2}:#{booking.start_time.minute}:#{booking.start_time.second} "%></td>
+      <td><%=if booking.end_time==  nil do    "" else "#{booking.end_time.day}/#{booking.end_time.month}/#{booking.end_time.year} #{booking.end_time.hour+2}:#{booking.end_time.minute}:#{booking.end_time.second} " end%></td>
       <td><%= booking.total_amount %></td>
       <td><%= booking.parking_type %></td>
       <td><%= booking.parking_place.address %></td>

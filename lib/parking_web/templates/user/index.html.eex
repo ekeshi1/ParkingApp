@@ -1,4 +1,5 @@
 <h1>Your profile</h1>
+<h3>Your balance: <%= Parking.Authentication.load_current_user(@conn).balance %></h3>
 
 <%= if Parking.Authentication.load_current_user(@conn).monthly_payment do %>
   <p><strong>You're configured to pay for your parkings at the end of the month.</strong></p>
