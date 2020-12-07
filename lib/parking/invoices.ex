@@ -9,6 +9,12 @@ defmodule Parking.Invoices do
     Repo.all(Invoice)
   end
 
+  def list_my_invoices(id) do
+    query = from invoice in Invoice, select: invoice, where: invoice.user_id == ^id
+
+    Repo.all(query)
+  end
+
   def get_invoice!(id), do: Repo.get!(Invoice, id)
 
   def create_invoice(attrs \\ %{}) do

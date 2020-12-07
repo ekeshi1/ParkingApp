@@ -2,11 +2,10 @@ defmodule ParkingWeb.InvoiceController do
   use ParkingWeb, :controller
 
   alias Parking.Invoices
-  alias Parking.Invoices.Invoice
 
   def index(conn, _params) do
-
-    invoices = Invoices.list_invoices()
+    user = Parking.Authentication.load_current_user(conn)
+    invoices = Invoices.list_my_invoices(user.id)
     render(conn, "index.html", invoices: invoices)
   end
 
