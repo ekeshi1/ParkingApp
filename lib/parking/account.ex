@@ -37,6 +37,11 @@ defmodule Parking.Account do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def reduce_balance_by(user_id, amount) do
+    user = get_user!(user_id)
+    update_user(user, %{amount: user.amount-amount})
+  end
+
   @doc """
   Creates a user.
 
