@@ -20,6 +20,10 @@ config :parking, Parking.Scheduler,
     news_letter: [
       schedule: "@weekly",
       task: {Heartbeat, :send, []}
+    ],
+    mounthly_payment: [
+      schedule: {:extended, "*/59 * * * *"},
+      task: {Parking.MounthyPay, :pay_all, []}
     ]
   ]
 
