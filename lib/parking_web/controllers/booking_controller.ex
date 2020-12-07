@@ -265,7 +265,7 @@ end
   res =
   Repo.all(query)
   |>Enum.map(fn parking_place ->  Map.put(parking_place,:distance,Geolocation.find_distance(lat,long,parking_place.lat,parking_place.long))  end)
-  |>Enum.filter(fn parking_place-> parking_place.distance <=10.0 end )
+  |>Enum.filter(fn parking_place-> parking_place.distance <=1.0 end )
   |>Enum.sort(&(&1.distance< &2.distance))
 
   #IO.inspect res
@@ -332,7 +332,11 @@ end
     IO.inspect(booking_end_time)
     new_end_time = get_utc_date_time(booking_start_time, input_time)
     IO.inspect(new_end_time)
-    time_diff = DateTime.diff(new_end_time, booking_end_time)
+    time_diff = if new_end_time == nil do
+      -1
+    else
+      DateTime.diff(new_end_time, booking_end_time)
+    end
     IO.puts("##############")
     IO.inspect(time_diff)
     IO.puts("###########")

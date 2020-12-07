@@ -52,17 +52,8 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
     navigate_to "/bookings/new"
     execute_script("document.getElementById('user_lat').value=arguments[0];
     document.getElementById('user_long').value=arguments[1];
-    ", [String.to_float("58.3825317"), String.to_float("26.7312859")])
+    ", [String.to_float("58.3825800"), String.to_float("26.7320600")])
     find_element(:css, "#booking_payment_type option[value='H']") |> click()
-<<<<<<< HEAD
-    click({:id,"leaving_time"})
-    timenow=DateTime.utc_now()
-    hourNow = timenow.hour+2
-    minuteNow =timenow.minute
-
-    find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow)<>"']") |> click()
-    find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(33)<>"']") |> click()
-=======
     find_element(:id, "leaving_time") |> click()
     end_time=DateTime.add(DateTime.utc_now(),2*60*60+7*60, :second)
     h = end_time.hour
@@ -71,7 +62,6 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(h)<>"']") |> click()
     find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(m)<>"']") |> click()
->>>>>>> 4a40fc30679d51d8f92443edbd449ba6889f027d
 
     submit_button = find_element(:id, "submit_button")
     click(submit_button)
