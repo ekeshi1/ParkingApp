@@ -110,7 +110,7 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
     {:ok, state}
   end
 
-  and_ ~r/^prices(rates) for hourly and real time should be specified$/, fn state ->
+  and_ ~r/^prices for hourly and real time should be specified$/, fn state ->
     assert inner_text({:id,"hour_rate"}) != ""
     assert inner_text({:id,"realtime_rate"}) != ""
     {:ok, state}
@@ -121,5 +121,8 @@ defmodule WhiteBread.Contexts.SearchParkingContext do
     assert inner_text({:id,"realtime_price"}) != ""
     {:ok, state}
   end
+
+
+
 
 end

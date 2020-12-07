@@ -52,7 +52,7 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
     navigate_to "/bookings/new"
     execute_script("document.getElementById('user_lat').value=arguments[0];
     document.getElementById('user_long').value=arguments[1];
-    ", [String.to_float("58.3825317"), String.to_float("26.7312859")])
+    ", [String.to_float("58.3825800"), String.to_float("26.7320600")])
     find_element(:css, "#booking_payment_type option[value='H']") |> click()
     find_element(:id, "leaving_time") |> click()
     end_time=DateTime.add(DateTime.utc_now(),2*60*60+7*60, :second)

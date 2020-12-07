@@ -20,6 +20,10 @@ config :parking, Parking.Scheduler,
     news_letter: [
       schedule: "@weekly",
       task: {Heartbeat, :send, []}
+    ],
+    mounthly_payment: [
+      schedule: {:extended, "*/59 * * * *"},
+      task: {Parking.MounthyPay, :pay_all, []}
     ]
   ]
 
@@ -58,5 +62,5 @@ config :parking, Parking.Guardian,
 
 
 config :parking, Parking.Mailer,
-  mailgun_domain: "34",
-  mailgun_key: "3242"
+  mailgun_domain: "sandboxd6bc43eee9304e5f86d13156763f2e32.mailgun.org",
+  mailgun_key: "0c10ee817bcbca1589a79ba90b28d7bf-95f6ca46-f250a3de"

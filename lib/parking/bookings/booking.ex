@@ -19,7 +19,7 @@ defmodule Parking.Bookings.Booking do
   @doc false
   def changeset(booking, attrs) do
     booking
-    |> cast(attrs, [:status, :start_time, :end_time, :total_amount,:parking_type])
+    |> cast(attrs, [:status, :start_time, :end_time, :total_amount,:parking_type, :user_id, :parking_place_id])
     |> validate_required([:status, :start_time,:parking_type])
     |> validate_number(:end_time, greater_than: :start_time)
 

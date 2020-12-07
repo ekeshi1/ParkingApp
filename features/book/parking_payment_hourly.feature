@@ -20,6 +20,7 @@ And I navigate to invoices
 And I must see an invoice with status "PAID" in the screen
 
 
+
 Scenario: As a driver I want to pay for a hourly parking place without a specific end time booking when I terminate booking.  
 
 Given that I am logged in
@@ -31,10 +32,9 @@ Given that the following parking places are available
 And my location is "Raatuse 21" with latitude "58.3825317" and longitude "26.7312859"
 And I choose "Hourly" payment method
 And I click Book
-Then I must see "Booking created successfully.You can now park in 'Narva maante 18'"
+Then I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."
 And I navigate to invoices
 And I shouldn't see an invoice in the screen
-
 
 
 
