@@ -20,7 +20,7 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    # Hound.end_session
+    Hound.end_session
   end
 
   given_ ~r/^that I have booked a parking space$/, fn state ->
@@ -105,6 +105,17 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
   fn state, %{argument_one: _argument_one} ->
     #Booking time extended!
     assert visible_in_page? ~r/Booking time extended!/
+    {:ok, state}
+  end
+
+  and_ ~r/^go to my invoices page$/, fn state ->
+    navigate_to "/invoices"
+    {:ok, state}
+  end
+
+  then_ ~r/^I should see an invoice with status "(?<status>[^"]+)" on the screen.$/,
+  fn state, %{status: status} ->
+    assert visible_in_page? ~r/status/
     {:ok, state}
   end
 
