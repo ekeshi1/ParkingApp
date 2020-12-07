@@ -128,7 +128,7 @@ defmodule ParkingWeb.BookingControllerTest do
       conn = get(conn, Routes.booking_path(conn, :extend_page, %{"id"=>id}))
       assert html_response(conn, 200) =~ "Extend Parking"
 
-      new_end_time = DateTime.add(end_time_before,10*60, :second)
+      new_end_time = DateTime.add(end_time_before,2*60*60+10*60, :second)# adding 2 hours to make time utc+2
       hour = new_end_time.hour
       minute = new_end_time.minute
       IO.inspect(minute)
@@ -163,7 +163,7 @@ defmodule ParkingWeb.BookingControllerTest do
       conn = get(conn, Routes.booking_path(conn, :extend_page, %{"id"=>id}))
       assert html_response(conn, 200) =~ "Extend Parking"
 
-      new_end_time = DateTime.add(end_time_before,60*60, :second)
+      new_end_time = DateTime.add(end_time_before,4*60*60, :second)#adding 2 hour to extend parking and 2 hours to make time utc+2
       hour = new_end_time.hour
       minute = new_end_time.minute
       params_for_extend = %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}
@@ -173,7 +173,7 @@ defmodule ParkingWeb.BookingControllerTest do
       updated_booking = Bookings.get_booking!(id)
       total_amount_after = updated_booking.total_amount
 
-      assert total_amount_after-total_amount_before == 2
+      assert total_amount_after-total_amount_before == 3.5
       IO.puts("##############")
       IO.puts("PASSED")
       IO.puts("##############")
