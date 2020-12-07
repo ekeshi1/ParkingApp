@@ -1,5 +1,3 @@
-
-
 Feature: Parking payment for Hourly
 
 #HOURLY PAYMENT FEATURES
@@ -35,6 +33,7 @@ And I click Book
 Then I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."
 And I navigate to invoices
 And I shouldn't see an invoice in the screen
+
 
 
 

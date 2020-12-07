@@ -81,8 +81,10 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
     click({:id,"leaving_time"})
 
     #get time now
-    timenow=DateTime.utc_now()
-    hourNow = timenow.hour+2
+    timenow=DateTime.add(DateTime.utc_now(),2*60*60, :second)
+
+    IO.inspect(timenow)
+    hourNow = timenow.hour
     minuteNow =timenow.minute
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow+1)<>"']") |> click()
@@ -162,11 +164,24 @@ fn state, %{argument_one: account_balance} ->
   IO.inspect state["user"]
   new_user = state["user"]
             |>User.changeset(%{balance: account_balance})
-            |>Repo.update()
+            |>Repo.update!()
   IO.inspect new_user
-  {:ok, state}
+  {:ok, state|> Map.put("user",new_user)}
 end
 
+and_ ~r/^I have configured "(?<argument_one>[^"]+)" in my profile$/,
+fn state, %{argument_one: payment_type} ->
+
+  tf =
+    case payment_type do
+    "Monthly Payment"-> true
+    "Each Parking" -> false
+    end
+  new_user = state["user"]
+            |>User.changeset(%{monthly_payment: tf})
+            |>Repo.update!()
+  {:ok, state}
+end
 
 and_ ~r/^I navigate to invoices$/, fn state ->
   "Navigated"
@@ -186,16 +201,6 @@ and_ ~r/^I shouldn't see an invoice in the screen$/, fn state ->
   {:ok, state}
 
 end
-
-
-
-
-
-
-
-
-
-
 
 
 

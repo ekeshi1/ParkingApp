@@ -9,6 +9,7 @@ defmodule ParkingWeb.BookingController do
   alias Parking.Authentication
   alias Parking.Scheduler
   alias Parking.Invoices
+  alias Parking.Account.User
   alias Parking.Invoices.Invoice
   import Ecto.Query, warn: false
   import Crontab.CronExpression
@@ -103,19 +104,41 @@ defmodule ParkingWeb.BookingController do
                 |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
                 |>Repo.update()
                # IO.inspect updated
-                if (isEndingSpecified and booking.parking_type=="H") do
+                if (isEndingSpecified) do
                 schedule_stuff(booking)
                 end
 
 
                 if(isEndingSpecified) do
+                  status =
+
+                    cond do
+                      user.monthly_payment==true and booking.parking_type == "RT" ->"UNPAID"
+                      user.monthly_payment==false and booking.parking_type == "RT" -> "PAID"
+                      user.monthly_payment == true and booking.parking_type=="H" -> "PAID"
+                      user.monthly_payment == false and booking.parking_type=="H" -> "PAID"
+                    end
+
+
+
+
+
 
                   #Adding invoice
-                    invoice = Invoice.changeset(%Invoice{},%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time, end_time: booking.end_time})
+                    invoice = Invoice.changeset(%Invoice{},%{status: status,amount: booking.total_amount, start_time: booking.start_time, end_time: booking.end_time})
                              |>Ecto.Changeset.put_assoc(:booking,booking)
                              |>Ecto.Changeset.put_assoc(:user,user)
 
                      Repo.insert!(invoice)
+
+
+
+                  if status == "PAID" do
+                    user
+                    |>User.changeset(%{balance: (user.balance-booking.total_amount)})
+                    |>Repo.update()
+                  end
+
 
                 end
 
@@ -162,7 +185,7 @@ defmodule ParkingWeb.BookingController do
 
     jobNameReminder="REMINDER_"<> bookingId
 
-    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,3)
+    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,10)
     cronExpresionTermination = buildCronExpressionReminder(booking.end_time,2)
     jobNameTermination="TERMINATE_" <> bookingId
 
@@ -239,13 +262,15 @@ end
     IO.puts "start"
     IO.inspect start_time
 
-    endDatetime = %DateTime{year: start_time.year , month: start_time.month , day: start_time.day, zone_abbr: "EET",
+    estDateTime =  DateTime.add(start_time,2*60*60,:second)
+    endDatetime = %DateTime{year: estDateTime.year , month: estDateTime.month , day: estDateTime.day, zone_abbr: "EET",
     hour: String.to_integer(end_time["hour"]), minute: String.to_integer(end_time["minute"]), second: start_time.second, microsecond: {0, 0},
      utc_offset: 7200, std_offset: 0, time_zone: "Europe/Tallinn"}
-
+    IO.inspect endDatetime
 
      IO.puts "END"
 
+     IO.puts DateTime.compare(start_time, endDatetime)
      case DateTime.compare(start_time, endDatetime) do
       :lt -> endDatetime
       :gt -> nil
