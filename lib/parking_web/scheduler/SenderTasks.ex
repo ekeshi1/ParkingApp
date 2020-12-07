@@ -1,13 +1,13 @@
 defmodule Parking.SenderTasks do
 
-  alias Parking.{Bookings.Booking, Bookings,Repo,Places.Parking_place}
+  alias Parking.{Bookings.Booking, Bookings,Repo,Places.Parking_place ,Account.User}
   import Ecto.Query
 
   def sendEmail(booking_id) do
       booking = Bookings.get_booking!(String.to_integer(booking_id))
       user=Repo.get!(User, booking.user_id)
       email=user.email
-      Parking.Mailer.send_email(email,"dd","dd")
+      Parking.Mailer.send_email(email,"dd","You have 10 minutes left to use this parking place. Please extend if you wish")
       IO.puts("Running scheduled task with id: "<>booking_id)
   end
 
