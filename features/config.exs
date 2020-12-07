@@ -31,13 +31,13 @@ defmodule WhiteBreadConfig do
   #     context:       WhiteBread.Contexts.ParkingBookingContext,
   #     feature_paths: ["features/book/parking_payment_hourly.feature"]
 
-  # suite name:          "Terminate Parking",
-  #     context:       WhiteBread.Contexts.TerminateParkingContext,
-  #     feature_paths: ["features/terminateparking/"]
+  suite name:          "Terminate Parking",
+      context:       WhiteBread.Contexts.TerminateParkingContext,
+      feature_paths: ["features/terminateparking/"]
 
-  suite name:          "Extend Parking",
-      context:       WhiteBread.Contexts.ExtendBookingContext,
-      feature_paths: ["features/extendbooking/"]
+  # suite name:          "Extend Parking",
+  #     context:       WhiteBread.Contexts.ExtendBookingContext,
+  #     feature_paths: ["features/extendbooking/"]
 
   # suite name:          "All",
   #     context:       WhiteBreadContext,
