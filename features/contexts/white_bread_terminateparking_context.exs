@@ -105,13 +105,15 @@ defmodule WhiteBread.Contexts.TerminateParkingContext do
 
   given_ ~r/^I have configured "(?<method>[^"]+)" in my profile$/,
   fn state, %{method: method} ->
-    cond do
-      method == "Pay monthly" ->
-        navigate_to "/users"
-        click({:id, method})
-        {:ok, state}
-      method == "Pay on each parking" -> {:ok, state}
-    end
+    tf =
+      case method do
+      "Pay monthly"-> true
+      "Pay on each parking" -> false
+      end
+    user = Account.get_user!(1)
+          |>User.changeset(%{monthly_payment: tf})
+          |>Repo.update!()
+    {:ok, state}
   end
 
 end
