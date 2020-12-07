@@ -102,20 +102,23 @@ defmodule ParkingWeb.BookingController do
                   closestParkingPlace
                 |> Parking_place.changeset(%{busy_places: closestParkingPlace.busy_places+1})
                 |>Repo.update()
-                IO.inspect updated
+               # IO.inspect updated
                 if (isEndingSpecified and booking.parking_type=="H") do
                 schedule_stuff(booking)
                 end
 
-                """
+
                 if(isEndingSpecified) do
-                    invoice = Invoice.changeset(%Invoice{},%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time})
+
+                  #Adding invoice
+                    invoice = Invoice.changeset(%Invoice{},%{status: "PAID",amount: booking.total_amount, start_time: booking.start_time, end_time: booking.end_time})
                              |>Ecto.Changeset.put_assoc(:booking,booking)
                              |>Ecto.Changeset.put_assoc(:user,user)
-                    Repo.insert(invoice)
+
+                     Repo.insert!(invoice)
 
                 end
-                """
+
 
 
 
