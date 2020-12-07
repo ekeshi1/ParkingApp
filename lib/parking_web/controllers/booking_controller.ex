@@ -341,7 +341,14 @@ end
       time_diff>0 ->
         parking_place = Repo.get!(Parking_place, booking.parking_place_id)
         new_amount = calculate_amount(booking.start_time, new_end_time, booking.parking_type, parking_place)
-        {:ok, _booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
+        {:ok, updated_booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
+        job_reminder = String.to_atom("REMINDER_"<>Integer.to_string(updated_booking.id))
+        job_terminate = String.to_atom("TERMINATE"<>Integer.to_string(updated_booking.id))
+        Scheduler.delete_job(job_reminder)
+        IO.puts("Deleted reminder job")
+        Scheduler.delete_job(job_terminate)
+        IO.puts("Deleted terminate job")
+        schedule_stuff(updated_booking)
         conn
         |> put_flash(:info, "Booking time extended!")
         |> redirect(to: Routes.booking_path(conn, :index))
