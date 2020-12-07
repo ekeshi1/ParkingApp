@@ -14,7 +14,8 @@ defmodule ParkingWeb.BookingController do
   import Ecto.Query
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    bookings = Bookings.list_bookings()
+    user = Parking.Authentication.load_current_user(conn)
+    bookings = Bookings.list_my_bookings(user.id)
 
     render(conn, "index.html", bookings: bookings)
 
@@ -246,7 +247,7 @@ end
   res =
   Repo.all(query)
   |>Enum.map(fn parking_place ->  Map.put(parking_place,:distance,Geolocation.find_distance(lat,long,parking_place.lat,parking_place.long))  end)
-  |>Enum.filter(fn parking_place-> parking_place.distance <=1.0 end )
+  |>Enum.filter(fn parking_place-> parking_place.distance <=10.0 end )
   |>Enum.sort(&(&1.distance< &2.distance))
 
   #IO.inspect res
