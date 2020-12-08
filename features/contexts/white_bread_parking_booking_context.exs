@@ -8,7 +8,6 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
     Application.ensure_all_started(:hound)
     %{}
 
-    IO.puts "Started"
   end
 
 
@@ -23,13 +22,15 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    #Hound.end_session
+    Hound.end_session
   end
 
   given_ ~r/that I am logged in$/, fn state->
+
     navigate_to "/sessions/new"
 
-    {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "34534567890", name: "some name", password: "123", monthly_payment: false})
+    {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "234534567890", name: "some name", password: "123", monthly_payment: false})
+
 
     case search_element(:id, "email",2) do
       {:ok,_elem} ->

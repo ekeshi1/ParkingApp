@@ -31,7 +31,7 @@ defmodule ParkingWeb.BookingController do
 
   def create(conn, %{"booking" => booking_params}) do
     IO.inspect("-------------------------------------------------------------------------")
-    IO.inspect(booking_params)
+   # IO.inspect(booking_params)
     lat = String.to_float(booking_params["lat"])
     long = String.to_float(booking_params["long"])
     isEndingSpecified = booking_params["isEndingSpecified"]=="true"
@@ -53,7 +53,7 @@ defmodule ParkingWeb.BookingController do
 
       count = Repo.all(query)
               |> Enum.at(0)
-      IO.inspect count
+     # IO.inspect count
 
       case count do
         0 -> case check_location_near_parking(lat,long) do
@@ -71,7 +71,7 @@ defmodule ParkingWeb.BookingController do
 
             IO.puts "OK"
             IO.puts "Found the parking_place"
-            IO.inspect(closestParkingPlace)
+           # IO.inspect(closestParkingPlace)
             bookingMap = %{}
             bookingMap=Map.put(bookingMap,:parking_place, closestParkingPlace.id)
             bookingMap=Map.put(bookingMap,:status,"ACTIVE")
@@ -157,7 +157,7 @@ defmodule ParkingWeb.BookingController do
                 |> redirect(to: Routes.booking_path(conn, :show, booking))
 
               {:error, %Ecto.Changeset{} = changeset} ->
-                IO.inspect changeset
+            #    IO.inspect changeset
                 render(conn, "new.html", changeset: changeset)
               end
             end
@@ -256,7 +256,7 @@ end
       endDatetime=end_time
       IO.inspect DateTime.to_unix(endDatetime)
       IO.inspect DateTime.to_unix(start_time)
-      diffMinutes = div(round(DateTime.diff(endDatetime,start_time)),60)
+      diffMinutes = max(div(round(DateTime.diff(endDatetime,start_time)),60),1)
       zone=Enum.at( Repo.all(from t in Zone, where: t.name == ^(parking_place.zone_id), select: t),0)
       hh= div(diffMinutes,60)
       mm = rem(diffMinutes,60)

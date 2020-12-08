@@ -42,7 +42,7 @@ config :parking, ParkingWeb.Endpoint,
   live_view: [signing_salt: "G2RD4BO5"]
 
 # Configures Elixir's Logger
-config :logger, :console,level: :debug,
+config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

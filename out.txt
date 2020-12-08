@@ -1,0 +1,653 @@
+Compiling 45 files (.ex)
+Generated parking app
+09:26:15.621 [info] Running ParkingWeb.Endpoint with cowboy 2.8.0 at 0.0.0.0:4001 (http)
+09:26:15.621 [info] Access ParkingWeb.Endpoint at http://localhost:4001
+loading all contexts from features/contexts/**
+loading config from features/config.exs
+
+
+Suite: Parking Booking
+Started
+09:26:17.296 request_id=Fk6tCmxTJ46-Dh0AAAUl [info] GET /sessions/new
+09:26:17.314 request_id=Fk6tCmxTJ46-Dh0AAAUl [info] Sent 200 in 17ms
+09:26:17.971 request_id=Fk6tCpSOVKorFrEAAAVF [info] POST /sessions
+09:26:18.023 request_id=Fk6tCpSOVKorFrEAAAVF [info] Sent 302 in 52ms
+09:26:18.026 request_id=Fk6tCpfSgYjISfcAAAWF [info] GET /
+Came here
+09:26:18.030 request_id=Fk6tCpfSgYjISfcAAAWF [info] Sent 302 in 3ms
+09:26:18.032 request_id=Fk6tCpgvX2-4-AIAAAXF [info] GET /search
+09:26:18.035 request_id=Fk6tCpgvX2-4-AIAAAXF [info] Sent 200 in 3ms
+first
+09:26:18.131 request_id=Fk6tCp4cphi14ZgAAAXl [info] GET /bookings/new
+09:26:18.134 request_id=Fk6tCp4cphi14ZgAAAXl [info] Sent 200 in 2ms
+"58.3825317"
+"26.7312859"
+completed location
+09:26:18.321 request_id=Fk6tCqlmeb4gi1YAAAYF [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+nil
+0
+Not ok. No parking places
+09:26:18.331 request_id=Fk6tCqlmeb4gi1YAAAYF [info] Sent 200 in 9ms
+Submited
+Booking a parking space when you are too far(more than  km) from the parking place. ---> ok
+09:26:18.416 request_id=Fk6tCq8TJsVfUTwAABVB [info] GET /sessions/new
+09:26:18.419 request_id=Fk6tCq8TJsVfUTwAABVB [info] Sent 200 in 2ms
+09:26:18.853 request_id=Fk6tCskf3oSZbjIAAAZF [info] POST /sessions
+09:26:18.856 request_id=Fk6tCskf3oSZbjIAAAZF [info] Sent 302 in 2ms
+09:26:18.857 request_id=Fk6tCsliNi21_LcAAAZl [info] GET /
+Came here
+09:26:18.859 request_id=Fk6tCsliNi21_LcAAAZl [info] Sent 302 in 1ms
+09:26:18.862 request_id=Fk6tCsmkeet49A8AAAaF [info] GET /search
+09:26:18.863 request_id=Fk6tCsmkeet49A8AAAaF [info] Sent 200 in 1ms
+09:26:18.912 request_id=Fk6tCsyehhLe6igAAAal [info] GET /bookings/new
+09:26:18.915 request_id=Fk6tCsyehhLe6igAAAal [info] Sent 200 in 3ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+09:26:19.053 request_id=Fk6tCtUPqhzlL48AABVh [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+nil
+0
+09:26:19.057 request_id=Fk6tCtUPqhzlL48AABVh [info] Sent 302 in 3ms
+09:26:19.064 request_id=Fk6tCtWq5dxVb8YAABWB [info] GET /search
+09:26:19.066 request_id=Fk6tCtWq5dxVb8YAABWB [info] Sent 200 in 2ms
+Submited
+Response check
+09:26:19.138 request_id=Fk6tCtoZVRSQB74AAAbF [info] GET /sessions/new
+09:26:19.140 request_id=Fk6tCtoZVRSQB74AAAbF [info] Sent 302 in 2ms
+09:26:19.144 request_id=Fk6tCtpz_gQGmfwAAAbl [info] GET /search
+09:26:19.146 request_id=Fk6tCtpz_gQGmfwAAAbl [info] Sent 200 in 1ms
+Booking a parking space when you are close enough(less than 0.5km) to a parking place with no free spaces must fail ---> failed
+09:26:19.201 request_id=Fk6tCt3hOD22oD4AABWh [info] GET /sessions/new
+09:26:19.204 request_id=Fk6tCt3hOD22oD4AABWh [info] Sent 200 in 2ms
+09:26:19.648 request_id=Fk6tCvh-m-vboFEAABXB [info] POST /sessions
+09:26:19.651 request_id=Fk6tCvh-m-vboFEAABXB [info] Sent 302 in 2ms
+09:26:19.653 request_id=Fk6tCvjUinJVXHsAABXh [info] GET /
+Came here
+09:26:19.654 request_id=Fk6tCvjUinJVXHsAABXh [info] Sent 302 in 1ms
+09:26:19.657 request_id=Fk6tCvkKM4YNeEsAAAcF [info] GET /search
+09:26:19.658 request_id=Fk6tCvkKM4YNeEsAAAcF [info] Sent 200 in 1ms
+first
+09:26:19.718 request_id=Fk6tCvyvGICq0R0AAAcl [info] GET /bookings/new
+09:26:19.720 request_id=Fk6tCvyvGICq0R0AAAcl [info] Sent 200 in 1ms
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:19.911 request_id=Fk6tCwgrCslNHS8AAAdF [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "H"
+}
+nil
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 2,
+  distance: 0.8446396348983854,
+  id: 364,
+  inserted_at: ~N[2020-12-08 07:26:19],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:19],
+  zone_id: "A"
+}
+09:26:19.922 request_id=Fk6tCwgrCslNHS8AAAdF [info] Sent 302 in 11ms
+09:26:19.924 request_id=Fk6tCwj3tSWnvXMAAAdl [info] GET /bookings/124
+09:26:19.927 request_id=Fk6tCwj3tSWnvXMAAAdl [info] Sent 200 in 2ms
+Submited
+Response check
+Booking a parking space when you are close enough(less than 0.5km) to the parking place ---> ok
+09:26:20.023 request_id=Fk6tCw7iAnizsgkAABYB [info] GET /sessions/new
+09:26:20.025 request_id=Fk6tCw7iAnizsgkAABYB [info] Sent 200 in 1ms
+09:26:20.462 request_id=Fk6tCykAfu8GoRgAAAel [info] POST /sessions
+09:26:20.464 request_id=Fk6tCykAfu8GoRgAAAel [info] Sent 302 in 2ms
+09:26:20.467 request_id=Fk6tCylVTan38zsAAAfF [info] GET /
+Came here
+09:26:20.468 request_id=Fk6tCylVTan38zsAAAfF [info] Sent 302 in 1ms
+09:26:20.470 request_id=Fk6tCymICaJm0nMAAAfl [info] GET /search
+09:26:20.472 request_id=Fk6tCymICaJm0nMAAAfl [info] Sent 200 in 1ms
+09:26:20.523 request_id=Fk6tCyyqnKc3LY4AABYh [info] GET /bookings/new
+09:26:20.526 request_id=Fk6tCyyqnKc3LY4AABYh [info] Sent 200 in 2ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:20.715 request_id=Fk6tCzgaDFmInP0AABZB [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+nil
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 365,
+  inserted_at: ~N[2020-12-08 07:26:20],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:20],
+  zone_id: "A"
+}
+09:26:20.723 request_id=Fk6tCzgaDFmInP0AABZB [info] Sent 302 in 8ms
+09:26:20.726 request_id=Fk6tCzjHIyG5b_QAABZh [info] GET /bookings/125
+09:26:20.728 request_id=Fk6tCzjHIyG5b_QAABZh [info] Sent 200 in 2ms
+Submited
+Response check
+Booking a Real time parking space without specifying end time should be successfull ---> ok
+Started
+1 scenario failed for Book parking
+  - Booking a parking space when you are close enough(less than 0.5km) to a parking place with no free spaces must fail --> execution failure: that I am logged in:
+Exception: constraint error when attempting to insert struct:
+
+    * users_email_license_index (unique_constraint)
+
+If you would like to stop this constraint violation from raising an
+exception and instead add it as an error to your changeset, please
+call `unique_constraint/3` on your changeset with the constraint
+`:name` as an option.
+
+The changeset defined the following constraints:
+
+    * users_license_index (unique_constraint)
+    * users_email_index (unique_constraint)
+: 
+    (ecto 3.5.5) lib/ecto/repo/schema.ex:688: anonymous fn/4 in Ecto.Repo.Schema.constraints_to_errors/3
+    (elixir 1.10.4) lib/enum.ex:1396: Enum."-map/2-lists^map/1-0-"/2
+    (ecto 3.5.5) lib/ecto/repo/schema.ex:673: Ecto.Repo.Schema.constraints_to_errors/3
+    (ecto 3.5.5) lib/ecto/repo/schema.ex:654: Ecto.Repo.Schema.apply/4
+    (ecto 3.5.5) lib/ecto/repo/schema.ex:262: anonymous fn/15 in Ecto.Repo.Schema.do_insert/4
+    features/contexts/white_bread_parking_booking_context.exs:32: anonymous fn/1 in WhiteBread.Contexts.ParkingBookingContext."regex_step_that I am logged in$"/2
+    (white_bread 3.1.0) lib/white_bread/context/step_executor.ex:9: WhiteBread.Context.StepExecutor.execute_step/3
+    (white_bread 3.1.0) lib/white_bread/runners/steps_runner.ex:24: WhiteBread.Runners.StepsRunner.run_step/3
+
+
+
+
+Suite: Parking Hourly Payment
+09:26:20.879 request_id=Fk6tC0Hje7pY_RUAAAgF [info] GET /sessions/new
+09:26:20.882 request_id=Fk6tC0Hje7pY_RUAAAgF [info] Sent 200 in 2ms
+09:26:21.327 request_id=Fk6tC1yUWnm6mXwAABaB [info] POST /sessions
+09:26:21.329 request_id=Fk6tC1yUWnm6mXwAABaB [info] Sent 302 in 1ms
+09:26:21.334 request_id=Fk6tC10DeW9ghwYAABah [info] GET /
+Came here
+09:26:21.336 request_id=Fk6tC10DeW9ghwYAABah [info] Sent 302 in 1ms
+09:26:21.338 request_id=Fk6tC11FrIvduOkAABbB [info] GET /search
+09:26:21.340 request_id=Fk6tC11FrIvduOkAABbB [info] Sent 200 in 1ms
+Check balance
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 140,
+  inserted_at: ~N[2020-12-08 07:26:20],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:20]
+}
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 140,
+  inserted_at: ~N[2020-12-08 07:26:20],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:20]
+}
+09:26:21.386 request_id=Fk6tC2AVIPc5eOEAAAgl [info] GET /bookings/new
+09:26:21.388 request_id=Fk6tC2AVIPc5eOEAAAgl [info] Sent 200 in 2ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:21.774 request_id=Fk6tC3c9kB1CssIAABbh [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "end_time" => %{"hour" => "10", "minute" => "26"},
+  "isEndingSpecified" => "true",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "H"
+}
+start
+~U[2020-12-08 07:26:21.776892Z]
+#DateTime<2020-12-08 10:26:21+02:00 EET Europe/Tallinn>
+END
+lt
+#DateTime<2020-12-08 10:26:21+02:00 EET Europe/Tallinn>
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 366,
+  inserted_at: ~N[2020-12-08 07:26:21],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:21],
+  zone_id: "A"
+}
+################################
+~U[2020-12-08 07:26:21.776892Z]
+1607415981
+1607412381
+1
+12
+2.0
+Scheduling reminder for booking with id: 126
+~e[21 23 8 8 12 * 2020]e
+~e[21 24 8 8 12 * 2020]e
+09:26:21.787 request_id=Fk6tC3c9kB1CssIAABbh [info] Sent 302 in 13ms
+09:26:21.789 request_id=Fk6tC3gnDxJsscoAABch [info] GET /bookings/126
+09:26:21.791 request_id=Fk6tC3gnDxJsscoAABch [info] Sent 200 in 1ms
+Submited
+Response check
+09:26:21.861 request_id=Fk6tC3xpKebHls8AABdB [info] GET /invoices
+09:26:21.864 request_id=Fk6tC3xpKebHls8AABdB [info] Sent 200 in 2ms
+As a driver I want to pay for a hourly parking place with a specific end time booking before starting parking.   ---> ok
+09:26:21.932 request_id=Fk6tC4CnIbgUagEAAAhF [info] GET /sessions/new
+09:26:21.934 request_id=Fk6tC4CnIbgUagEAAAhF [info] Sent 200 in 1ms
+09:26:22.397 request_id=Fk6tC5xeD3UArLoAABeB [info] POST /sessions
+09:26:22.399 request_id=Fk6tC5xeD3UArLoAABeB [info] Sent 302 in 2ms
+09:26:22.401 request_id=Fk6tC5yZXqYB7ycAAAhl [info] GET /
+Came here
+09:26:22.402 request_id=Fk6tC5yZXqYB7ycAAAhl [info] Sent 302 in 985µs
+09:26:22.404 request_id=Fk6tC5zEgUrmRcsAABeh [info] GET /search
+09:26:22.405 request_id=Fk6tC5zEgUrmRcsAABeh [info] Sent 200 in 1ms
+Check balance
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 141,
+  inserted_at: ~N[2020-12-08 07:26:21],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:21]
+}
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 141,
+  inserted_at: ~N[2020-12-08 07:26:21],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:21]
+}
+09:26:22.459 request_id=Fk6tC6AMN_OdntgAAAiF [info] GET /bookings/new
+09:26:22.462 request_id=Fk6tC6AMN_OdntgAAAiF [info] Sent 200 in 3ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:22.635 request_id=Fk6tC6qSlWjDnPIAAAil [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "H"
+}
+nil
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 367,
+  inserted_at: ~N[2020-12-08 07:26:22],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:22],
+  zone_id: "A"
+}
+09:26:22.640 request_id=Fk6tC6qSlWjDnPIAAAil [info] Sent 302 in 4ms
+09:26:22.643 request_id=Fk6tC6sIYS9PICgAAAjF [info] GET /bookings/127
+09:26:22.645 request_id=Fk6tC6sIYS9PICgAAAjF [info] Sent 200 in 1ms
+Submited
+Response check
+09:26:22.721 request_id=Fk6tC6-lT4qkJR8AAAjl [info] GET /invoices
+09:26:22.723 request_id=Fk6tC6-lT4qkJR8AAAjl [info] Sent 200 in 2ms
+As a driver I want to pay for a hourly parking place without a specific end time booking when I terminate booking.   ---> ok
+All features passed.
+
+
+Suite: Parking RT Payment
+Started
+09:26:22.801 request_id=Fk6tC7RxiUbyyRoAAAkF [info] GET /sessions/new
+09:26:22.804 request_id=Fk6tC7RxiUbyyRoAAAkF [info] Sent 200 in 2ms
+09:26:23.261 request_id=Fk6tC8_WQK2A2GoAAAkl [info] POST /sessions
+09:26:23.265 request_id=Fk6tC8_WQK2A2GoAAAkl [info] Sent 302 in 4ms
+09:26:23.269 request_id=Fk6tC9BZFeNCKQ0AAAlF [info] GET /
+Came here
+09:26:23.270 request_id=Fk6tC9BZFeNCKQ0AAAlF [info] Sent 302 in 1ms
+09:26:23.272 request_id=Fk6tC9CILW-r5BUAAAll [info] GET /search
+09:26:23.274 request_id=Fk6tC9CILW-r5BUAAAll [info] Sent 200 in 1ms
+Check balance
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 142,
+  inserted_at: ~N[2020-12-08 07:26:22],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:22]
+}
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 142,
+  inserted_at: ~N[2020-12-08 07:26:22],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:22]
+}
+09:26:23.327 request_id=Fk6tC9PKN7szO8kAAAmF [info] GET /bookings/new
+09:26:23.330 request_id=Fk6tC9PKN7szO8kAAAmF [info] Sent 200 in 2ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:23.529 request_id=Fk6tC9_cmar1B-YAAAml [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "isEndingSpecified" => "false",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+nil
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 368,
+  inserted_at: ~N[2020-12-08 07:26:23],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:23],
+  zone_id: "A"
+}
+09:26:23.538 request_id=Fk6tC9_cmar1B-YAAAml [info] Sent 302 in 8ms
+09:26:23.540 request_id=Fk6tC-B9KbSus5AAAAnF [info] GET /bookings/128
+09:26:23.542 request_id=Fk6tC-B9KbSus5AAAAnF [info] Sent 200 in 2ms
+Submited
+Response check
+09:26:23.616 request_id=Fk6tC-UFclQaShMAAAnl [info] GET /invoices
+09:26:23.618 request_id=Fk6tC-UFclQaShMAAAnl [info] Sent 200 in 2ms
+As a driver I want to not be debited when I have configured Monthly Payment and I book a real time parking place without end time. ---> ok
+09:26:23.692 request_id=Fk6tC-mMfbC97YMAAAoF [info] GET /sessions/new
+09:26:23.693 request_id=Fk6tC-mMfbC97YMAAAoF [info] Sent 200 in 1ms
+09:26:24.142 request_id=Fk6tDARkIQyMZpAAAAol [info] POST /sessions
+09:26:24.144 request_id=Fk6tDARkIQyMZpAAAAol [info] Sent 302 in 1ms
+09:26:24.147 request_id=Fk6tDASn1nJ-VdsAAApF [info] GET /
+Came here
+09:26:24.148 request_id=Fk6tDASn1nJ-VdsAAApF [info] Sent 302 in 1ms
+09:26:24.150 request_id=Fk6tDATgU8_rZScAAApl [info] GET /search
+09:26:24.152 request_id=Fk6tDATgU8_rZScAAApl [info] Sent 200 in 1ms
+Check balance
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 143,
+  inserted_at: ~N[2020-12-08 07:26:23],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:23]
+}
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 143,
+  inserted_at: ~N[2020-12-08 07:26:23],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:23]
+}
+09:26:24.204 request_id=Fk6tDAgYjetdcxUAAAqF [info] GET /bookings/new
+09:26:24.206 request_id=Fk6tDAgYjetdcxUAAAqF [info] Sent 200 in 2ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:24.563 request_id=Fk6tDB111XU236UAAAql [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "end_time" => %{"hour" => "10", "minute" => "26"},
+  "isEndingSpecified" => "true",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+start
+~U[2020-12-08 07:26:24.564886Z]
+#DateTime<2020-12-08 10:26:24+02:00 EET Europe/Tallinn>
+END
+lt
+#DateTime<2020-12-08 10:26:24+02:00 EET Europe/Tallinn>
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 369,
+  inserted_at: ~N[2020-12-08 07:26:24],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:24],
+  zone_id: "A"
+}
+################################
+~U[2020-12-08 07:26:24.564886Z]
+1607415984
+1607412384
+1
+12
+1.92
+Scheduling reminder for booking with id: 129
+~e[24 23 8 8 12 * 2020]e
+~e[24 24 8 8 12 * 2020]e
+09:26:24.571 request_id=Fk6tDB111XU236UAAAql [info] Sent 302 in 8ms
+09:26:24.574 request_id=Fk6tDB4Z20ibpKIAAArF [info] GET /bookings/129
+09:26:24.575 request_id=Fk6tDB4Z20ibpKIAAArF [info] Sent 200 in 1ms
+Submited
+Response check
+09:26:24.648 request_id=Fk6tDCKJ_tmPGjUAAArl [info] GET /invoices
+09:26:24.651 request_id=Fk6tDCKJ_tmPGjUAAArl [info] Sent 200 in 2ms
+As a driver I want to not be debited when I have configured Monthly Payment and I book a real time parking place with end time but invoice should be generated. ---> ok
+09:26:24.725 request_id=Fk6tDCcjdzZqkcQAAAsF [info] GET /sessions/new
+09:26:24.727 request_id=Fk6tDCcjdzZqkcQAAAsF [info] Sent 200 in 1ms
+09:26:25.210 request_id=Fk6tDEQLwOJGE4UAAAsl [info] POST /sessions
+09:26:25.212 request_id=Fk6tDEQLwOJGE4UAAAsl [info] Sent 302 in 1ms
+09:26:25.214 request_id=Fk6tDERH92pKS7QAAAtF [info] GET /
+Came here
+09:26:25.216 request_id=Fk6tDERH92pKS7QAAAtF [info] Sent 302 in 1ms
+09:26:25.218 request_id=Fk6tDESD2r3FyWgAAAtl [info] GET /search
+09:26:25.220 request_id=Fk6tDESD2r3FyWgAAAtl [info] Sent 200 in 1ms
+Check balance
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 144,
+  inserted_at: ~N[2020-12-08 07:26:24],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:24]
+}
+%Parking.Account.User{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  balance: 50.0,
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  email: "a@gmail.com",
+  id: 144,
+  inserted_at: ~N[2020-12-08 07:26:24],
+  license: "34534567890",
+  monthly_payment: false,
+  name: "some name",
+  password: "123",
+  updated_at: ~N[2020-12-08 07:26:24]
+}
+09:26:25.271 request_id=Fk6tDEem2IWY-1oAAAuF [info] GET /bookings/new
+09:26:25.272 request_id=Fk6tDEem2IWY-1oAAAuF [info] Sent 200 in 1ms
+first
+"58.3825317"
+"26.7312859"
+completed location
+Selected Hourly method
+09:26:25.620 request_id=Fk6tDFx8vdv5SpwAAAul [info] POST /bookings
+"-------------------------------------------------------------------------"
+%{
+  "end_time" => %{"hour" => "10", "minute" => "26"},
+  "isEndingSpecified" => "true",
+  "lat" => "58.3825317",
+  "long" => "26.7312859",
+  "payment_type" => "RT"
+}
+start
+~U[2020-12-08 07:26:25.622451Z]
+#DateTime<2020-12-08 10:26:25+02:00 EET Europe/Tallinn>
+END
+lt
+#DateTime<2020-12-08 10:26:25+02:00 EET Europe/Tallinn>
+0
+OK
+Found the parking_place
+%{
+  __meta__: #Ecto.Schema.Metadata<:loaded, "parking_places">,
+  __struct__: Parking.Places.Parking_place,
+  address: "Narva maantee 18",
+  bookings: #Ecto.Association.NotLoaded<association :bookings is not loaded>,
+  busy_places: 28,
+  distance: 0.8446396348983854,
+  id: 370,
+  inserted_at: ~N[2020-12-08 07:26:25],
+  lat: 58.39091,
+  long: 26.72998,
+  name: "Delta",
+  total_places: 30,
+  updated_at: ~N[2020-12-08 07:26:25],
+  zone_id: "A"
+}
+################################
+~U[2020-12-08 07:26:25.622451Z]
+1607415985
+1607412385
+1
+12
+1.92
+Scheduling reminder for booking with id: 130
+~e[25 23 8 8 12 * 2020]e
+~e[25 24 8 8 12 * 2020]e
+09:26:25.639 request_id=Fk6tDFx8vdv5SpwAAAul [info] Sent 302 in 18ms
+09:26:25.641 request_id=Fk6tDF27uM3raZgAAAvF [info] GET /bookings/130
+09:26:25.644 request_id=Fk6tDF27uM3raZgAAAvF [info] Sent 200 in 2ms
+Submited
+Response check
+09:26:25.720 request_id=Fk6tDGJo8HFxBNAAAAvl [info] GET /invoices
+09:26:25.723 request_id=Fk6tDGJo8HFxBNAAAAvl [info] Sent 200 in 2ms
+As a driver I want to  be debited immediately when I have configured Each booking payment and I book a real time parking place with a specific end time. ---> ok
+All features passed.

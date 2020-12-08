@@ -3,13 +3,13 @@ defmodule WhiteBreadConfig do
 
 
 
-  context_per_feature namespace_prefix: WhiteBread.Contexts,
-                      entry_path: "features/context_per_feature"
-
+  #context_per_feature namespace_prefix: WhiteBread.Contexts,
+  #                    entry_path: "features/context_per_feature"
+#
 
    suite name:          "Register",
        context:       WhiteBread.Contexts.RegisterContext,
-       feature_paths: ["features/register/"]
+      feature_paths: ["features/register/"]
 
    suite name:          "Login",
        context:       WhiteBread.Contexts.LoginContext,
@@ -21,7 +21,7 @@ defmodule WhiteBreadConfig do
 
    suite name:          "Configuring monthly payment",
        context:       WhiteBread.Contexts.MonthlyPaymentContext,
-       feature_paths: ["features/user/config_monthly_payment.feature"]
+        feature_paths: ["features/user/config_monthly_payment.feature"]
 
    suite name:          "Parking Booking",
        context:       WhiteBread.Contexts.ParkingBookingContext,
@@ -31,8 +31,6 @@ defmodule WhiteBreadConfig do
        context:       WhiteBread.Contexts.ParkingBookingContext,
        feature_paths: ["features/book/parking_payment_hourly.feature"]
 
-
-
    suite name:          "Parking RT Payment",
        context:       WhiteBread.Contexts.ParkingBookingContext,
        feature_paths: ["features/book/parking_payment_real_time.feature"]
@@ -41,13 +39,8 @@ defmodule WhiteBreadConfig do
       context:       WhiteBread.Contexts.TerminateParkingContext,
       feature_paths: ["features/terminateparking/"]
 
-
-
    suite name:          "Extend Parking",
        context:       WhiteBread.Contexts.ExtendBookingContext,
        feature_paths: ["features/extendbooking/"]
-
-
-
 
 end
