@@ -36,9 +36,10 @@ defmodule WhiteBreadConfig do
       feature_paths: ["features/terminateparking/"]
 
 
-  #suite name:          "Parking RT Payment",
-  #    context:       WhiteBread.Contexts.ParkingBookingContext,
-  #    feature_paths: ["features/book/parking_payment_real_time.feature"]
+
+  # suite name:          "Parking RT Payment",
+  #     context:       WhiteBread.Contexts.ParkingBookingContext,
+  #     feature_paths: ["features/book/parking_payment_real_time.feature"]
 
   # suite name:          "Extend Parking",
   #     context:       WhiteBread.Contexts.ExtendBookingContext,
