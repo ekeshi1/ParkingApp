@@ -29,7 +29,7 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
   given_ ~r/that I am logged in$/, fn state->
     navigate_to "/sessions/new"
 
-    {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "3454567890", name: "some name", password: "123", monthly_payment: false})
+    {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "34534567890", name: "some name", password: "123", monthly_payment: false})
 
     case search_element(:id, "email",2) do
       {:ok,_elem} ->
@@ -83,9 +83,8 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
     #get time now
     dateTime=DateTime.add(DateTime.utc_now(),2*60*60, :second)
 
-    IO.inspect(timenow)
-    hourNow = timenow.hour
-    minuteNow =timenow.minute
+    hourNow = dateTime.hour
+    minuteNow =dateTime.minute
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(hourNow+1)<>"']") |> click()
     find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(minuteNow)<>"']") |> click()

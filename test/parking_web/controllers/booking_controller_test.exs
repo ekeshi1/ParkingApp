@@ -8,7 +8,7 @@ defmodule ParkingWeb.BookingControllerTest do
   alias Parking.Places.Parking_place
   alias Parking.Repo
   alias Parking.Invoices.Invoice
-
+  alias Parking.Account
 
 
   setup_all do
@@ -60,9 +60,10 @@ defmodule ParkingWeb.BookingControllerTest do
       param = %{name: "Narva 27", address: "Narva maantee 27", total_places: 30, busy_places: 2, zone_id: "A", lat: 58.3965215, long: 26.735385}
       set =Parking_place.changeset(%Parking_place{},param)
       place= Repo.insert!(set)
-
+      {:ok,createdUser} = Account.create_user(%{email: "a@gmail.com", license: "3454567890", name: "some name", password: "123", monthly_payment: false})
+      conn = post conn, "/sessions", %{session: [email: createdUser.email, password: createdUser.password]}
       IO.inspect place
-      params = %{end_time: "2010-04-17T14:00:00Z", start_time: "2010-04-17T14:00:00Z", status: "ACTIVE", total_amount: 120.5, parking_type: "RT", parking_place_id: place.id, user_id: 1}
+      params = %{end_time: "2010-04-17T14:00:00Z", start_time: "2010-04-17T14:00:00Z", status: "ACTIVE", total_amount: 120.5, parking_type: "RT", parking_place_id: place.id, user_id: createdUser.id}
       {:ok, booking} = Bookings.create_booking(params)
       id=booking.id
       conn = delete(conn, Routes.booking_path(conn, :delete, booking))

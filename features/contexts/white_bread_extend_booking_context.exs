@@ -20,7 +20,7 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
 
   scenario_finalize fn _status, _state ->
     Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo)
-    Hound.end_session
+    #Hound.end_session
   end
 
   given_ ~r/^that I have booked a parking space$/, fn state ->
@@ -48,23 +48,22 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
       {:error ,_s}-> IO.puts("User logged...")
 
     end
-
     navigate_to "/bookings/new"
     execute_script("document.getElementById('user_lat').value=arguments[0];
     document.getElementById('user_long').value=arguments[1];
     ", [String.to_float("58.3825800"), String.to_float("26.7320600")])
     find_element(:css, "#booking_payment_type option[value='H']") |> click()
     find_element(:id, "leaving_time") |> click()
-    end_time=DateTime.add(DateTime.utc_now(),2*60*60+7*60, :second)
+    end_time=DateTime.add(DateTime.utc_now(),2*60*60+40*60, :second)
     h = end_time.hour
     m = end_time.minute
 
 
     find_element(:css, "#booking_end_time_hour option[value='"<>Integer.to_string(h)<>"']") |> click()
     find_element(:css, "#booking_end_time_minute option[value='"<>Integer.to_string(m)<>"']") |> click()
+    execute_script("document.getElementById('submit_button').disabled=arguments[0]",[false])
+    click({:id, "submit_button"})
 
-    submit_button = find_element(:id, "submit_button")
-    click(submit_button)
     {:ok, state}
   end
 
@@ -84,13 +83,14 @@ defmodule WhiteBread.Contexts.ExtendBookingContext do
 
   and_ ~r/^I click the extend link received in my email$/, fn state ->
     #checked
+    IO.puts "foo" ; :timer.sleep(2000); IO.puts "bar"
     navigate_to "/bookings"
     find_element(:class, "extend_button") |> click()
     {:ok, state}
   end
 
   and_ ~r/^I choose the new end time$/, fn state ->
-    end_time=DateTime.add(DateTime.utc_now(),2*60*60+10*60, :second)
+    end_time=DateTime.add(DateTime.utc_now(),2*60*60+50*60, :second)
     h = end_time.hour
     m = end_time.minute
 

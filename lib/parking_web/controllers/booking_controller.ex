@@ -348,11 +348,36 @@ end
     booking = Bookings.get_booking!(id)
     parking_place = Repo.get!(Parking_place, booking.parking_place_id)
 
-    amount = calculate_amount(booking.start_time, DateTime.add(DateTime.utc_now(), 7200, :second), booking.parking_type, parking_place)
 
-    {:ok, _booking} = Bookings.update_booking(booking, %{end_time: DateTime.utc_now(), total_amount: amount, status: "TERMINATED"})
+    amount = calculate_amount(booking.start_time,DateTime.utc_now(), booking.parking_type, parking_place)
+
+    {:ok, booking} = Bookings.update_booking(booking, %{end_time: DateTime.utc_now(), total_amount: amount, status: "TERMINATED"})
+    user = Authentication.load_current_user(conn)
 
 
+                    status =
+
+                    cond do
+                      user.monthly_payment==true and booking.parking_type == "RT" ->"UNPAID"
+                      user.monthly_payment==false and booking.parking_type == "RT" -> "PAID"
+                      user.monthly_payment == true and booking.parking_type=="H" -> "PAID"
+                      user.monthly_payment == false and booking.parking_type=="H" -> "PAID"
+                    end
+
+                  #Adding invoice
+                    invoice = Invoice.changeset(%Invoice{},%{status: status,amount: booking.total_amount, start_time: booking.start_time, end_time: booking.end_time})
+                             |>Ecto.Changeset.put_assoc(:booking,booking)
+                             |>Ecto.Changeset.put_assoc(:user,user)
+
+                     Repo.insert!(invoice)
+
+
+
+                  if status == "PAID" do
+                    user
+                    |>User.changeset(%{balance: (user.balance-booking.total_amount)})
+                    |>Repo.update()
+                  end
 
 
     conn
@@ -423,6 +448,7 @@ end
         {:ok, updated_booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
         job_reminder = String.to_atom("REMINDER_"<>Integer.to_string(updated_booking.id))
         job_terminate = String.to_atom("TERMINATE"<>Integer.to_string(updated_booking.id))
+        Scheduler.find_job(job_reminder)
         Scheduler.delete_job(job_reminder)
         IO.puts("Deleted reminder job")
         Scheduler.delete_job(job_terminate)

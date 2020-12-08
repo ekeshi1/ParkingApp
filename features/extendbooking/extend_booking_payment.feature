@@ -1,6 +1,8 @@
+
+
 Feature: Extend Booking time payment
 
-    Scenario: Driver extends booking time
+    Scenario: Driver extends booking time and pays
     Given that I have booked a parking space
     And there are 8 minutes left until my booking time ends
     And the payment method is Hourly Payment

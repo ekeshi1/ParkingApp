@@ -23,19 +23,8 @@ And my location is "Raatuse 21" with latitude "58.3825317" and longitude "26.731
 When I click Book
 Then I must see "Oops,this parking place doesnt have any available space right now. Please find another one."
 
-Scenario: Booking a Real time parking space without specifying end time should be successfull
 
-Given that I am logged in
-And I navigate to new bookings page
-Given that the following parking places are available
-| name | address | zone_id | total_places | busy_places | lat | long |
-| Delta| Narva maantee 18 | A | 30 | 28 | 58.390910 | 26.729980 |
-And my location is "Raatuse 21" with latitude "58.3825317" and longitude "26.7312859"
-And I choose "Real-Time" payment method
-And I click Book
-Then I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."
-And Total amount must be "-"
-And End time should not be specified
+
 
 
 Given that I am logged in
@@ -65,3 +54,18 @@ And my location is "Raatuse 21" with latitude "58.3825317" and longitude "26.731
 And I choose "Hourly" payment method
 When I click Book
 Then I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."
+
+
+Scenario: Booking a Real time parking space without specifying end time should be successfull
+
+Given that I am logged in
+And I navigate to new bookings page
+Given that the following parking places are available
+| name | address | zone_id | total_places | busy_places | lat | long |
+| Delta| Narva maantee 18 | A | 30 | 28 | 58.390910 | 26.729980 |
+And my location is "Raatuse 21" with latitude "58.3825317" and longitude "26.7312859"
+And I choose "Real-Time" payment method
+And I click Book
+Then I must see "Booking is successfull. You can now terminate your parking in 'Narva maantee 18' anytime by clicking Terminate Parking in your bookings."
+And Total amount must be "-"
+And End time should not be specified

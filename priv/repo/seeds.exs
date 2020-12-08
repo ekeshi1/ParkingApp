@@ -42,9 +42,9 @@ if Application.get_env(:parking, :env) != :test do
 
 end
 
-[%{name: "Bob", license: "9999", email: "bob@gmail.com", password: "123"},
-%{name: "E", license: "11112", email: "erkesh@ttu.ee", password: "12345"},
-%{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321"}]
+[%{name: "Bob", license: "9999", email: "bob@gmail.com", password: "123",balance: 50.0},
+%{name: "E", license: "11112", email: "erkesh@ttu.ee", password: "12345",balance: 50.0},
+%{name: "Dave", license: "1111", email: "dave@gmail.com", password: "321",balance: 50.0}]
 |> Enum.map(fn user_data -> User.changeset(%User{}, user_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
 
