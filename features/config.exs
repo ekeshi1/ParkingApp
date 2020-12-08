@@ -23,22 +23,22 @@ defmodule WhiteBreadConfig do
   #     context:       WhiteBread.Contexts.MonthlyPaymentContext,
   #     feature_paths: ["features/user/config_monthly_payment.feature"]
 
-  # suite name:          "Parking Booking",
-  #     context:       WhiteBread.Contexts.ParkingBookingContext,
-  #     feature_paths: ["features/book/parking_booking.feature"]
+   #suite name:          "Parking Booking",
+   #    context:       WhiteBread.Contexts.ParkingBookingContext,
+   #    feature_paths: ["features/book/parking_booking.feature"]
 
-  # suite name:          "Parking Hourly Payment",
-  #     context:       WhiteBread.Contexts.ParkingBookingContext,
-  #     feature_paths: ["features/book/parking_payment_hourly.feature"]
+   #suite name:          "Parking Hourly Payment",
+   #    context:       WhiteBread.Contexts.ParkingBookingContext,
+   #    feature_paths: ["features/book/parking_payment_hourly.feature"]
 
   suite name:          "Terminate Parking",
       context:       WhiteBread.Contexts.TerminateParkingContext,
       feature_paths: ["features/terminateparking/"]
 
 
-  suite name:          "Parking RT Payment",
-      context:       WhiteBread.Contexts.ParkingBookingContext,
-      feature_paths: ["features/book/parking_payment_real_time.feature"]
+  #suite name:          "Parking RT Payment",
+  #    context:       WhiteBread.Contexts.ParkingBookingContext,
+  #    feature_paths: ["features/book/parking_payment_real_time.feature"]
 
   # suite name:          "Extend Parking",
   #     context:       WhiteBread.Contexts.ExtendBookingContext,

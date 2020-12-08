@@ -7,10 +7,11 @@ defmodule Parking.SenderTasks do
       booking = Bookings.get_booking!(String.to_integer(booking_id))
       user=Repo.get!(User, booking.user_id)
       email=user.email
-      Parking.Mailer.send_email(email,"dd","You have 10 minutes left to use this parking place. Please extend if you wish")
+      Parking.Mailer.send_email(email,"Extension Reminder","You have 10 minutes left to use this parking place. Please extend if you wish")
       IO.puts("Running scheduled task with id: "<>booking_id)
   end
 
+  @spec terminateParking(binary) :: any
   def terminateParking(booking_id) do
     IO.puts("Running Booking Termination task with id: "<> booking_id)
 

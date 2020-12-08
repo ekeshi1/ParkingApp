@@ -179,13 +179,32 @@ defmodule ParkingWeb.BookingController do
     end
   end
 
+  @spec schedule_stuff(
+          atom
+          | %{
+              end_time: %{
+                calendar: atom,
+                day: any,
+                hour: any,
+                microsecond: {any, any},
+                minute: any,
+                month: any,
+                second: any,
+                std_offset: integer,
+                time_zone: any,
+                utc_offset: integer,
+                year: any
+              },
+              id: integer
+            }
+        ) :: :ok
   def schedule_stuff(booking) do
     bookingId = Integer.to_string(booking.id)
     IO.puts "Scheduling reminder for booking with id: "<>bookingId
 
     jobNameReminder="REMINDER_"<> bookingId
 
-    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,10)
+    cronExpresionReminder = buildCronExpressionReminder(booking.end_time,3)
     cronExpresionTermination = buildCronExpressionReminder(booking.end_time,2)
     jobNameTermination="TERMINATE_" <> bookingId
 
@@ -333,6 +352,9 @@ end
 
     {:ok, _booking} = Bookings.update_booking(booking, %{end_time: DateTime.utc_now(), total_amount: amount, status: "TERMINATED"})
 
+
+
+
     conn
     |> put_flash(:info, "Parking Terminated. Total Fee is " <> to_string(amount) <> " euro.")
     |> redirect(to: Routes.booking_path(conn, :index))
@@ -346,6 +368,7 @@ end
   end
 
   def extend(conn, %{"changeset" => %{"end_time" => %{"hour" => hour, "minute" => minute}, "id" => id}}) do
+    IO.puts("OLAAAAAAAAAAAAAAAAAAAAAAA")
     IO.puts(hour)
     IO.puts(minute)
     IO.puts(id)
@@ -371,8 +394,32 @@ end
         |> redirect(to: Routes.booking_path(conn, :extend_page, %{id: id}))
         IO.puts("ERROR, CHANGE NEWTIME")
       time_diff>0 ->
+        user =Repo.get!(User, booking.user_id)
+
+        status =
+          cond  do
+          booking.parking_type =="H" -> "PAID"
+          booking.parking_type =="RT" and user.monthly_payment==true -> "UNPAID"
+          booking.parking_type =="RT" and user.monthly_payment==false -> "PAID"
+        end
+
+
         parking_place = Repo.get!(Parking_place, booking.parking_place_id)
         new_amount = calculate_amount(booking.start_time, new_end_time, booking.parking_type, parking_place)
+
+        invoice = Invoice.changeset(%Invoice{},%{status: status,amount: (new_amount-booking.total_amount), start_time: booking.end_time, end_time: new_end_time})
+        |>Ecto.Changeset.put_assoc(:booking,booking)
+        |>Ecto.Changeset.put_assoc(:user,user)
+
+        Repo.insert!(invoice)
+        if status == "PAID" do
+          user
+          |>User.changeset(%{balance: (user.balance-(new_amount-booking.total_amount))})
+          |>Repo.update()
+        end
+
+
+
         {:ok, updated_booking} = Bookings.update_booking(booking, %{end_time: new_end_time, total_amount: new_amount})
         job_reminder = String.to_atom("REMINDER_"<>Integer.to_string(updated_booking.id))
         job_terminate = String.to_atom("TERMINATE"<>Integer.to_string(updated_booking.id))
@@ -381,6 +428,10 @@ end
         Scheduler.delete_job(job_terminate)
         IO.puts("Deleted terminate job")
         schedule_stuff(updated_booking)
+
+
+
+
         conn
         |> put_flash(:info, "Booking time extended!")
         |> redirect(to: Routes.booking_path(conn, :index))

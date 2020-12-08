@@ -22,7 +22,7 @@ config :parking, Parking.Scheduler,
       task: {Heartbeat, :send, []}
     ],
     mounthly_payment: [
-      schedule: {:extended, "*/59 * * * *"},
+      schedule: "@monthly",#{:extended, "*/59 * * * *"},
       task: {Parking.MounthyPay, :pay_all, []}
     ]
   ]

@@ -207,7 +207,7 @@ defmodule ParkingWeb.BookingControllerTest do
       conn = post(conn, Routes.booking_path(conn, :extend, params_for_extend))
       assert redirected_to(conn) == Routes.booking_path(conn, :index)
 
-      query = from invoice in Invoice, select: invoice, where: (invoice.end_time == ^new_end_time) and invoice.status == "PAID"
+      query = from invoice in Invoice, select: invoice, where: (invoice.booking_id == ^booking.id) and invoice.status == "PAID"
       invoices = Repo.all(query)
 
       assert length(invoices) == 1
