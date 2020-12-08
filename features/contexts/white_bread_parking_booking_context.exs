@@ -81,7 +81,7 @@ defmodule WhiteBread.Contexts.ParkingBookingContext do
     click({:id,"leaving_time"})
 
     #get time now
-    timenow=DateTime.add(DateTime.utc_now(),2*60*60, :second)
+    dateTime=DateTime.add(DateTime.utc_now(),2*60*60, :second)
 
     IO.inspect(timenow)
     hourNow = timenow.hour

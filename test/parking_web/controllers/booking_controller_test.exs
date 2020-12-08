@@ -27,10 +27,9 @@ defmodule ParkingWeb.BookingControllerTest do
     |> recycle
 
 
-    conn = post conn, "/sessions", %{session: [email: "erkesh@ttu.ee", password: "12345"]}
+    #conn = post conn, "/sessions", %{session: [email: "erkesh@ttu.ee", password: "12345"]}
 
 
-    IO.inspect Parking.Authentication.load_current_user(conn)
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo) end)
 
     {:ok, conn: conn}
