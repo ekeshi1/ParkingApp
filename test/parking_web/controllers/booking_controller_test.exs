@@ -17,18 +17,7 @@ defmodule ParkingWeb.BookingControllerTest do
     Ecto.Adapters.SQL.Sandbox.mode(Parking.Repo, {:shared, self()})
 
 
-    user = Repo.get_by(User, email: "erkesh@ttu.ee")
     conn = build_conn()
-    |> bypass_through(Parking.Router, [:browser, :browser_auth, :ensure_auth])
-    |> get("/")
-    |> Map.update!(:state, fn (_) -> :set end)
-    |> Guardian.Plug.sign_in(user)
-    |> send_resp(200, "Flush the session")
-    |> recycle
-
-
-    #conn = post conn, "/sessions", %{session: [email: "erkesh@ttu.ee", password: "12345"]}
-
 
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.checkin(Parking.Repo) end)
 
